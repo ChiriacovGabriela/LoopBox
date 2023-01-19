@@ -1,0 +1,41 @@
+.neon {
+    color: #fff;
+    text-shadow: 0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 42px rgb(255,0,0),
+    0 0 77px rgb(255, 0, 0),
+    0 0 100px rgb(255, 0, 0)
+}
+.red-color {
+    color: rgba(201,30,30);
+}
+.bg-color {
+    background-color: rgba(33,7,7,0.65);
+}
+.body {
+    background-image: url("music.jpeg");
+}
+.white-color {
+    color: white;
+    font-size: 1.6em;
+}
+.nav{
+    text-align: center;
+    Font-size:25px;
+    Text-transform:uppercase;
+    background-color: rgba(8,0,0,0.99);
+}
+.nav_link{
+    display: inline-block;
+    Vertical-align:top;
+    Margin:0 17px;
+    color:rgba(201,30,30);
+    font-weight: bold;
+    Text-decoration:none;
+    Transition:color .2s linear;
+}
+.nav_link:hover{
+    color: white;
+}
+
+
