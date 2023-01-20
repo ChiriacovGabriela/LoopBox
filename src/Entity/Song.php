@@ -43,13 +43,13 @@ class Song
     #[ORM\ManyToOne(inversedBy: 'relation')]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'song', targetEntity: comment::class)]
+    #[ORM\OneToMany(mappedBy: 'song', targetEntity: Comment::class)]
     private Collection $relation;
 
-    #[ORM\ManyToMany(targetEntity: playlist::class, inversedBy: 'songs')]
+    #[ORM\ManyToMany(targetEntity: Playlist::class, inversedBy: 'songs')]
     private Collection $relationWithPlaylist;
 
-    #[ORM\ManyToMany(targetEntity: album::class, inversedBy: 'songs')]
+    #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'songs')]
     private Collection $relationWithAlbum;
 
     public function __construct()
