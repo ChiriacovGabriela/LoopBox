@@ -38,13 +38,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $preference = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: comment::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
     private Collection $comment;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: song::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Song::class)]
     private Collection $relation;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: playlist::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Playlist::class)]
     private Collection $relationWithPlaylist;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Album::class)]
