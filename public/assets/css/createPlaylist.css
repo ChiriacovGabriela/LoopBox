@@ -37,5 +37,12 @@
 .nav_link:hover{
     color: white;
 }
-
+.btn1{
+    margin-bottom: 5px;
+    margin-top: 55px;
+}
+.person-circle{
+    margin-left: 85%;
+    color: rgba(255,39,39,1);
+}
 
