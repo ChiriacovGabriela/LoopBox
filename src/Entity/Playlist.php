@@ -22,8 +22,7 @@ class Playlist
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imagePath = null;
 
-    #[ORM\Column]
-    private ?bool $visibility = null;
+
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
@@ -74,17 +73,7 @@ class Playlist
         return $this;
     }
 
-    public function isVisibility(): ?bool
-    {
-        return $this->visibility;
-    }
 
-    public function setVisibility(bool $visibility): self
-    {
-        $this->visibility = $visibility;
-
-        return $this;
-    }
 
     public function getCretedAt(): ?\DateTimeInterface
     {
