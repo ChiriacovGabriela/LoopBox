@@ -1,12 +1,12 @@
 {{ form_start(playlistForm) }}
 
     <div class="form-outline form-white mb-4">
-    <div>{{ form_widget(playlistForm.name) }}</div>
-    <div>{{ form_label(playlistForm.name) }}</div>
+    {{ form_widget(playlistForm.name) }}
+    {{ form_label(playlistForm.name) }}
     </div>
 
     <div class="form-outline form-white mb-4">
-    <div>{{ form_widget(playlistForm.imagePath) }}</div>
+    {{ form_widget(playlistForm.imagePath) }}
     <div>Image</div>
     </div>
 

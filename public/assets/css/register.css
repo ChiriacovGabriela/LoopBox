@@ -1,0 +1,14 @@
+.background{
+    background-image: url("music1.jpg");
+    background-size: cover;
+    background-position: center;
+}
+.card_color{
+    background-color: rgba(158, 64, 64, 0.09);
+}
+.agree_terms{
+    text-align: left;
+}
+
+
+

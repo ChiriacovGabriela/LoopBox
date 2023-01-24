@@ -4,18 +4,52 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
 
-    {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.name) }}
-    {{ form_row(registrationForm.surname) }}
-    {{ form_row(registrationForm.preference) }}
-    {{ form_row(registrationForm.email) }}
-    {{ form_row(registrationForm.plainPassword, {
-        label: 'Password'
-    }) }}
-    {{ form_row(registrationForm.agreeTerms) }}
+    <nav class="nav">
+        <a class="nav_link neon" href="#">LoopBox</a>
+    </nav>
 
-    <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+    <section class="background" >
+
+        <div class="container py-5 h-100 ">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card card_color text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+
+                            <div class="mb-md-5 mt-md-4 pb-5">
+
+                                <h2 class="fw-bold mb-2 text-uppercase neon red-color">Register</h2>
+                                <p class="text-white-50 mb-5">It's time to create your account!</p>
+
+                                {{ form_start(registrationForm) }}
+
+                                {{ form_row(registrationForm.name) }}
+                                {{ form_row(registrationForm.surname) }}
+                                {{ form_row(registrationForm.preference) }}
+                                {{ form_row(registrationForm.email) }}
+                                {{ form_row(registrationForm.plainPassword, {
+                                    label: 'Password'
+                                }) }}
+
+                                <div class="agree_terms">
+                                {{ form_row(registrationForm.agreeTerms) }}
+                                </div>
+
+                                <div class="btn1">
+                                <button type="submit" class="btn btn-light btn-lg px-5">Register</button>
+                                </div>
+
+                                {{ form_end(registrationForm) }}
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 {% endblock %}
