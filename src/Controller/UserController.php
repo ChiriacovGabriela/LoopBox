@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CreatePlaylistController extends AbstractController
+class UserController extends AbstractController
 {
-    #[Route('/create/playlist', name: 'app_create_playlist')]
+    #[Route('/user', name: 'app_user')]
     public function index(): Response
     {
-        return $this->render('create_playlist/index.html.twig', [
-            'controller_name' => 'CreatePlaylistController',
+        return $this->render('user/index.html.twig', [
+            'controller_name' => 'UserController',
         ]);
     }
 }

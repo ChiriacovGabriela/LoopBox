@@ -42,6 +42,7 @@ class Playlist
     public function __construct()
     {
         $this->songs = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -72,80 +73,9 @@ class Playlist
 
         return $this;
     }
-
-
-
-    public function getCretedAt(): ?\DateTimeInterface
-    {
-        return $this->creted_at;
-    }
-
-    public function setCretedAt(\DateTimeInterface $creted_at): self
-    {
-        $this->creted_at = $creted_at;
-
-        return $this;
-    }
-
-    public function getDeletedAt(): ?\DateTimeInterface
-    {
-        return $this->deleted_at;
-    }
-
-    public function setDeletedAt(?\DateTimeInterface $deleted_at): self
-    {
-        $this->deleted_at = $deleted_at;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updated_at;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    public function setUpdated_at(?\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Song>
-     */
-    public function getSongs(): Collection
-    {
-        return $this->songs;
-    }
-
-    public function addSong(Song $song): self
-    {
-        if (!$this->songs->contains($song)) {
-            $this->songs->add($song);
-            $song->addRelationWithPlaylist($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSong(Song $song): self
-    {
-        if ($this->songs->removeElement($song)) {
-            $song->removeRelationWithPlaylist($this);
-        }
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
