@@ -3,8 +3,11 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,7 +24,15 @@ RegistrationFormType extends AbstractType
         $builder
             ->add('name')
             ->add('surname')
-            ->add('preference')
+            ->add('preference', ChoiceType::class,[
+                'choices'  => [
+                    'Rap' => 'rap',
+                    'Pop' => 'pop',
+                    'Metal' => 'metal',
+                    'Rock' => 'rock',
+                    'Classical Music' => 'classical music',
+                    'Jazz' => 'jazz',
+                ]])
             ->add('email')
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,

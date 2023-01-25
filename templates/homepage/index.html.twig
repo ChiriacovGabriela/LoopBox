@@ -9,9 +9,14 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-    <div class="mb-3">
-        You are logged in as {{ app.user.name }}, <a href="{{ path('app_logout') }}">Logout</a>
-    </div>
+    {% if app.user %}
+        <h1>Hello {{ controller_name }}! ✅</h1>
+        <div class="mb-3">
+            You are logged in as {{ app.user.name }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% else %}
+        <h1>Hello Traveller !</h1>
+        Do you want to , <a href="{{ path('app_login') }}">Login</a> ?
+    {% endif %}
 </div>
 {% endblock %}
