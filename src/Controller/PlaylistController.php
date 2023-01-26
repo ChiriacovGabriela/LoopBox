@@ -29,4 +29,5 @@ class PlaylistController extends AbstractController
             'playlistForm' => $playlistForm->createView()
         ]);
     }
+
 }
