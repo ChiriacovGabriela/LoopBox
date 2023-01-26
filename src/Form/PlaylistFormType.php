@@ -14,8 +14,17 @@ class PlaylistFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+<<<<<<< HEAD
             ->add('name')
             ->add('imagePath')
+=======
+            ->add('name', options: [
+                'label' => 'Name'
+            ])
+            ->add('imagePath', options: [
+                'label' => 'Image'
+            ])
+>>>>>>> gabriela
         ;
     }
 
