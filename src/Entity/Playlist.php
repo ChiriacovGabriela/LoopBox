@@ -73,42 +73,8 @@ class Playlist
 
         return $this;
     }
-<<<<<<< HEAD
 
-
-    public function getCretedAt(): ?\DateTimeInterface
-    {
-        return $this->creted_at;
-    }
-
-    public function setCretedAt(\DateTimeInterface $creted_at): self
-    {
-        $this->creted_at = $creted_at;
-
-        return $this;
-    }
-
-    public function getDeletedAt(): ?\DateTimeInterface
-    {
-        return $this->deleted_at;
-    }
-
-    public function setDeletedAt(?\DateTimeInterface $deleted_at): self
-    {
-        $this->deleted_at = $deleted_at;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updated_at;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
-=======
     public function setUpdated_at(?\DateTimeInterface $updated_at): self
->>>>>>> gabriela
     {
         $this->updated_at = $updated_at;
 
