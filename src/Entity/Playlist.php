@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
 class Playlist
 {
     #[ORM\Id]
@@ -20,7 +21,7 @@ class Playlist
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imagePath = null;
+    private ?string $imageFileName = null;
 
 
 
@@ -42,8 +43,15 @@ class Playlist
     public function __construct()
     {
         $this->songs = new ArrayCollection();
-        $this->created_at = new \DateTimeImmutable();
+        //$this->created_at = new \DateTimeImmutable();
     }
+    #[ORM\PrePersist]
+    public function setCreatedAtValue():void
+    {
+        $this->created_at = new \DateTime;
+
+    }
+
 
     public function getId(): ?int
     {
@@ -62,14 +70,14 @@ class Playlist
         return $this;
     }
 
-    public function getImagePath(): ?string
+    public function getImageFileName(): ?string
     {
-        return $this->imagePath;
+        return $this->imageFileName;
     }
 
-    public function setImagePath(?string $imagePath): self
+    public function setImageFileName(?string $imageFileName): self
     {
-        $this->imagePath = $imagePath;
+        $this->imageFileName = $imageFileName;
 
         return $this;
     }
