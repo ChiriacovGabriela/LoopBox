@@ -21,7 +21,7 @@ class Playlist
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imagePath = null;
+    private ?string $imageFileName = null;
 
 
 
@@ -70,14 +70,14 @@ class Playlist
         return $this;
     }
 
-    public function getImagePath(): ?string
+    public function getImageFileName(): ?string
     {
-        return $this->imagePath;
+        return $this->imageFileName;
     }
 
-    public function setImagePath(?string $imagePath): self
+    public function setImageFileName(?string $imageFileName): self
     {
-        $this->imagePath = $imagePath;
+        $this->imageFileName = $imageFileName;
 
         return $this;
     }

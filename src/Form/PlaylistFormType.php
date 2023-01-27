@@ -20,7 +20,7 @@ class PlaylistFormType extends AbstractType
                 'label' => 'Name'
             ])
             //->add('imagePath', options: [
-              ->add ('imagePath', FileType::class,[
+              ->add ('imageFileName', FileType::class,[
                 'label' => 'Image',
                 'mapped'=> false,
                 'required' => false,

@@ -37,7 +37,7 @@ class PlaylistController extends AbstractController
 
         // on verifie si le formulaire est soumis et valide
         if($playlistForm->isSubmitted() && $playlistForm->isValid()){
-            $imagePathFile = $playlistForm ->get('imagePath')->getData();
+            $imagePathFile = $playlistForm ->get('imageFileName')->getData();
             if($imagePathFile){
                 $originalFilename = pathinfo($imagePathFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
@@ -50,7 +50,7 @@ class PlaylistController extends AbstractController
                 } catch (FileException $e) {
                     die ('File did not upload: ' . $e->getMessage());
                 }
-                $playlist->setImagePath($newFilename);
+                $playlist->setImageFileName($newFilename);
             }
             //On stock
             $em-> persist($playlist);
