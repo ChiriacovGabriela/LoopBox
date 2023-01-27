@@ -57,6 +57,7 @@ class Song
         $this->relation = new ArrayCollection();
         $this->relationWithPlaylist = new ArrayCollection();
         $this->relationWithAlbum = new ArrayCollection();
+        $this->created_at=new \DateTimeImmutable();
     }
 
     public function getId(): ?int
