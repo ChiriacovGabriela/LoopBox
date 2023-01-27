@@ -18,7 +18,7 @@ class SongType extends AbstractType
             ->add('type')
             ->add('artist')
             ->add('picturePath')
-            ->add('audioPath', FileType::class, [
+            ->add('audioFileName', FileType::class, [
                 'label'=> 'Song (MP3 file)',
                 'mapped' => false,
                 'required' => false,

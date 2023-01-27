@@ -13,7 +13,7 @@
                 <th>Type</th>
                 <th>Artist</th>
                 <th>PicturePath</th>
-                <th>AudioPath</th>
+                <th>AudioFileName</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -25,7 +25,7 @@
                 <td>{{ song.type }}</td>
                 <td>{{ song.artist }}</td>
                 <td>{{ song.picturePath }}</td>
-                <td>{{ song.audioPath }}</td>
+                <td>{{ song.audioFileName }}</td>
                 <td>
                     <a href="{{ path('app_song_show', {'id': song.id}) }}">show</a>
                     <a href="{{ path('app_song_edit', {'id': song.id}) }}">edit</a>

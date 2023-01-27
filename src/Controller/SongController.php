@@ -35,7 +35,7 @@ class SongController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $songFile*/
-            $songFile = $form->get('audioPath')->getData();
+            $songFile = $form->get('audioFileName')->getData();
             if ($songFile){
                 $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
@@ -49,7 +49,7 @@ class SongController extends AbstractController
                 } catch (FileException $e) {
                     // ... handle exception if something happens during file upload
                 }
-                $song->setAudioPath($newFilename);
+                $song->setAudioFileName($newFilename);
             }
 
             $em-> persist($song);

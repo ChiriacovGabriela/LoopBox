@@ -38,7 +38,7 @@ class Song
     private ?string $picturePath = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $audioPath = null;
+    private ?string $audioFileName = null;
 
     #[ORM\ManyToOne(inversedBy: 'relation')]
     private ?User $user = null;
@@ -149,14 +149,14 @@ class Song
         return $this;
     }
 
-    public function getAudioPath(): ?string
+    public function getAudioFileName(): ?string
     {
-        return $this->audioPath;
+        return $this->audioFileName;
     }
 
-    public function setAudioPath(string $audioPath): self
+    public function setAudioFileName(string $audioFileName): self
     {
-        $this->audioPath = $audioPath;
+        $this->audioFileName = $audioFileName;
 
         return $this;
     }
