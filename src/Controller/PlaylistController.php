@@ -7,12 +7,15 @@ use App\Form\PlaylistFormType;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PlaylistController extends AbstractController
+
 {
     #[Route('/playlist', name: 'app_playlist')]
     public function index(): Response
@@ -23,7 +26,7 @@ class PlaylistController extends AbstractController
     }
 
     #[Route('/playlist/add', name: 'add')]
-    public function add(Request $request, EntityManagerInterface $em): Response
+    public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
         //On crée un nouveau Playlist
         $playlist = new Playlist();
@@ -34,8 +37,24 @@ class PlaylistController extends AbstractController
 
         // on verifie si le formulaire est soumis et valide
         if($playlistForm->isSubmitted() && $playlistForm->isValid()){
+            $imagePathFile = $playlistForm ->get('imagePath')->getData();
+            if($imagePathFile){
+                $originalFilename = pathinfo($imagePathFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imagePathFile->guessExtension();
+                try {
+                    $imagePathFile->move(
+                        $this->getParameter('image_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    die ('File did not upload: ' . $e->getMessage());
+                }
+                $playlist->setImagePath($newFilename);
+            }
             //On stock
             $em-> persist($playlist);
+
             $em->flush();
 
 
@@ -53,6 +72,7 @@ class PlaylistController extends AbstractController
     {
         // ajouter la date pour update
         $playlist ->setUpdated_at(new \DateTimeImmutable());
+
         //On crée le formulaire
         $playlistForm = $this->createForm(PlaylistFormType::class, $playlist);
         // On traite la requete du formulaire
@@ -60,7 +80,7 @@ class PlaylistController extends AbstractController
         // on verifie si le formulaire est soumis et valide
         if($playlistForm->isSubmitted() && $playlistForm->isValid()){
             //On stock
-            $em-> persist($playlist);
+            //$em-> persist($playlist);
             $em->flush();
 
 
