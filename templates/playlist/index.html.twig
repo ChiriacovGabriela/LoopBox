@@ -4,13 +4,8 @@
 
 {% block body %}
 
-    <nav class="nav">
-        <a class="nav_link neon" href="#">LoopBox</a>
-        <a class="nav_link person-circle " href="#"><svg class="bi bi-person-circle" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="26" height="26" viewBox="0 0 16 16">
-                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-            </svg></a>
-    </nav>
+
+    {% include "partials/nav_bar.html.twig" %}
 
     <section class="jumbotron text-center">
         <div class="container">
@@ -18,10 +13,63 @@
             <img src="https://www.shutterstock.com/image-illustration/note-sign-260nw-2228793919.jpg" alt="Sol">
             <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
             <p>
+
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+                    Add Song
+                </button>
+
                 <a href="#" class="btn btn-primary my-2">Delete playlist</a>
-                <a href="#" class="btn btn-secondary my-2">Add song</a>
+
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">All songs</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Titre</th>
+                                    <th scope="col">Artist</th>
+                                    <th scope="col">Album</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             </p>
         </div>
+
     </section>
 
     <table class="table">
@@ -51,6 +99,8 @@
         </tr>
         </tbody>
     </table>
+
+{% endblock %}
 
 
 

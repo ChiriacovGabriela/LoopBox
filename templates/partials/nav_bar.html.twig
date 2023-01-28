@@ -1,3 +1,27 @@
-<nav class="nav">
-    <a class="nav_link neon" href="#">LoopBox</a>
-</nav>
+{% if app.user %}
+
+    <nav>
+        <a class="nav_link neon" href="{{ path('app_homepage')}}">LoopBox</a>
+
+        <a class="nav_link neon" href="{{ path('app_user')}}">My account</a>
+
+        <a class="nav_link neon" href="#">Edit my account</a>
+
+        <a class="nav_link neon" href="{{ path('app_logout')}}">Logout</a>
+        
+    </nav>
+
+
+{% else %}
+
+    <nav>
+        <a class="nav_link neon" href="{{ path('app_homepage')}}">LoopBox</a>
+
+        <a class="nav_link neon" href="{{ path('app_register')}}">Sing up</a>
+
+        <a class="nav_link neon login" href="{{ path('app_login')}}">Login</a>
+    </nav>
+
+
+{% endif %}
+

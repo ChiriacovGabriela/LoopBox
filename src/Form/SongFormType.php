@@ -23,6 +23,7 @@ class SongFormType extends AbstractType
             ->add('user')
             ->add('relationWithPlaylist')
             ->add('relationWithAlbum')
+
         ;
     }
 
