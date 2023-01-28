@@ -5,7 +5,6 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 
 parameters:
-    #app.images_upload_file_path: '%env(IMAGES_UPLOAD_FILE_PATH)%'
     image_directory: '%kernel.project_dir%/public/uploads/images'
 
 

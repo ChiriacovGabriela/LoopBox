@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230122123923 extends AbstractMigration
+final class Version20230128170414 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,12 @@ final class Version20230122123923 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE playlist DROP visibility');
+        $this->addSql('ALTER TABLE playlist CHANGE image_path image_file_name VARCHAR(255) DEFAULT NULL');
     }
 
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE playlist CHANGE image_file_name image_path VARCHAR(255) DEFAULT NULL');
+    }
 }
