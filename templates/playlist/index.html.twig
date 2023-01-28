@@ -33,29 +33,28 @@
 
                             <table class="table">
                                 <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Titre</th>
-                                    <th scope="col">Artist</th>
-                                    <th scope="col">Album</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                    <tr>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Artist</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for song in songs1 %}
+                                        <tr>
+                                            <td>{{ song.name }}</td>
+                                            <td>{{ song.artist }}</td>
+                                            <td>{{ song.type }}</td>
+                                            <td><button>Add</button></td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="10">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
 
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-
-                                </tr>
-                                </tbody>
                             </table>
 
 
@@ -72,6 +71,7 @@
 
     </section>
 
+
     <table class="table">
         <thead>
         <tr>
@@ -85,18 +85,12 @@
         <tbody>
         <tr>
             <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
             <td><button>Delete</button></td>
         </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td><button>Delete</button></td>
-        </tr>
+
         </tbody>
     </table>
 
