@@ -83,6 +83,7 @@ class Playlist
     }
 
     public function setUpdated_at(?\DateTimeInterface $updated_at): self
+
     {
         $this->updated_at = $updated_at;
 

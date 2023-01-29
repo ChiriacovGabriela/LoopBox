@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Playlist;
 use App\Form\PlaylistFormType;
+use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,11 +18,11 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class PlaylistController extends AbstractController
 
 {
-    #[Route('/playlist', name: 'app_playlist')]
-    public function index(): Response
+    #[Route('/playlist', name: 'app_playlist', methods: ['GET'])]
+    public function index(SongRepository $songRepository): Response
     {
         return $this->render('playlist/index.html.twig', [
-            'controller_name' => 'PlaylistController',
+            'songs1' => $songRepository->findAll(),
         ]);
     }
 
@@ -94,5 +95,7 @@ class PlaylistController extends AbstractController
         ]);
 
     }
+
+
 
 }
