@@ -26,7 +26,7 @@ class SongType extends AbstractType
                     new File([
                         'maxSize' => '6000k',
                         'mimeTypes' => [
-                            'audio/midi',
+                            'audio/mpeg',
 
                         ],
                         'mimeTypesMessage' => 'Please upload a valid MP3 audio',

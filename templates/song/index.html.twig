@@ -14,6 +14,7 @@
                 <th>Artist</th>
                 <th>PictureFileName</th>
                 <th>AudioFileName</th>
+                <th>Player</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -26,6 +27,11 @@
                 <td>{{ song.artist }}</td>
                 <td>{{ song.picturePath }}</td>
                 <td>{{ song.audioFileName }}</td>
+                <td>
+                    <audio controls>
+                           <source src="{{ asset('uploads/song/'~ song.audioFileName)}}" type="audio/mp3">
+                    </audio>
+                </td>
                 <td>
                     <a href="{{ path('app_song_show', {'id': song.id}) }}">show</a>
                     <a href="{{ path('app_song_edit', {'id': song.id}) }}">edit</a>
