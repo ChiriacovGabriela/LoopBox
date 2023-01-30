@@ -51,6 +51,11 @@ class Playlist
         $this->created_at = new \DateTime;
 
     }
+    public function setUser(User $user):self
+    {
+        $this->user=$user;
+        return $this;
+    }
 
 
     public function getId(): ?int
@@ -81,10 +86,13 @@ class Playlist
 
         return $this;
     }
+
     public function setUpdated_at(?\DateTimeInterface $updated_at): self
+
     {
         $this->updated_at = $updated_at;
 
         return $this;
     }
+
 }

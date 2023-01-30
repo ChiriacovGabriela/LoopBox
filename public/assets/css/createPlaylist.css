@@ -19,29 +19,15 @@
     color: white;
     font-size: 1.6em;
 }
-.nav{
-    text-align: center;
-    Font-size:25px;
-    Text-transform:uppercase;
-    background-color: rgba(8,0,0,0.99);
-}
-.nav_link{
-    display: inline-block;
-    Vertical-align:top;
-    Margin:0 17px;
-    color:rgba(201,30,30);
-    font-weight: bold;
-    Text-decoration:none;
-    Transition:color .2s linear;
-}
-.nav_link:hover{
-    color: white;
-}
 .btn1{
     margin-bottom: 5px;
     margin-top: 55px;
 }
-.person-circle{
-    margin-left: 85%;
-    color: rgba(255,39,39,1);
-}
+
+
+
+
+
+
+
+

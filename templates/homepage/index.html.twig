@@ -3,15 +3,25 @@
 {% block title %}Hello HomepageController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-    <div class="mb-3">
-        You are logged in as {{ app.user.name }}, <a href="{{ path('app_logout') }}">Logout</a>
+    {% include "partials/nav_bar.html.twig" %}
+
+    <h1>Welcome to Loopbox!</h1>
+
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <div class="example-wrapper">
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.name }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% else %}
+            <h1>Hello Traveller</h1>
+            <div>Do you want to <a href="{{ path('app_login') }}">Login</a> </div>
+        {% endif %}
     </div>
-</div>
+    
 {% endblock %}
