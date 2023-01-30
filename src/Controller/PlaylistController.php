@@ -5,10 +5,9 @@ namespace App\Controller;
 use App\Entity\Playlist;
 use App\Form\PlaylistFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\FormHandler\UploadFileHandler;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,16 +16,17 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class PlaylistController extends AbstractController
 
 {
-    #[Route('/playlist', name: 'app_playlist')]
+    #[Route('/playlist/{id}', name: 'app_playlist')]
     public function index(): Response
     {
+
         return $this->render('playlist/index.html.twig', [
             'controller_name' => 'PlaylistController',
         ]);
     }
 
     #[Route('/playlist/add', name: 'add')]
-    public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
+    public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         //On crée un nouveau Playlist
         $playlist = new Playlist();
@@ -39,24 +39,13 @@ class PlaylistController extends AbstractController
         if($playlistForm->isSubmitted() && $playlistForm->isValid()){
             $imagePathFile = $playlistForm ->get('imageFileName')->getData();
             if($imagePathFile){
-                $originalFilename = pathinfo($imagePathFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imagePathFile->guessExtension();
-                try {
-                    $imagePathFile->move(
-                        $this->getParameter('image_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    die ('File did not upload: ' . $e->getMessage());
-                }
+                $directory = $this->getParameter('image_directory');
+                $newFilename = $uploadFileHandler->upload($slugger,$imagePathFile,$directory);
                 $playlist->setImageFileName($newFilename);
             }
             //On stock
             $em-> persist($playlist);
-
             $em->flush();
-
 
             //On redirige
             return $this->redirectToRoute('app_playlist');
@@ -92,7 +81,15 @@ class PlaylistController extends AbstractController
             'playlistForm' => $playlistForm->createView(),
             'playlist' => $playlist
         ]);
+    }
+    #[Route('/{id}', name: 'app_playlist_delete', methods: ['POST'])]
+    public function delete(Request $request, Playlist $playlist, PlaylistRepository $playlistRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$playlist->getId(), $request->request->get('_token'))) {
+            $playlistRepository->remove($playlist, true);
+        }
 
+        return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
     }
 
 }
