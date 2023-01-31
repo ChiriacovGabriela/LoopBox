@@ -1,9 +1,6 @@
 .bgg{
-    background-image: url("https://www.wallpapertip.com/wmimgs/216-2166661_headphones-music-wallpaper-headphones-music-rainbows.jpg");
+    background-image: url("img/music2.jpg");
     background-size: cover;
     background-position: center;
+}
 
-}
-.rainbow-text {
-    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
-}

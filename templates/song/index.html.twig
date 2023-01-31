@@ -3,7 +3,7 @@
 {% block title %}Song index{% endblock %}
 
 {% block body %}
-    <h1>Song index</h1>
+    <h1>Song that you have added on LoopBox</h1>
 
     <table class="table">
         <thead>
@@ -27,6 +27,7 @@
                 <td>{{ song.picturePath }}</td>
                 <td>{{ song.audioFileName }}</td>
                 <td>
+                    <a href="{{ path('app_song_player', {'id': song.id}) }}">play</a>
                     <a href="{{ path('app_song_show', {'id': song.id}) }}">show</a>
                     <a href="{{ path('app_song_edit', {'id': song.id}) }}">edit</a>
                 </td>
@@ -40,4 +41,6 @@
     </table>
 
     <a href="{{ path('app_song_new') }}">Create new</a>
+
+
 {% endblock %}

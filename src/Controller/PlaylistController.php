@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Playlist;
 use App\Form\PlaylistFormType;
+use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -24,9 +25,10 @@ class PlaylistController extends AbstractController
         return $this->render('playlist/index.html.twig', [
             'songs1' => $songRepository->findAll(),
         ]);
+
     }
 
-    #[Route('/playlist/add', name: 'add')]
+    #[Route('/playlist/add', name: 'app_playlist_add')]
     public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
         //On crée un nouveau Playlist
@@ -68,7 +70,7 @@ class PlaylistController extends AbstractController
             'playlistForm' => $playlistForm->createView()
         ]);
     }
-    #[Route('/playlist/edit/{id}', name: 'edit')]
+    #[Route('/playlist/edit/{id}', name: 'app_playlist_edit')]
     public function edit (Playlist $playlist, Request $request, EntityManagerInterface $em ):Response
     {
         // ajouter la date pour update

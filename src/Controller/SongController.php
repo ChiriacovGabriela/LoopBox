@@ -20,8 +20,10 @@ class SongController extends AbstractController
     #[Route('/', name: 'app_song_index', methods: ['GET'])]
     public function index(SongRepository $songRepository): Response
     {
+        $songs = $songRepository->findBy(['user'=>$this->getUser()]);
+
         return $this->render('song/index.html.twig', [
-            'songs' => $songRepository->findAll(),
+            'songs' => $songs
         ]);
     }
 
@@ -30,6 +32,7 @@ class SongController extends AbstractController
     public function new(Request $request,EntityManagerInterface $em ,SluggerInterface $slugger): Response
     {
         $song = new Song();
+        $song ->setUser($this->getUser());
         $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);
 
@@ -99,5 +102,26 @@ class SongController extends AbstractController
         }
 
         return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/player', name: 'app_song_player', methods: ['GET'], requirements: ['id' =>'\d+'])]
+    public function player(Song $song, SongRepository $songRepository): Response
+    {
+        $songs = $songRepository->findBy(['user'=>$this->getUser()]);
+
+        $selectedSongKey = null;
+        foreach ($songs as $key => $value) {
+            if ($value->getId() === $song->getId()) {
+                $selectedSongKey = $key;
+            }
+        }
+
+        return $this->render('song/player.html.twig', [
+            'song' => $song,
+            'next' => array_key_exists($selectedSongKey+1, $songs) ? $songs[$selectedSongKey+1] : null,
+            'prev' => array_key_exists($selectedSongKey-1, $songs) ? $songs[$selectedSongKey-1] : null,
+        ]);
+
+
     }
 }

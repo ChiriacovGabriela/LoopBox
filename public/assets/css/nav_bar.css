@@ -2,20 +2,17 @@ nav{
     background-color: rgba(8,0,0,0.99);
     Font-size:25px;
     Text-transform:uppercase;
+    display: flex;
+    padding: 10px 10px 10px 10px;
 }
+
 .nav_link{
     display: inline-block;
-    Vertical-align:top;
-    Margin:0 17px;
+    Text-decoration:none;
     color:rgba(201,30,30);
     font-weight: bold;
-    Text-decoration:none;
     Transition:color .2s linear;
 }
 .nav_link:hover{
     color: white;
-}
-.login{
-    text-align: center;
-
 }
