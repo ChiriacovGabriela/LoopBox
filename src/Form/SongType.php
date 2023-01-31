@@ -17,7 +17,21 @@ class SongType extends AbstractType
             ->add('name')
             ->add('type')
             ->add('artist')
-            ->add('picturePath')
+            ->add('pictureFileName',FileType::class,[
+                'label' => 'Image',
+                'mapped'=> false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                        'image/jpeg'
+                ],
+                'mimeTypesMessage' => 'Please upload a valid JPG document',
+            ])
+        ],
+    ])
+
             ->add('audioFileName', FileType::class, [
                 'label'=> 'Song (MP3 file)',
                 'mapped' => false,

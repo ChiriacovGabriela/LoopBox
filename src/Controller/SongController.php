@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Song;
 use App\Form\SongType;
+use App\FormHandler\UploadFileHandler;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +28,7 @@ class SongController extends AbstractController
 
 
     #[Route('/new', name: 'app_song_new', methods: ['GET', 'POST'])]
-    public function new(Request $request,EntityManagerInterface $em ,SluggerInterface $slugger): Response
+    public function new(Request $request,EntityManagerInterface $em ,SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         $song = new Song();
         $form = $this->createForm(SongType::class, $song);
@@ -36,6 +37,7 @@ class SongController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $songFile*/
             $songFile = $form->get('audioFileName')->getData();
+            $imageFile = $form ->get('pictureFileName')->getData();
             if ($songFile){
                 $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
@@ -51,6 +53,12 @@ class SongController extends AbstractController
                 }
                 $song->setAudioFileName($newFilename);
             }
+            if($imageFile){
+                $directory = $this->getParameter('image_directory');
+                $newFilename = $uploadFileHandler->upload($slugger,$imageFile,$directory);
+                $song->setPictureFileName($newFilename);
+            }
+
 
             $em-> persist($song);
             $em->flush();
