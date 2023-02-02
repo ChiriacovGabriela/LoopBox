@@ -29,15 +29,12 @@ class Playlist
     private ?\DateTimeInterface $created_at = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $deleted_at = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
-    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'relationWithPlaylist')]
+    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'playlists', cascade:['persist'])]
     private Collection $songs;
 
-    #[ORM\ManyToOne(inversedBy: 'relationWithPlaylist')]
+    #[ORM\ManyToOne(inversedBy: 'playlists')]
     private ?User $user = null;
 
     public function __construct()
@@ -86,6 +83,82 @@ class Playlist
 
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function addSongPlaylist(Song $song): self
+    {
+        $this->songs[] = $song;
+
+        if (!$song->getPlaylists()->contains($this)) {
+            $song->addPlaylist($this);
+        }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Song>
+     */
+    public function getSongs(): Collection
+    {
+        return $this->songs;
+    }
+
+    public function addSong(Song $song): self
+    {
+        if (!$this->songs->contains($song)) {
+            $this->songs->add($song);
+            $song->addPlaylist($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSong(Song $song): self
+    {
+        //dd($song);
+        if ($this->songs->contains($song)) {
+            $this->songs->removeElement($song);
+            $song->removePlaylist($this);
+        }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

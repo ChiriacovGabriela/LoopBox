@@ -29,6 +29,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+
                         <div class="modal-body">
 
                             <table class="table">
@@ -40,13 +41,24 @@
                                         <th scope="col">action</th>
                                     </tr>
                                     </thead>
+
                                     <tbody>
-                                    {% for song in songs1 %}
+                                    {% for song in songs %}
                                         <tr>
                                             <td>{{ song.name }}</td>
                                             <td>{{ song.artist }}</td>
                                             <td>{{ song.type }}</td>
-                                            <td><button>Add</button></td>
+                                            <td>
+                                                <a href = {{path('add_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Add</a>
+                                            </td>
+
+                                            {#
+
+                                        <form action="{{ path('add_song_playlist', {'id': playlist.id, 'songId': song.id}) }}" method="POST">
+                                            <input type="hidden" name="songId" value="{{ song.id }}">
+                                            <button type="submit" class="btn btn-primary">Add</button>
+                                        </form>
+                                            #}
                                         </tr>
                                     {% else %}
                                         <tr>
@@ -71,7 +83,6 @@
 
     </section>
 
-
     <table class="table">
         <thead>
         <tr>
@@ -83,13 +94,17 @@
         </tr>
         </thead>
         <tbody>
+        {% for song in playlist.songs %}
         <tr>
-            <th scope="row">1</th>
-            <td>...</td>
-            <td>...</td>
-            <td>...</td>
-            <td><button>Delete</button></td>
+            <th scope="row">{{ song.id }}</th>
+            <td>{{ song.name }}</td>
+            <td>{{ song.artist }}</td>
+            <td>{{ song.type }}</td>
+            <td>
+                <a href = {{path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>delete</a>
+            </td>
         </tr>
+        {% endfor %}
 
         </tbody>
     </table>

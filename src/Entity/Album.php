@@ -28,10 +28,10 @@ class Album
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
-    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'relationWithAlbum')]
+    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'album')]
     private Collection $songs;
 
-    #[ORM\ManyToOne(inversedBy: 'relationWithAlbum')]
+    #[ORM\ManyToOne(inversedBy: 'album')]
     private ?User $user = null;
 
     public function __construct()
@@ -104,7 +104,7 @@ class Album
     {
         if (!$this->songs->contains($song)) {
             $this->songs->add($song);
-            $song->addRelationWithAlbum($this);
+            $song->addAlbum($this);
         }
 
         return $this;
@@ -113,7 +113,7 @@ class Album
     public function removeSong(Song $song): self
     {
         if ($this->songs->removeElement($song)) {
-            $song->removeRelationWithAlbum($this);
+            $song->removeAlbum($this);
         }
 
         return $this;
