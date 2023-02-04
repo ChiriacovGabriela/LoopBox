@@ -22,6 +22,32 @@
             <h1>Hello Traveller</h1>
             <div>Do you want to <a href="{{ path('app_login') }}">Login</a> </div>
         {% endif %}
+
     </div>
+    <h1> Song </h1>
+
+    <table class="table">
+        <tbody>
+
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Artist</th>
+            <th>audioFileName</th>
+        </tr>
+        {% for song in songs %}
+            <tr>
+
+                <td>{{ song.name }}</td>
+                <td>{{ song.type }}</td>
+                <td>{{ song.artist }}</td>
+                <td> button </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
     
 {% endblock %}

@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Playlist;
 use App\Form\PlaylistFormType;
+use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\FormHandler\UploadFileHandler;
 use App\Controller\UserController;
+
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +21,7 @@ class PlaylistController extends AbstractController
 
 {
 
-    #[Route('/playlist/{id}', name: 'app_playlist', methods: ['GET'])]
+    #[Route('/playlist/{id}', name: 'app_playlist', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function index(Playlist $playlist, SongRepository $songs ): Response
     {
         return $this->render('playlist/index.html.twig', [
@@ -51,7 +53,11 @@ class PlaylistController extends AbstractController
             $em->flush();
 
             //On redirige
-            return $this->redirectToRoute('app_playlist');
+            $user = $this->getUser();
+            $id= $user->getId();
+
+            return $this->redirectToRoute('app_user',[
+                'userId' => $id]);
 
         }
 
@@ -87,21 +93,13 @@ class PlaylistController extends AbstractController
     #[Route('/{id}', name: 'app_playlist_delete', methods: ['POST'])]
     public function delete(Request $request, Playlist $playlist, PlaylistRepository $playlistRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$playlist->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $playlist->getId(), $request->request->get('_token'))) {
             $playlistRepository->remove($playlist, true);
         }
+        $user = $this->getUser();
+        $id = $user->getId();
 
-        return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_user', [
+            'userId' => $id]);
     }
-    #[Route('/playlist/{playlistId}/view', name: 'app_playlist_view', methods: ['GET'])]
-    public function view(Playlist $playlist)
-    {
-
-
-
-
-    }
-
-
-
 }

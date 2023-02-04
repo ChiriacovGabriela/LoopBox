@@ -18,7 +18,7 @@
                     Add Song
                 </button>
 
-                <a href="#" class="btn btn-primary my-2">Delete playlist</a>
+                {{ include('playlist/_delete_form.html.twig') }}
 
             <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -60,7 +60,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">create</button>
                         </div>
                     </div>
                 </div>
