@@ -3,7 +3,7 @@
 {{ form_row(registrationForm.name) }}
 {{ form_row(registrationForm.surname) }}
 {{ form_row(registrationForm.preference) }}
-{{ form_row(registrationForm.email) }}
+{{ form_row(registrationForm.email, {'attr':{'readonly':true}} ) }}
 {{ form_row(registrationForm.plainPassword, {
     label: 'Password'
 }) }}

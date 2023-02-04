@@ -41,4 +41,28 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+    #[Route('/user/edit/{id}', name: 'edit')]
+    public function edit (User $user, Request $request, EntityManagerInterface $em ):Response
+    {
+        //On crée le formulaire
+        $registrationForm = $this->createForm(RegistrationFormType::class, $user);
+        // On traite la requete du formulaire
+        $registrationForm->handleRequest($request);
+        // on verifie si le formulaire est soumis et valide
+        if($registrationForm->isSubmitted() && $registrationForm->isValid()){
+            //On stock
+            $em-> persist($user);
+            $em->flush();
+
+
+            //On redirige
+            return $this->redirectToRoute('app_user');
+
+        }
+        return $this->render('registration/edit.html.twig', [
+            'registrationForm' => $registrationForm->createView(),
+            'user' => $user
+        ]);
+
+    }
 }
