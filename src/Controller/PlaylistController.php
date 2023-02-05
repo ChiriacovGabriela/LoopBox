@@ -8,9 +8,13 @@ use App\Form\PlaylistFormType;
 use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\FormHandler\UploadFileHandler;
+use App\Controller\UserController;
+
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,46 +32,39 @@ class PlaylistController extends AbstractController
         //dd($playlistRepository->find($playlist->getId())->getSongs()->toArray());
         return $this->render('playlist/index.html.twig', [
             'songs' => $songRepository->findAll(),
-            'playlist' => $playlistRepository->find($playlist)
+            'playlist' => $playlist,
         ]);
 
     }
 
     #[Route('/playlist/add', name: 'app_playlist_add')]
-    public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
+    public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         //On crée un nouveau Playlist
         $playlist = new Playlist();
         //On crée le formulaire
         $playlistForm = $this->createForm(PlaylistFormType::class, $playlist);
+        $playlist ->setUser($this->getUser());
         // On traite la requete du formulaire
         $playlistForm->handleRequest($request);
-
         // on verifie si le formulaire est soumis et valide
         if($playlistForm->isSubmitted() && $playlistForm->isValid()){
             $imagePathFile = $playlistForm ->get('imageFileName')->getData();
             if($imagePathFile){
-                $originalFilename = pathinfo($imagePathFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imagePathFile->guessExtension();
-                try {
-                    $imagePathFile->move(
-                        $this->getParameter('image_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    die ('File did not upload: ' . $e->getMessage());
-                }
+                $directory = $this->getParameter('image_directory');
+                $newFilename = $uploadFileHandler->upload($slugger,$imagePathFile,$directory);
                 $playlist->setImageFileName($newFilename);
             }
             //On stock
             $em-> persist($playlist);
-
             $em->flush();
 
-
             //On redirige
-            return $this->redirectToRoute('app_playlist');
+            $user = $this->getUser();
+            $id= $user->getId();
+
+            return $this->redirectToRoute('app_user',[
+                'userId' => $id]);
 
         }
 
@@ -75,6 +72,7 @@ class PlaylistController extends AbstractController
             'playlistForm' => $playlistForm->createView()
         ]);
     }
+
     #[Route('/playlist/edit/{id}', name: 'app_playlist_edit')]
     public function edit (Playlist $playlist, Request $request, EntityManagerInterface $em ):Response
     {
@@ -90,8 +88,6 @@ class PlaylistController extends AbstractController
             //On stock
             //$em-> persist($playlist);
             $em->flush();
-
-
             //On redirige
             return $this->redirectToRoute('app_playlist');
 
@@ -100,8 +96,8 @@ class PlaylistController extends AbstractController
             'playlistForm' => $playlistForm->createView(),
             'playlist' => $playlist
         ]);
-
     }
+
     #[Route('/playlist/{playlistId}/song/{songId}', name: 'add_song_playlist')]
     #[Entity('playlist', options: ['id' => 'playlistId'])]
     #[Entity('song', options: ['id' => 'songId'])]
@@ -156,6 +152,17 @@ class PlaylistController extends AbstractController
         ]);
     }
 
+    #[Route('/playlist/{id}', name: 'app_playlist_delete', methods: ['POST'])]
+    public function delete(Request $request, Playlist $playlist, PlaylistRepository $playlistRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $playlist->getId(), $request->request->get('_token'))) {
+            $playlistRepository->remove($playlist, true);
+        }
+        $user = $this->getUser();
+        $id = $user->getId();
 
 
+        return $this->redirectToRoute('app_user', [
+            'userId' => $id]);
+    }
 }

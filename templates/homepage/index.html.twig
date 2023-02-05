@@ -8,10 +8,6 @@
 
     <h1>Welcome to Loopbox!</h1>
 
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
 
     <div class="example-wrapper">
         {% if app.user %}
@@ -22,6 +18,59 @@
             <h1>Hello Traveller</h1>
             <div>Do you want to <a href="{{ path('app_login') }}">Login</a> </div>
         {% endif %}
+
     </div>
+    <h1 class="center"> Songs </h1>
+
+    <table class="table">
+        <tbody>
+
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Artist</th>
+            <th>audioFileName</th>
+        </tr>
+        {% for song in songs %}
+            <tr>
+
+                <td>{{ song.name }}</td>
+                <td>{{ song.type }}</td>
+                <td>{{ song.artist }}</td>
+                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">Add</button></td>
+                <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Choose the playlist</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                {% for playlist in playlists %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        <a href="{{path('app_playlist', {id: playlist.id})}}"> {{ playlist.name }} </a>
+                                    </label>
+                                    {% endfor %}
+
+                                    <div><button>Add in playlist</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+
     
 {% endblock %}

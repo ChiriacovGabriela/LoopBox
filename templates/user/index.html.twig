@@ -9,12 +9,17 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Hello ! ✅</h1>
+    This friendly message is coming from:{{ app.user.name }}<br>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/andra/OneDrive/Desktop/Projects/LoopBox/src/Controller/UserController.php'|file_link(0) }}">src/Controller/UserController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/andra/OneDrive/Desktop/Projects/LoopBox/templates/user/index.html.twig'|file_link(0) }}">templates/user/index.html.twig</a></code></li>
-    </ul>
 </div>
+    <a href="{{path('app_playlist_add')}}">Create Playlist </a>
+
+   <div>
+       {% for playlist in playlists %}
+           <a href="{{path('app_playlist', {id: playlist.id})}}"> {{ playlist.name }} </a> <br>
+       {% endfor %}
+
+
+   </div>
 {% endblock %}

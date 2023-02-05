@@ -1,18 +1,25 @@
 nav{
     background-color: rgba(8,0,0,0.99);
-    Font-size:25px;
+    Font-size:28px;
     Text-transform:uppercase;
-    display: flex;
-    padding: 10px 10px 10px 10px;
 }
-
 .nav_link{
     display: inline-block;
-    Text-decoration:none;
+    Vertical-align:top;
+    Margin:0 17px;
     color:rgba(201,30,30);
     font-weight: bold;
+    Text-decoration:none;
     Transition:color .2s linear;
+
 }
 .nav_link:hover{
     color: white;
+}
+
+.header_nav{
+    float: right;
+    Font-size:18px;
+    margin-top: 7px;
+
 }

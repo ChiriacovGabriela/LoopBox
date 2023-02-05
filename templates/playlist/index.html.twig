@@ -8,14 +8,20 @@
 
     <section class="jumbotron text-center">
         <div class="container">
-            <h1 class="jumbotron-heading">Playlist</h1>
-            <img src="https://www.shutterstock.com/image-illustration/note-sign-260nw-2228793919.jpg" alt="Sol">
+
+            <h1 class="jumbotron-heading">Playlist {{ playlist.name }}</h1>
+            <img src="{{ asset('uploads/images/'~playlist.imageFileName) }}" alt="Sol">
+
             <p>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
                     Add Song
                 </button>
-                <a href="#" class="btn btn-primary my-2">Edit playlist</a>
+
+                <a href="{{ path('app_playlist_edit',{id: playlist.id})}}" class="btn btn-primary my-2">Edit playlist</a>
                 <a href="#" class="btn btn-primary my-2">Delete playlist</a>
+
+                {{ include('playlist/_delete_form.html.twig') }}
+
             <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -52,12 +58,14 @@
                                     <tr>
                                         <td colspan="10">no records found</td>
                                     </tr>
+
                                 {% endfor %}
                                 </tbody>
+
                             </table>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">create</button>
                         </div>
                     </div>
                 </div>
