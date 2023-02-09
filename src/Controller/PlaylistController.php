@@ -31,11 +31,7 @@ class PlaylistController extends AbstractController
     }
 
     #[Route('/playlist/add', name: 'app_playlist_add')]
-<<<<<<< HEAD
     public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
-=======
-    public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
->>>>>>> origin/andra2
     {
         //On crée un nouveau Playlist
         $playlist = new Playlist();
@@ -65,10 +61,7 @@ class PlaylistController extends AbstractController
             'playlistForm' => $playlistForm->createView()
         ]);
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/andra2
     #[Route('/playlist/edit/{id}', name: 'app_playlist_edit')]
     public function edit (Playlist $playlist, Request $request, EntityManagerInterface $em ):Response
     {

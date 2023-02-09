@@ -28,7 +28,7 @@ class Album
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
-    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'relationWithAlbum')]
+    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'relationWithAlbum', cascade:['persist'])]
     private Collection $songs;
 
     #[ORM\ManyToOne(inversedBy: 'relationWithAlbum')]
@@ -37,6 +37,7 @@ class Album
     public function __construct()
     {
         $this->songs = new ArrayCollection();
+        $this->created_at=new \DateTimeImmutable();
     }
 
     public function getId(): ?int

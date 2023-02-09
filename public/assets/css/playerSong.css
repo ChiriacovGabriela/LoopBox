@@ -1,0 +1,14 @@
+
+
+audio {
+    width: 300px;
+    height: 35px;
+    overflow: hidden;
+}
+
+.audio-play-button {
+    width: 300px;
+    height: 35px;
+    background: url("img/boutonP.jpg") no-repeat center center;"
+cursor: pointer;
+}
