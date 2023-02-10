@@ -46,7 +46,7 @@ class Song
     #[ORM\OneToMany(mappedBy: 'song', targetEntity: Comment::class)]
     private Collection $relation;
 
-    #[ORM\ManyToMany(targetEntity: Playlist::class, inversedBy: 'songs', cascade:['persist'])]
+    #[ORM\ManyToMany(targetEntity: Playlist::class, inversedBy: 'songs', cascade: ['persist'])]
     private Collection $playlists;
 
     #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'songs')]
@@ -57,7 +57,7 @@ class Song
         $this->relation = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->album = new ArrayCollection();
-        $this->created_at=new \DateTimeImmutable();
+        $this->created_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

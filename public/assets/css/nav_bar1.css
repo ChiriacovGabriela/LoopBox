@@ -1,6 +1,6 @@
 nav{
     background-color: rgba(8,0,0,0.99);
-    Font-size:25px;
+    Font-size:28px;
     Text-transform:uppercase;
 }
 .nav_link{
@@ -11,11 +11,15 @@ nav{
     font-weight: bold;
     Text-decoration:none;
     Transition:color .2s linear;
+
 }
 .nav_link:hover{
     color: white;
 }
-.login{
-    text-align: center;
+
+.header_nav{
+    float: right;
+    Font-size:18px;
+    margin-top: 7px;
 
 }
