@@ -6,8 +6,10 @@ use App\Entity\Album;
 use App\Entity\Song;
 use App\Form\AlbumType;
 use App\Repository\AlbumRepository;
+use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,18 +37,15 @@ class AlbumController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $songs= $form->get('songs')->getData();
             foreach ($songs as $song){
-                $songFile ='';
-                $songFile->getClientOriginalName();
-                $originalFilename = pathinfo($songFile, PATHINFO_FILENAME);
+                $songFile= $song;
+                $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $songFile =  $safeFilename.'-'.uniqid().'.'.$songFile->guessExtension();;
                 $song->move(
                     $this->getParameter('song_directory'),$songFile
                 );
-                $songName='';
                 $newSong= new Song();
-                $songName->getClientOriginalName();
-                $newSong->setName($songName);
+                $newSong->setName($originalFilename);
                 $newSong->setAudioFileName($songFile);
                 $album->addSong($newSong);
             }
@@ -72,12 +71,26 @@ class AlbumController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_album_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Album $album, AlbumRepository $albumRepository): Response
+    public function edit(Request $request, Album $album, AlbumRepository $albumRepository,SluggerInterface $slugger): Response
     {
         $form = $this->createForm(AlbumType::class, $album);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $songs= $form->get('songs')->getData();
+            foreach ($songs as $song){
+                $songFile= $song;
+                $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $songFile =  $safeFilename.'-'.uniqid().'.'.$songFile->guessExtension();;
+                $song->move(
+                    $this->getParameter('song_directory'),$songFile
+                );
+                $newSong= new Song();
+                $newSong->setName($originalFilename);
+                $newSong->setAudioFileName($songFile);
+                $album->addSong($newSong);
+            }
             $albumRepository->save($album, true);
 
             return $this->redirectToRoute('app_album_index', [], Response::HTTP_SEE_OTHER);
@@ -90,12 +103,21 @@ class AlbumController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_album_delete', methods: ['POST'])]
-    public function delete(Request $request, Album $album, AlbumRepository $albumRepository): Response
+    public function delete(Request $request, Album $album, AlbumRepository $albumRepository, SongRepository $songRepository): Response
     {
+
         if ($this->isCsrfTokenValid('delete'.$album->getId(), $request->request->get('_token'))) {
+            $songs= $album->getSongs();
+            foreach ($songs as $song){
+                $songRepository->remove($song, true);
+            }
             $albumRepository->remove($album, true);
+
+
         }
 
         return $this->redirectToRoute('app_album_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }
