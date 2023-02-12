@@ -1,0 +1,29 @@
+.background_playlist{
+    background-image: url("img/music5.jpg");
+    background-size: cover;
+    background-position: center;
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
+    position: absolute;
+
+}
+.white {
+    color: white;
+}
+.btn_margin {
+    margin-top: 35px;
+}
+.color_popup {
+    background-color: navajowhite;
+}
+.color_popup2 {
+    background-color: papayawhip;
+}
+.btn_add_close {
+    border-radius: 10px;
+    border-color: rgba(201,30,30);
+    background-color: navajowhite;
+}
+
+

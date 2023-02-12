@@ -4,41 +4,41 @@
 
 {% block body %}
 
-    <section class="background_song">
-
     {% include "partials/nav_bar.html.twig" %}
+
+    <div class="background_song">
 
     <h1 class="red-color neon center title">Songs that you have added on LoopBox</h1>
 
     <table class="table noline">
         <thead>
             <tr>
-                <th><font class="red-color neon">Name</font></th>
-                <th><font class="red-color neon">Type</font></th>
-                <th><font class="red-color neon">Artist</font></th>
+                <th class="th2"><font class="red-color neon">Name</font></th>
+                <th class="th2"><font class="red-color neon">Type</font></th>
+                <th class="th2"><font class="red-color neon">Artist</font></th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
         {% for song in songs %}
-            <tr class="">
-                <td><font color="white">{{ song.name }}</font></td>
-                <td><font color="white">{{ song.type }}</font></td>
-                <td><font color="white">{{ song.artist }}</font></td>
-                <td>
+            <tr>
+                <td class="td2"><font color="white">{{ song.name }}</font></td>
+                <td class="td2"><font color="white">{{ song.type }}</font></td>
+                <td class="td2"><font color="white">{{ song.artist }}</font></td>
+                <td class="td2">
                     <button class="btn_space btn btn-outline-light"><a class="red-color neon" href="{{ path('app_song_player', {'id': song.id}) }}">play</a></button>
                     <button class="btn btn-outline-light"><a class="red-color neon" href="{{ path('app_song_show', {'id': song.id}) }}">show</a></button>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="10">no records found</td>
+                <td colspan="10" class="td2">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
     <div class="center btn1"><button class="btn btn-outline-light btn-lg px-5"><a class="red-color neon" href="{{ path('app_song_new') }}">Add song</a></button></div>
-    </section>
+    </div>
 
 {% endblock %}
