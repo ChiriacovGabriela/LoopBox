@@ -29,7 +29,8 @@
             <th>Name</th>
             <th>Type</th>
             <th>Artist</th>
-            <th>audioFileName</th>
+            <th></th>
+            <th></th>
         </tr>
         {% for song in songs %}
             <tr>
@@ -37,6 +38,10 @@
                 <td>{{ song.name }}</td>
                 <td>{{ song.type }}</td>
                 <td>{{ song.artist }}</td>
+                <td><button>
+                        <a class="red-color neon" href="{{ path('app_homepage_player', {'id': song.id}) }}">play</a>
+                    </button>
+                </td>
                 <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">Add</button></td>
                 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -63,6 +68,7 @@
                         </div>
                     </div>
                 </div>
+
 
             </tr>
 

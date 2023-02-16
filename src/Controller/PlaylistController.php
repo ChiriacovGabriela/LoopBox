@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Playlist;
 use App\Entity\Song;
 use App\Form\PlaylistFormType;
+use App\Repository\PalylistRepository;
 use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -89,7 +90,7 @@ class PlaylistController extends AbstractController
             //$em-> persist($playlist);
             $em->flush();
             //On redirige
-            return $this->redirectToRoute('app_playlist');
+            return $this->redirectToRoute('app_playlist', ['id' => $playlist->getId()]);
 
         }
         return $this->render('playlist/edit.html.twig', [
@@ -165,4 +166,29 @@ class PlaylistController extends AbstractController
         return $this->redirectToRoute('app_user', [
             'userId' => $id]);
     }
+
+    #[Route('/playlist/{playlistId}/song/{songId}/player', name: 'app_playlist_player')]
+    #[Entity('playlist', options: ['id' => 'playlistId'])]
+    #[Entity('song', options: ['id' => 'songId'])]
+    public function player(Song $song, Playlist $playlist, PlaylistRepository $playlistRepository, Playlist $playlistId): Response
+    {
+        $playlistSongs = $playlist->getSongs()->toArray();
+
+        $selectedSongKey = null;
+        foreach ($playlistSongs as $key => $value) {
+            if ($value->getId() === $song->getId()) {
+                $selectedSongKey = $key;
+            }
+        }
+
+        return $this->render('playlist/player.html.twig', [
+            'song' => $song,
+            'playlist' => $playlistRepository->find($playlistId),
+            'next' => array_key_exists($selectedSongKey+1, $playlistSongs) ? $playlistSongs[$selectedSongKey+1] : null,
+            'prev' => array_key_exists($selectedSongKey-1, $playlistSongs) ? $playlistSongs[$selectedSongKey-1] : null,
+        ]);
+
+
+    }
+
 }
