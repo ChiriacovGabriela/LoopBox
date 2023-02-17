@@ -16,12 +16,17 @@
                 <td>{{ album.name }}</td>
             </tr>
             <tr>
-                <th>Created_at</th>
-                <td>{{ album.createdAt ? album.createdAt|date('Y-m-d') : '' }}</td>
+                <th>Type</th>
+                <td>{{ album.type }}</td>
             </tr>
             <tr>
-                <th>Deleted_at</th>
-                <td>{{ album.deletedAt ? album.deletedAt|date('Y-m-d') : '' }}</td>
+                <th>Artist</th>
+                <td>{{ album.artist }}</td>
+            </tr>
+
+            <tr>
+                <th>Created_at</th>
+                <td>{{ album.createdAt ? album.createdAt|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
                 <th>Updated_at</th>

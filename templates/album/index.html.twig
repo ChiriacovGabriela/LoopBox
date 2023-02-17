@@ -10,6 +10,8 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Type</th>
+                <th>Artist</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,9 +20,8 @@
             <tr>
                 <td>{{ album.id }}</td>
                 <td>{{ album.name }}</td>
-                <td>{{ album.createdAt ? album.createdAt|date('Y-m-d') : '' }}</td>
-                <td>{{ album.deletedAt ? album.deletedAt|date('Y-m-d') : '' }}</td>
-                <td>{{ album.updatedAt ? album.updatedAt|date('Y-m-d') : '' }}</td>
+                <td>{{ album.type }}</td>
+                <td>{{ album.artist }}</td>
                 <td>
                     <a href="{{ path('app_album_show', {'id': album.id}) }}">show</a>
                     <a href="{{ path('app_album_edit', {'id': album.id}) }}">edit</a>

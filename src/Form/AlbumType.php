@@ -15,6 +15,22 @@ class AlbumType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('type')
+            ->add('artist')
+            ->add('pictureFileName',FileType::class,[
+                'label' => 'Image',
+                'mapped'=> false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2024k',
+                        'mimeTypes' => [
+                            'image/jpeg'
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid JPG document',
+                    ])
+                ],
+            ])
             ->add('songs',FileType::class,[
                 'label'=> 'Song',
                 'multiple'=> true,
