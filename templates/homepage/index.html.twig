@@ -24,6 +24,10 @@
         {% endif %}
 
     </div>
+    {%include "partials/_search_data.html.twig" with {
+        form: form
+    } only %}
+
     <h1> Song </h1>
 
     <table class="table">

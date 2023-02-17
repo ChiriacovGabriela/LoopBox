@@ -23,8 +23,6 @@ class Playlist
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageFileName = null;
 
-
-
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
@@ -94,5 +92,12 @@ class Playlist
 
         return $this;
     }
+
+    public function getSongs(): Collection
+    {
+        return $this->songs;
+    }
+
+
 
 }
