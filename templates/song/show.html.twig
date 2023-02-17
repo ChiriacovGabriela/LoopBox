@@ -7,34 +7,40 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ song.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ song.name }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ song.type }}</td>
-            </tr>
-            <tr>
-                <th>Artist</th>
-                <td>{{ song.artist }}</td>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ song.id }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ song.name }}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>{{ song.type }}</td>
+        </tr>
+        <tr>
+            <th>Artist</th>
+            <td>{{ song.artist }}</td>
+        </tr>
 
-            <tr>
-                <th>PictureFileName</th>
-                <td>{{ song.picturePath }}</td>
-            </tr>
-            <tr>
-                <th>audioFileName</th>
-                <td>{{ song.audioFileName }}</td>
-            </tr>
+        <tr>
+            <th>PictureFileName</th>
+            <td>{{ song.picturePath }}</td>
+        </tr>
+        <tr>
+            <th>audioFileName</th>
+            <td>{{ song.audioFileName }}</td>
+        </tr>
         </tbody>
     </table>
+    {% include "song/_comment_form.html.twig" with {form: form} only %}
 
+    {% for comment in comments %}
+        {% if comment.song.id == song.id %}
+            {{ comment.user.name }} a écrit {{ comment.text }} <br>
+        {% endif %}
+    {% endfor %}
     <a href="{{ path('app_song_index') }}">back to list</a>
 
     <a href="{{ path('app_song_edit', {'id': song.id}) }}">edit</a>

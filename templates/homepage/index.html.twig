@@ -54,14 +54,17 @@
                             </button>
                         </div>
                         <div class="modal-body">
-
                             <div class="form-check">
-                                {% for playlist in playlists %}
-                                    <div>{{ playlist.name }}</div>
-                                    <div>
-                                        <a href="{{ path('add_song_homepage', {'songId': song.id, 'playlistId': playlist.id}) }}"> {{ playlist.name }} </a>
-                                    </div>
-                                {% endfor %}
+                                {% if app.user %}
+                                    {% for playlist in playlists %}
+                                        <div>{{ playlist.name }}</div>
+                                        <div>
+                                            <a href="{{ path('add_song_homepage', {'songId': song.id, 'playlistId': playlist.id}) }}"> {{ playlist.name }} </a>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <a href="{{ path('app_login') }}">Veuillez vous connecter</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

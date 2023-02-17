@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Song;
+use App\Form\CommentFormType;
 use App\Form\SongType;
+use App\Repository\CommentRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,11 +70,25 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_song_show', methods: ['GET'])]
-    public function show(Song $song): Response
+    #[Route('/{id}', name: 'app_song_show', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    public function show(Request $request, Song $song, CommentRepository $commentRepository, EntityManagerInterface $em): Response
     {
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest($request);
+        //dd($form);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser());
+            $comment->setSong($song);
+            $em->persist($comment);
+            $em->flush();
+        }
+
         return $this->render('song/show.html.twig', [
             'song' => $song,
+            'form' => $form,
+            'id' => $song->getId(),
+            'comments' => $commentRepository->findAll()
         ]);
     }
 
@@ -94,7 +111,7 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_song_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_song_delete', methods: ['POST'])]
     public function delete(Request $request, Song $song, SongRepository $songRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $song->getId(), $request->request->get('_token'))) {

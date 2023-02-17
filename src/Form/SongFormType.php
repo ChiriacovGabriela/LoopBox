@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Song;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +14,15 @@ class SongFormType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('type')
+            ->add('type', ChoiceType::class, [
+                'choices' => [
+                    'Rap' => 'rap',
+                    'Pop' => 'pop',
+                    'Metal' => 'metal',
+                    'Rock' => 'rock',
+                    'Classical Music' => 'classical music',
+                    'Jazz' => 'jazz',
+                ]])
             ->add('artist')
             ->add('created_at')
             ->add('deleted_at')
@@ -22,9 +31,7 @@ class SongFormType extends AbstractType
             ->add('audioPath')
             ->add('user')
             ->add('relationWithPlaylist')
-            ->add('relationWithAlbum')
-
-        ;
+            ->add('relationWithAlbum');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
