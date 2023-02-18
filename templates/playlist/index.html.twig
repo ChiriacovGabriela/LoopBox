@@ -26,30 +26,31 @@
 
                 {{ include('playlist/_delete_form.html.twig') }}
 
-                <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content color_popup2">
-                            <div class="modal-header color_popup">
-                                <h5 class="modal-title red-color" id="exampleModalLongTitle">All songs</h5>
-                                <button type="button" class="close btn_add_close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content color_popup2">
+                        <div class="modal-header color_popup">
+                            <h5 class="modal-title red-color" id="exampleModalLongTitle">All songs</h5>
+                            <button type="button" class="close btn_add_close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
 
-                            <div class="modal-body">
+                        <div class="modal-body">
 
-                                <table class="table">
-                                    <thead>
-                                    <tr class="red-color">
-                                        <th scope="col">Title</th>
-                                        <th scope="col">Artist</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col"></th>
-                                    </tr>
-                                    </thead>
+                            <table class="table">
+                                <thead>
+                                <tr class="red-color">
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Artist</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
 
-                                    <tbody>
-                                    {% for song in songs %}
+                                <tbody>
+                                {% for song in songs %}
+                                    {% if song not in playlist.songs %}
                                     <tr>
                                         <td>{{ song.name }}</td>
                                         <td>{{ song.artist }}</td>
@@ -58,50 +59,53 @@
                                             <button class="btn_add_close"><a class="red-color neon" href = {{path('add_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Add</a></button>
                                         </td>
                                     </tr>
-                                    {% else %}
-                                        <tr>
-                                            <td colspan="10">no records found</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if songs|length == playlist.songs|length %}
+                                    <tr>
+                                        <td colspan="10">no records found</td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
 
-                                </table>
-                            </div>
+                            </table>
                         </div>
                     </div>
                 </div>
-                </p>
             </div>
+            </p>
+        </div>
 
-            <table class="table">
-                <thead>
+        <table class="table">
+            <thead>
+            <tr class="white">
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Type</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for song in playlist.songs %}
                 <tr class="white">
-                    <th>Title</th>
-                    <th>Artist</th>
-                    <th>Type</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for song in playlist.songs %}
-                    <tr class="white">
-                        <td>{{ song.name }}</td>
-                        <td>{{ song.artist }}</td>
-                        <td>{{ song.type }}</td>
-                        <td><button class="btn btn-outline-light"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16">
+                    <td>{{ song.name }}</td>
+                    <td>{{ song.artist }}</td>
+                    <td>{{ song.type }}</td>
+                    <td><button class="btn btn-outline-light">
+                                <a href="{{ path('app_playlist_player', {'playlistId': playlist.id, 'songId':song.id}) }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right white" viewBox="0 0 16 16">
                                 <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
-                            </svg>
-                            </button>
-                        </td>
-                        <td>
-                            <a class="btn btn-outline-light" href = {{path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Delete</a>
-                        </td>
+                                </svg></a>
+                        </button>
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-light" href = {{path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
 
-                    </tr>
-                {% endfor %}
-
-                </tbody>
-            </table>
+            </tbody>
+        </table>
     </div>
 {% endblock %}

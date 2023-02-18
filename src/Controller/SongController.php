@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Song;
+use App\Form\CommentFormType;
 use App\Form\SongType;
+use App\Repository\CommentRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +23,7 @@ class SongController extends AbstractController
     #[Route('/', name: 'app_song_index', methods: ['GET'])]
     public function index(SongRepository $songRepository): Response
     {
-        $songs = $songRepository->findBy(['user'=>$this->getUser()]);
+        $songs = $songRepository->findBy(['user' => $this->getUser()]);
 
         return $this->render('song/index.html.twig', [
             'songs' => $songs
@@ -29,20 +32,20 @@ class SongController extends AbstractController
 
 
     #[Route('/new', name: 'app_song_new', methods: ['GET', 'POST'])]
-    public function new(Request $request,EntityManagerInterface $em ,SluggerInterface $slugger): Response
+    public function new(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
         $song = new Song();
-        $song ->setUser($this->getUser());
+        $song->setUser($this->getUser());
         $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $songFile*/
+            /** @var UploadedFile $songFile */
             $songFile = $form->get('audioFileName')->getData();
-            if ($songFile){
+            if ($songFile) {
                 $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$songFile->guessExtension();
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $songFile->guessExtension();
 
                 try {
                     $songFile->move(
@@ -55,7 +58,7 @@ class SongController extends AbstractController
                 $song->setAudioFileName($newFilename);
             }
 
-            $em-> persist($song);
+            $em->persist($song);
             $em->flush();
 
             return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
@@ -67,18 +70,32 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_song_show', methods: ['GET'])]
-    public function show(Song $song): Response
+    #[Route('/{id}', name: 'app_song_show', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    public function show(Request $request, Song $song, CommentRepository $commentRepository, EntityManagerInterface $em): Response
     {
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest($request);
+        //dd($form);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser());
+            $comment->setSong($song);
+            $em->persist($comment);
+            $em->flush();
+        }
+
         return $this->render('song/show.html.twig', [
             'song' => $song,
+            'form' => $form,
+            'id' => $song->getId(),
+            'comments' => $commentRepository->findAll()
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_song_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Song $song, SongRepository $songRepository): Response
     {
-        $song -> setUpdatedAt(new \DateTimeImmutable());
+        $song->setUpdatedAt(new \DateTimeImmutable());
         $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);
 
@@ -94,20 +111,20 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_song_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_song_delete', methods: ['POST'])]
     public function delete(Request $request, Song $song, SongRepository $songRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$song->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $song->getId(), $request->request->get('_token'))) {
             $songRepository->remove($song, true);
         }
 
         return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/player', name: 'app_song_player', methods: ['GET'], requirements: ['id' =>'\d+'])]
+    #[Route('/{id}/player', name: 'app_song_player', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function player(Song $song, SongRepository $songRepository): Response
     {
-        $songs = $songRepository->findBy(['user'=>$this->getUser()]);
+        $songs = $songRepository->findBy(['user' => $this->getUser()]);
 
         $selectedSongKey = null;
         foreach ($songs as $key => $value) {
@@ -118,8 +135,8 @@ class SongController extends AbstractController
 
         return $this->render('song/player.html.twig', [
             'song' => $song,
-            'next' => array_key_exists($selectedSongKey+1, $songs) ? $songs[$selectedSongKey+1] : null,
-            'prev' => array_key_exists($selectedSongKey-1, $songs) ? $songs[$selectedSongKey-1] : null,
+            'next' => array_key_exists($selectedSongKey + 1, $songs) ? $songs[$selectedSongKey + 1] : null,
+            'prev' => array_key_exists($selectedSongKey - 1, $songs) ? $songs[$selectedSongKey - 1] : null,
         ]);
 
 

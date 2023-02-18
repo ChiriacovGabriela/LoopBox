@@ -24,14 +24,13 @@ class Playlist
     private ?string $imageFileName = null;
 
 
-
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
-    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'playlists', cascade:['persist'])]
+    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'playlists', cascade: ['persist'])]
     private Collection $songs;
 
     #[ORM\ManyToOne(inversedBy: 'playlists')]
@@ -42,8 +41,9 @@ class Playlist
         $this->songs = new ArrayCollection();
         //$this->created_at = new \DateTimeImmutable();
     }
+
     #[ORM\PrePersist]
-    public function setCreatedAtValue():void
+    public function setCreatedAtValue(): void
     {
         $this->created_at = new \DateTime;
 
@@ -157,12 +157,11 @@ class Playlist
     }
 
 
-    public function setUser(?User $user):self
+    public function setUser(?User $user): self
     {
-        $this->user=$user;
+        $this->user = $user;
         return $this;
     }
-
 
 
 }

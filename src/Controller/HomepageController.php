@@ -16,7 +16,7 @@ class HomepageController extends AbstractController
     {
         return $this->render('homepage/index.html.twig', [
             'songs' => $songRepository->findAll(),
-            'playlists' => $playlistRepository->findBy(['user'=>$this->getUser()]),
+            'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
         ]);
 
     }

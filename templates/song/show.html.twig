@@ -30,6 +30,16 @@
             </tbody>
         </table>
 
+
+    {% include "song/_comment_form.html.twig" with {form: form} only %}
+
+    {% for comment in comments %}
+        {% if comment.song.id == song.id %}
+            {{ comment.user.name }} a écrit {{ comment.text }} <br>
+        {% endif %}
+    {% endfor %}
+
+
         <div class="buttons_block">
 
             <button class="btn1 btn btn-outline-light btn-lg px-5 red-color neon buttons_space">
