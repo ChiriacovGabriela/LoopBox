@@ -11,11 +11,8 @@ use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\FormHandler\UploadFileHandler;
 use App\Controller\UserController;
-
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,9 +63,7 @@ class PlaylistController extends AbstractController
 
             return $this->redirectToRoute('app_user', [
                 'userId' => $id]);
-
         }
-
         return $this->render('playlist/add.html.twig', [
             'playlistForm' => $playlistForm->createView()
         ]);
@@ -90,6 +85,7 @@ class PlaylistController extends AbstractController
             //$em-> persist($playlist);
             $em->flush();
             //On redirige
+
             return $this->redirectToRoute('app_playlist', ['id' => $playlist->getId()]);
 
         }
@@ -159,14 +155,13 @@ class PlaylistController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $playlist->getId(), $request->request->get('_token'))) {
             $playlistRepository->remove($playlist, true);
         }
+
         $user = $this->getUser();
         $id = $user->getId();
 
-
         return $this->redirectToRoute('app_user', [
-            'userId' => $id]);
+            'userId' => $this->getUser()->getId()]);
     }
-
 
     #[Route('/playlist/{playlistId}/song/{songId}/player', name: 'app_playlist_player')]
     #[Entity('playlist', options: ['id' => 'playlistId'])]
