@@ -50,6 +50,8 @@ class SongRepository extends ServiceEntityRepository
         if(!empty($searchData->q)) {
             $data = $data
                 ->where('p.name LIKE :q')
+                ->orWhere('p.artist LIKE :q')
+                ->orWhere('p.type LIKE :q')
                 ->setParameter('q', "%{$searchData->q}%");
         }
         $data = $data
