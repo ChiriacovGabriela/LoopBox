@@ -49,6 +49,12 @@ class Playlist
         $this->created_at = new \DateTime;
 
     }
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue():void
+    {
+        $this->updated_at = new \DateTime;
+
+    }
     public function setUser(User $user):self
     {
         $this->user=$user;

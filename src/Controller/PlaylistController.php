@@ -33,7 +33,7 @@ class PlaylistController extends AbstractController
         $playlist = new Playlist();
         //On crée le formulaire
         $playlistForm = $this->createForm(PlaylistFormType::class, $playlist);
-        $playlist ->setUser($this->getUser());
+        $playlist->setUser($this->getUser());
         // On traite la requete du formulaire
         $playlistForm->handleRequest($request);
         // on verifie si le formulaire est soumis et valide
@@ -60,12 +60,9 @@ class PlaylistController extends AbstractController
         ]);
     }
 
-    #[Route('/playlist/update/{id}', name: 'app_playlist_update')]
+    #[Route('/playlist/edit/{id}', name: 'app_playlist_edit')]
     public function edit (Playlist $playlist, Request $request, EntityManagerInterface $em ):Response
     {
-        // ajouter la date pour update
-        $playlist ->setUpdated_at(new \DateTimeImmutable());
-
         //On crée le formulaire
         $playlistForm = $this->createForm(PlaylistFormType::class, $playlist);
         // On traite la requete du formulaire
