@@ -9,6 +9,7 @@ use App\Form\SongType;
 use App\Repository\CommentRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,6 +93,22 @@ class SongController extends AbstractController
         ]);
     }
 
+    #[Route('/{songId}/comment/{commentId}', name: 'app_comment_delete', methods: ['GET', 'POST'])]
+    #[Entity('song', options: ['id' => 'songId'])]
+    #[Entity('comment', options: ['id' => 'commentId'])]
+    public function deleteComment(Request $request, Song $song, Comment $comment, CommentRepository $commentRepository): Response
+    {
+        $user = $this->getUser();
+        $id = $user->getId();
+        if ($id != $comment->getUser()->getId()) {
+            throw $this->createAccessDeniedException('You cant delete a comment you didnt post');
+        }
+        $commentRepository->remove($comment, true);
+
+
+        return $this->redirectToRoute('app_song_player', ['id' => $song->getId()], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}/edit', name: 'app_song_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Song $song, SongRepository $songRepository): Response
     {
@@ -112,9 +129,13 @@ class SongController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'app_song_delete', methods: ['POST'])]
-    public function delete(Request $request, Song $song, SongRepository $songRepository): Response
+    public function delete(Request $request, Song $song, SongRepository $songRepository, CommentRepository $commentRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $song->getId(), $request->request->get('_token'))) {
+            $comments = $commentRepository->findBy(['song' => $song]);
+            foreach ($comments as $comment) {
+                $commentRepository->remove($comment, true);
+            }
             $songRepository->remove($song, true);
         }
 

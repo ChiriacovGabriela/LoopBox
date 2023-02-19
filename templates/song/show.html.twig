@@ -33,11 +33,15 @@
 
     {% include "song/_comment_form.html.twig" with {form: form} only %}
 
-    {% for comment in comments %}
-        {% if comment.song.id == song.id %}
-            {{ comment.user.name }} a écrit {{ comment.text }} <br>
-        {% endif %}
-    {% endfor %}
+        {% for comment in comments %}
+            {% if comment.song.id == song.id %}
+                {{ comment.user.name }} a écrit {{ comment.text }}
+                {% if app.user is defined and app.user.id == comment.user.id %}
+                    <a class="" href="{{ path('app_comment_delete', {'commentId': comment.id, 'songId': song.id}) }}">Delete</a>
+                {% endif %}
+                <br>
+            {% endif %}
+        {% endfor %}
 
 
         <div class="buttons_block">
