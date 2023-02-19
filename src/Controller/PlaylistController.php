@@ -60,7 +60,7 @@ class PlaylistController extends AbstractController
         ]);
     }
 
-    #[Route('/playlist/edit/{id}', name: 'app_playlist_edit')]
+    #[Route('/playlist/update/{id}', name: 'app_playlist_update')]
     public function edit (Playlist $playlist, Request $request, EntityManagerInterface $em ):Response
     {
         // ajouter la date pour update

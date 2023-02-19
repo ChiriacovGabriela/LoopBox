@@ -41,7 +41,7 @@ class Playlist
     public function __construct()
     {
         $this->songs = new ArrayCollection();
-        //$this->created_at = new \DateTimeImmutable();
+
     }
     #[ORM\PrePersist]
     public function setCreatedAtValue():void

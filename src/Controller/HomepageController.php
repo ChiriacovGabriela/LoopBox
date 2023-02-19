@@ -21,15 +21,12 @@ class HomepageController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $searchData->page=$request->query->getInt('page',1);
-            $allSongs = $songRepository->findAll();
             $songs = $songRepository->findBySearch($searchData);
-
             return $this->render('homepage/index.html.twig',[
                 'form' => $form,
                 'songs' => $songs
             ]);
         }
-
 
         return $this->render('homepage/index.html.twig', [
             'form'=>$form->createView(),
