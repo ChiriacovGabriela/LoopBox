@@ -13,7 +13,11 @@
 
             <div class="card1">
                 <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                    <img class="card-img-top img" src="{{ asset('assets/css/img/music3.jpg') }}" alt="Card image cap" height="450" width="390">
+                    {% if song.pictureFileName == null %}
+                        <img class="card-img-top img" src="{{ asset('assets/css/img/music3.jpg') }}" alt="Card image cap" height="450" width="390">
+                    {% else %}
+                        <img class="card-img-top img" src="{{ asset('uploads/images/'~song.pictureFileName) }}" alt="Card image cap" height="450" width="390">
+                    {% endif %}
                 </div>
                 <div class="card-body text-center">
 
@@ -37,11 +41,9 @@
                         </a>
                     {% endif %}
 
-                    <button class="buttons">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16">
-                        <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
-                        </svg>
-                    </button>
+                    <audio controls class="audio-play-button" onclick="this.nextElementSibling.play()">
+                        <source src="{{ asset('uploads/song/'~ song.audioFileName)}}" type="audio/mp3">
+                    </audio>
 
                     {% if next %}
                         <a href="{{ path('app_song_player',{id: next.id}) }}">

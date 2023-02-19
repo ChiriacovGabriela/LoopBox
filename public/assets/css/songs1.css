@@ -1,0 +1,35 @@
+.title {
+    height: 100px;
+}
+.center {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.background_song {
+    background-image: url("img/music4.jpg");
+    background-size: cover;
+    background-position: center;
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
+    position: absolute;
+}
+.noline {
+    border: none;
+}
+.red-color:hover{
+    color: black;
+}
+.btn_space {
+    margin-right: 15px;
+
+}
+td, th{
+    height: 40px;
+    width: 160px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+

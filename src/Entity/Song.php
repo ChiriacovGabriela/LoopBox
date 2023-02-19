@@ -35,7 +35,7 @@ class Song
     private ?\DateTimeInterface $updated_at = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $picturePath = null;
+    private ?string $pictureFileName = null;
 
     #[ORM\Column(length: 255)]
     private ?string $audioFileName = null;
@@ -137,14 +137,14 @@ class Song
         return $this;
     }
 
-    public function getPicturePath(): ?string
+    public function getPictureFileName(): ?string
     {
-        return $this->picturePath;
+        return $this->pictureFileName;
     }
 
-    public function setPicturePath(?string $picturePath): self
+    public function setPictureFileName(?string $pictureFileName): self
     {
-        $this->picturePath = $picturePath;
+        $this->pictureFileName = $pictureFileName;
 
         return $this;
     }

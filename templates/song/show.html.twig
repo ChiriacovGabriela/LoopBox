@@ -9,6 +9,14 @@
     <div class="background_song" >
         <h1 class="center neon red-color title">Song details</h1>
 
+        <div class="center">
+        {% if song.pictureFileName == null %}
+            <img src="{{ asset('assets/css/img/music3.jpg') }}" alt="Song" width="250" height="200">
+        {% else %}
+            <img src="{{ asset('uploads/images/'~song.pictureFileName) }}" alt="Song" width="250" height="200">
+        {% endif %}
+        </div>
+
         <table class="table">
             <tbody>
                 <tr class="white">
@@ -29,16 +37,6 @@
                 </tr>
             </tbody>
         </table>
-
-
-    {% include "song/_comment_form.html.twig" with {form: form} only %}
-
-    {% for comment in comments %}
-        {% if comment.song.id == song.id %}
-            {{ comment.user.name }} a écrit {{ comment.text }} <br>
-        {% endif %}
-    {% endfor %}
-
 
         <div class="buttons_block">
 

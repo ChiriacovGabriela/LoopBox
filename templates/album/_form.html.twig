@@ -1,0 +1,21 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    {% if app.request.attributes.get('_route')=='app_album_edit'%}
+        <h2>Song in Album</h2>
+        <table class="table">
+        {% for song in album.songs %}
+            <tr>
+                <th>Titre</th>
+                <td>{{ song.name }}</td>
+            <td>
+                <audio controls>
+                    <source src="{{ asset('uploads/song/'~ song.audioFileName)}}" type="audio/mp3">
+                </audio>
+            </td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+        </table>
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

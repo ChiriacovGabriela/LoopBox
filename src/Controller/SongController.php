@@ -6,7 +6,9 @@ use App\Entity\Comment;
 use App\Entity\Song;
 use App\Form\CommentFormType;
 use App\Form\SongType;
+
 use App\Repository\CommentRepository;
+use App\FormHandler\UploadFileHandler;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,7 +34,7 @@ class SongController extends AbstractController
 
 
     #[Route('/new', name: 'app_song_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
+    public function new(Request $request,EntityManagerInterface $em ,SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         $song = new Song();
         $song->setUser($this->getUser());
@@ -42,7 +44,8 @@ class SongController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $songFile */
             $songFile = $form->get('audioFileName')->getData();
-            if ($songFile) {
+            $imageFile = $form ->get('pictureFileName')->getData();
+            if ($songFile){
                 $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $songFile->guessExtension();
@@ -57,6 +60,12 @@ class SongController extends AbstractController
                 }
                 $song->setAudioFileName($newFilename);
             }
+            if($imageFile){
+                $directory = $this->getParameter('image_directory');
+                $newFilename = $uploadFileHandler->upload($slugger,$imageFile,$directory);
+                $song->setPictureFileName($newFilename);
+            }
+
 
             $em->persist($song);
             $em->flush();
@@ -93,13 +102,37 @@ class SongController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_song_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Song $song, SongRepository $songRepository): Response
+    public function edit(Request $request, Song $song, SongRepository $songRepository,SluggerInterface $slugger,UploadFileHandler $uploadFileHandler): Response
     {
         $song->setUpdatedAt(new \DateTimeImmutable());
         $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $songFile = $form->get('audioFileName')->getData();
+            $imageFile = $form ->get('pictureFileName')->getData();
+            if ($songFile){
+                $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$songFile->guessExtension();
+
+                try {
+                    $songFile->move(
+                        $this->getParameter('song_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $song->setAudioFileName($newFilename);
+            }
+            if($imageFile){
+                $directory = $this->getParameter('image_directory');
+                $newFilename = $uploadFileHandler->upload($slugger,$imageFile,$directory);
+                $song->setPictureFileName($newFilename);
+            }
+
+
             $songRepository->save($song, true);
 
             return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
