@@ -52,12 +52,17 @@ class Song
     #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'songs')]
     private Collection $album;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'favoris')]
+    private Collection $favoris;
+
     public function __construct()
     {
         $this->relation = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->album = new ArrayCollection();
-        $this->created_at = new \DateTimeImmutable();
+        $this->created_at=new \DateTimeImmutable();
+        $this->favoris = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -247,6 +252,30 @@ class Song
     public function removeAlbum(album $album): self
     {
         $this->album->removeElement($album);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(User $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(User $favori): self
+    {
+        $this->favoris->removeElement($favori);
 
         return $this;
     }

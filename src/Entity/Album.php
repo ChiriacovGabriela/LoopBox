@@ -37,7 +37,7 @@ class Album
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pictureFileName = null;
 
-    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'relationWithAlbum', cascade:['persist'])]
+    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'album', cascade:['persist'])]
     private Collection $songs;
 
     #[ORM\ManyToOne(inversedBy: 'relationWithAlbum')]

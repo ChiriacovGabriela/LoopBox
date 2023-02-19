@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -144,7 +145,7 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'app_song_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_song_delete', requirements: ['id' => '\d+'])]
     public function delete(Request $request, Song $song, SongRepository $songRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $song->getId(), $request->request->get('_token'))) {
@@ -173,5 +174,29 @@ class SongController extends AbstractController
         ]);
 
 
+    }
+
+    #[Route('/favoris/add/{id}', name: 'app_song_favoris_add')]
+    public function addFavoris(Song $song, EntityManagerInterface $em,int $id)
+    {
+        if (!$song){
+            throw  new NotFoundHttpException('Musique introuvable');
+        }
+        $song->addFavori($this->getUser());
+        $em->persist($song);
+        $em->flush();
+        return $this->redirectToRoute('app_song_player', ['id'=>$id], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/favoris/remove/{id}', name: 'app_song_favoris_remove')]
+    public function removeFavoris(Song $song, EntityManagerInterface $em,int $id)
+    {
+        if (!$song){
+            throw  new NotFoundHttpException('Musique introuvable');
+        }
+        $song->removeFavori($this->getUser());
+        $em->persist($song);
+        $em->flush();
+        return $this->redirectToRoute('app_song_player', ['id'=>$id], Response::HTTP_SEE_OTHER);
     }
 }
