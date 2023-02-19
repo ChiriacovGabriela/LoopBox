@@ -24,6 +24,7 @@
 
                 <a href="{{ path('app_playlist_edit',{id: playlist.id})}}" class="btn btn-outline-light btn_margin">Edit playlist</a>
 
+
                 {{ include('playlist/_delete_form.html.twig') }}
 
             <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -94,7 +95,7 @@
                     <td>{{ song.type }}</td>
                     <td><button class="btn btn-outline-light">
                                 <a href="{{ path('app_playlist_player', {'playlistId': playlist.id, 'songId':song.id}) }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right white" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right white_hover" viewBox="0 0 16 16">
                                 <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
                                 </svg></a>
                         </button>
