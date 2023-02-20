@@ -32,6 +32,7 @@ class AlbumController extends AbstractController
     {
         $album = new Album();
         $form = $this->createForm(AlbumType::class, $album);
+        $album->setUser($this->getUser());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -72,7 +73,7 @@ class AlbumController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_album_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_album_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(Album $album): Response
     {
         return $this->render('album/show.html.twig', [
@@ -125,7 +126,7 @@ class AlbumController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_album_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_album_delete', methods: ['POST'])]
     public function delete(Request $request, Album $album, AlbumRepository $albumRepository, SongRepository $songRepository): Response
     {
 

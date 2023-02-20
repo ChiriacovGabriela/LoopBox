@@ -46,11 +46,11 @@ class Song
     #[ORM\OneToMany(mappedBy: 'song', targetEntity: Comment::class)]
     private Collection $relation;
 
-    #[ORM\ManyToMany(targetEntity: Playlist::class, inversedBy: 'songs')]
-    private Collection $relationWithPlaylist;
+    #[ORM\ManyToMany(targetEntity: Playlist::class, inversedBy: 'songs', cascade: ['persist'])]
+    private Collection $playlists;
 
     #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'songs')]
-    private Collection $relationWithAlbum;
+    private Collection $album;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'favoris')]
     private Collection $favoris;
@@ -58,10 +58,11 @@ class Song
     public function __construct()
     {
         $this->relation = new ArrayCollection();
-        $this->relationWithPlaylist = new ArrayCollection();
-        $this->relationWithAlbum = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
+        $this->album = new ArrayCollection();
         $this->created_at=new \DateTimeImmutable();
         $this->favoris = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -210,23 +211,23 @@ class Song
     /**
      * @return Collection<int, playlist>
      */
-    public function getRelationWithPlaylist(): Collection
+    public function getPlaylists(): Collection
     {
-        return $this->relationWithPlaylist;
+        return $this->playlists;
     }
 
-    public function addRelationWithPlaylist(playlist $relationWithPlaylist): self
+    public function addPlaylist(playlist $playlist): self
     {
-        if (!$this->relationWithPlaylist->contains($relationWithPlaylist)) {
-            $this->relationWithPlaylist->add($relationWithPlaylist);
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists->add($playlist);
         }
 
         return $this;
     }
 
-    public function removeRelationWithPlaylist(playlist $relationWithPlaylist): self
+    public function removePlaylist(playlist $playlist): self
     {
-        $this->relationWithPlaylist->removeElement($relationWithPlaylist);
+        $this->playlists->removeElement($playlist);
 
         return $this;
     }
@@ -234,23 +235,23 @@ class Song
     /**
      * @return Collection<int, album>
      */
-    public function getRelationWithAlbum(): Collection
+    public function getAlbum(): Collection
     {
-        return $this->relationWithAlbum;
+        return $this->album;
     }
 
-    public function addRelationWithAlbum(album $relationWithAlbum): self
+    public function addAlbum(album $album): self
     {
-        if (!$this->relationWithAlbum->contains($relationWithAlbum)) {
-            $this->relationWithAlbum->add($relationWithAlbum);
+        if (!$this->album->contains($album)) {
+            $this->album->add($album);
         }
 
         return $this;
     }
 
-    public function removeRelationWithAlbum(album $relationWithAlbum): self
+    public function removeAlbum(album $album): self
     {
-        $this->relationWithAlbum->removeElement($relationWithAlbum);
+        $this->album->removeElement($album);
 
         return $this;
     }

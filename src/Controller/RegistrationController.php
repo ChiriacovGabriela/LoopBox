@@ -41,7 +41,7 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
-    #[Route('/user/edit/{id}', name: 'edit')]
+    #[Route('/user/edit/{id}', name: 'app_user_edit')]
     public function edit (User $user, Request $request, EntityManagerInterface $em ):Response
     {
         //On crée le formulaire

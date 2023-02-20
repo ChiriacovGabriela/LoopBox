@@ -3,23 +3,37 @@
 {% block title %}Hello UserController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello ! ✅</h1>
-    This friendly message is coming from:{{ app.user.name }}<br>
+    {% include "partials/nav_bar.html.twig" %}
 
-</div>
-    <a href="{{path('app_playlist_add')}}">Create Playlist </a>
+    <section class="background_user">
+    <h1 class="red-color neon center margin_top">Hello, {{ app.user.name }}</h1>
+    <p class="lead white center">Welcome on your page! Here you can see all your playlists and create others if you want.</p>
+    <p class="center">
+        <button class="btn btn-outline-light button_create_playlist"><a class="red-color neon" href="{{path('app_playlist_add')}}">Create Playlist</a></button>
+    </p>
+    <div class="container1 margin_top">
+        <div class="row">
+        {% for playlist in playlists %}
+            <div class="card2">
+                <div class="center">
 
-   <div>
-       {% for playlist in playlists %}
-           <a href="{{path('app_playlist', {id: playlist.id})}}"> {{ playlist.name }} </a> <br>
-       {% endfor %}
+                    {% if playlist.imageFileName == null %}
+                        <img class="picture" src="https://cdn.dribbble.com/users/1752437/screenshots/14183305/ep_4x.png" alt="Card image cap" width="220" height="220">
+                    {% else %}
+                        <img class="picture" src="{{ asset('uploads/images/'~playlist.imageFileName) }}" alt="Card image cap" width="220" height="220">
+                    {% endif %}
+                </div>
+
+                <p><h4 class="center"><a class="red-color neon" href="{{path('app_playlist', {id: playlist.id})}}">{{ playlist.name }}</a></h4></p>
+            </div>
+
+        {% endfor %}
+        </div>
+    </div>
+
+    {% include "user/_footer.html.twig" %}
 
 
-   </div>
+
 {% endblock %}
