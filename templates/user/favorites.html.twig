@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{% include "partials/nav_bar.html.twig" %}
+<div>
+    <h2>My favorites</h2>
+    <table class="table">
+        <thead>
+        <tr>
+
+            <th class="th2"><font class="red-color neon">Name</font></th>
+            <th class="th2"><font class="red-color neon">Type</font></th>
+            <th class="th2"><font class="red-color neon">Artist</font></th>
+            <th></th>
+
+
+        </tr>
+        </thead>
+        <tr>
+            {% for song in app.user.favoris %}
+
+            <td class="td2">{{ song.name }}</td>
+            <td class="td2">{{ song.type }}</td>
+            <td class="td2">{{ song.artist }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+
+</div>
+
+{% endblock %}

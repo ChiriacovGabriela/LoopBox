@@ -28,39 +28,13 @@
                 <p><h4 class="center"><a class="red-color neon" href="{{path('app_playlist', {id: playlist.id})}}">{{ playlist.name }}</a></h4></p>
             </div>
 
+               <a href="{{path('app_song_favoris',{id: app.user.id})}}"> My favorites </a>
+
+
         {% endfor %}
         </div>
     </div>
-    <div>
-        <h2>My favourites</h2>
-        <table class="table">
-            <thead>
-            <tr>
 
-                <th class="th2"><font class="red-color neon">Name</font></th>
-                <th class="th2"><font class="red-color neon">Type</font></th>
-                <th class="th2"><font class="red-color neon">Artist</font></th>
-                <th></th>
-
-
-            </tr>
-            </thead>
-            <tr>
-            {% for song in app.user.favoris %}
-
-
-
-                <td class="td2"><font color="white">{{ song.name }}</font></td>
-                <td class="td2"><font color="white">{{ song.type }}</font></td>
-                <td class="td2"><font color="white">{{ song.artist }}</font></td>
-
-
-
-            </tr>
-            </table>
-
-        {% endfor %}
-    </div>
 
     {% include "user/_footer.html.twig" %}
 
