@@ -53,6 +53,7 @@ class AlbumController extends AbstractController
                     $this->getParameter('song_directory'),$songFile
                 );
                 $newSong=new Song();
+                $newSong->setUser($this->getUser());
                 $newSong->setArtist($artist);
                 $newSong->setType($type);
                 $newSong->setName($originalFilename);
@@ -105,6 +106,7 @@ class AlbumController extends AbstractController
                     $this->getParameter('song_directory'),$songFile
                 );
                 $newSong=new Song();
+                $newSong->setUser($this->getUser());
                 $newSong->setArtist($artist);
                 $newSong->setType($type);
                 $newSong->setName($originalFilename);
