@@ -20,7 +20,6 @@
             <th class="th2">Name</th>
             <th class="th2">Type</th>
             <th class="th2">Artist</th>
-            <th class="th2">Album</th>
             <th class="th2"></th>
             <th class="th2"></th>
         </tr>
@@ -31,52 +30,33 @@
                 <td class="td2">{{ song.name }}</td>
                 <td class="td2">{{ song.type }}</td>
                 <td class="td2">{{ song.artist }}</td>
-                <td class="td2">album</td>
                 <td class="td2">
                     <button class="btn_space btn btn-outline-light">
-                        <a class="white_hover neon" href="{{ path('app_homepage_player', {'id': song.id}) }}">play</a>
+                        <a class="white_hover neon" href="{{ path('app_homepage_player', {'id': song.id}) }}">Play</a>
                     </button>
                 </td>
                 <td class="td2">
-                    <button type="button" class="btn_space btn btn-outline-light white_hover neon" data-toggle="modal"
+                    <button  class="btn_space btn btn-outline-light white_hover neon" data-toggle="modal"
                             data-target="#exampleModalLong{{ song.id }}">Add
                     </button>
                 </td>
             </tr>
-            <div class="modal fade" id="exampleModalLong{{ song.id }}" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content popup_homepage2">
-                        <div class="modal-header popup_homepage">
-                            <h5 class="modal-title" id="exampleModalLongTitle">CHOOSE THE PLAYLIST</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-check">
-                                {% if app.user %}
-                                    {% for playlist in playlists %}
-                                        <div>
-                                            <a class="neon white_hover" href="{{ path('add_song_homepage', {'songId': song.id, 'playlistId': playlist.id}) }}"> {{ playlist.name }} </a>
-                                        </div>
-                                    {% endfor %}
-                                {% else %}
-                                    <div class="neon white_hover">Sorry ... you must be connected</div>
-                                    <div class="neon white_hover">Click here to sing in:
-                                        <a class="neon white_hover" href="{{ path('app_login') }}">SING IN</a>
-                                    </div>
-
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% include "partials/_popupPlaylists.html.twig"%}
         {% endfor %}
-
         </tbody>
     </table>
+        <div class="container1 margin_top">
+            <div class="row">
+                {% for album in albums %}
+                    <div class="card2">
+                        <div class="center">
+                            <img class="picture" src="{{ asset('uploads/images/'~album.pictureFileName) }}" alt="Card image cap" width="220" height="220">
+                        </div>
+                        <p><h4 class="center"><a class="red-color neon" href="{{path('app_album_show', {id: album.id})}}">{{ album.name }}</a></h4></p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
 
     </div>
 

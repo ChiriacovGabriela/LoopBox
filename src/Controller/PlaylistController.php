@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Playlist;
 use App\Entity\Song;
 use App\Form\PlaylistFormType;
+use App\Repository\AlbumRepository;
 use App\Repository\PalylistRepository;
 use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
@@ -189,7 +190,7 @@ class PlaylistController extends AbstractController
     #[Route('/song/{songId}/playlist/{playlistId}', name: 'add_song_homepage')]
     #[Entity('playlist', options: ['id' => 'playlistId'])]
     #[Entity('song', options: ['id' => 'songId'])]
-    public function addSongHomepage(Playlist $playlistId, Song $songId, SongRepository $songRepository, PlaylistRepository $playlistRepository, EntityManagerInterface $em, Request $request): Response
+    public function addSongHomepage(Playlist $playlistId, Song $songId, SongRepository $songRepository, PlaylistRepository $playlistRepository, EntityManagerInterface $em, AlbumRepository $albumRepository, Request $request): Response
     {
 
         // Check if the playlist and song exist
@@ -211,6 +212,7 @@ class PlaylistController extends AbstractController
             'song' => $songId,
             'songs' => $songRepository->findAll(),
             'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
+            'albums' => $albumRepository->findAll(),
         ]);
 
     }

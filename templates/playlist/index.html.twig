@@ -41,23 +41,23 @@
 
                             <table class="table">
                                 <thead>
-                                <tr class="red-color">
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Artist</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col"></th>
+                                <tr class="white">
+                                    <th class="td1">Title</th>
+                                    <th class="td1">Artist</th>
+                                    <th class="td1">Type</th>
+                                    <th class="td1"></th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
                                 {% for song in songs %}
                                     {% if song not in playlist.songs %}
-                                    <tr>
+                                    <tr class="white">
                                         <td>{{ song.name }}</td>
                                         <td>{{ song.artist }}</td>
                                         <td>{{ song.type }}</td>
                                         <td>
-                                            <button class="btn_add_close"><a class="red-color neon" href = {{path('add_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Add</a></button>
+                                            <button class="btn btn-outline-light"><a class="white_hover neon" href = {{path('add_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Add</a></button>
                                         </td>
                                     </tr>
                                     {% endif %}
