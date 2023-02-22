@@ -17,8 +17,7 @@ class SearchType extends AbstractType
         $builder
             ->add('q', TextType::class,[
                 'attr' => [
-                    'placeholder' => 'Recherche via un mot cle ... '
-
+                    'placeholder' => 'Search by keyword ... '
                 ]
             ]);
     }

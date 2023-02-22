@@ -50,12 +50,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Album::class)]
     private Collection $relationWithAlbum;
 
+    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'favoris')]
+    private Collection $favoris;
+
     public function __construct()
     {
         $this->comment = new ArrayCollection();
         $this->relation = new ArrayCollection();
         $this->relationWithPlaylist = new ArrayCollection();
         $this->relationWithAlbum = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -279,6 +283,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($relationWithAlbum->getUser() === $this) {
                 $relationWithAlbum->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Song>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Song $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+            $favori->addFavori($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Song $favori): self
+    {
+        if ($this->favoris->removeElement($favori)) {
+            $favori->removeFavori($this);
         }
 
         return $this;

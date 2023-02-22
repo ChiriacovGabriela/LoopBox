@@ -7,7 +7,7 @@
 
         <a class="nav_link neon" href="{{ path('app_user', {userId: app.user.id})}}">My account</a>
 
-        <a class="nav_link neon" href="#">Edit my account</a>
+        <a class="nav_link neon" href="{{ path('app_user_edit', {id: app.user.id}) }}">Edit my account</a>
 
         <a class="nav_link neon" href="{{ path('app_logout')}}">Logout</a>
         </div>
@@ -21,10 +21,13 @@
         <a class="nav_link neon" href="{{ path('app_homepage')}}">LoopBox</a>
 
         <div class="header_nav">
+
         <a class="nav_link neon " href="{{ path('app_register')}}">Sing up</a>
 
         <a class="nav_link neon " href="{{ path('app_login')}}">Login</a>
+
         </div>
+
     </nav>
 
 

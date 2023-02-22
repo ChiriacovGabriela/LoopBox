@@ -4,101 +4,109 @@
 
 {% block body %}
 
-
     {% include "partials/nav_bar.html.twig" %}
 
-    <section class="jumbotron text-center">
-        <div class="container">
-            <h1 class="jumbotron-heading">Playlist {{ playlist.name }}</h1>
-            <img src="{{ asset('uploads/images/'~playlist.imageFileName) }}" alt="Sol">
-            <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
-            <p>
+    <div class="jumbotron text-center background_playlist">
 
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+        <div class="container">
+            <h1 class="red-color neon center title">Playlist {{ playlist.name }}</h1>
+
+            {% if playlist.imageFileName == null %}
+                <img src="https://cdn.dribbble.com/users/1752437/screenshots/14183305/ep_4x.png" alt="Music Note" width="250" height="200">
+            {% else %}
+                <img src="{{ asset('uploads/images/'~playlist.imageFileName) }}" alt="Music Note" width="250" height="200">
+            {% endif %}
+
+            <p>
+                <button type="button" class="btn btn-outline-light btn_space btn_margin" data-toggle="modal" data-target="#exampleModalLong">
                     Add Song
                 </button>
 
-                <a  href="{{ path('app_playlist_edit',{id: playlist.id})}}">Edit </a>
-
+                <a href="{{ path('app_playlist_edit',{id: playlist.id})}}" class="btn btn-outline-light btn_margin">Edit playlist</a>
 
 
                 {{ include('playlist/_delete_form.html.twig') }}
 
             <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">All songs</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <div class="modal-content color_popup2">
+                        <div class="modal-header color_popup">
+                            <h5 class="modal-title red-color" id="exampleModalLongTitle">All songs</h5>
+                            <button type="button" class="close btn_add_close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+
                         <div class="modal-body">
 
                             <table class="table">
                                 <thead>
+                                <tr class="red-color">
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Artist</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for song in songs %}
+                                    {% if song not in playlist.songs %}
                                     <tr>
-                                        <th scope="col">Title</th>
-                                        <th scope="col">Artist</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">action</th>
+                                        <td>{{ song.name }}</td>
+                                        <td>{{ song.artist }}</td>
+                                        <td>{{ song.type }}</td>
+                                        <td>
+                                            <button class="btn_add_close"><a class="red-color neon" href = {{path('add_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Add</a></button>
+                                        </td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for song in songs %}
-                                        <tr>
-                                            <td>{{ song.name }}</td>
-                                            <td>{{ song.artist }}</td>
-                                            <td>{{ song.type }}</td>
-                                            <td><button>Add</button></td>
-                                        </tr>
-                                    {% else %}
-                                        <tr>
-                                            <td colspan="10">no records found</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if songs|length == playlist.songs|length %}
+                                    <tr>
+                                        <td colspan="10">no records found</td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
 
                             </table>
-
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">create</button>
                         </div>
                     </div>
                 </div>
             </div>
-
             </p>
         </div>
 
-    </section>
+        <table class="table">
+            <thead>
+            <tr class="white">
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Type</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for song in playlist.songs %}
+                <tr class="white">
+                    <td>{{ song.name }}</td>
+                    <td>{{ song.artist }}</td>
+                    <td>{{ song.type }}</td>
+                    <td><button class="btn btn-outline-light">
+                                <a href="{{ path('app_playlist_player', {'playlistId': playlist.id, 'songId':song.id}) }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right white_hover" viewBox="0 0 16 16">
+                                <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
+                                </svg></a>
+                        </button>
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-light" href = {{path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
 
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Titre</th>
-            <th scope="col">Artist</th>
-            <th scope="col">Album</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>...</td>
-            <td>...</td>
-            <td>...</td>
-            <td><button>Delete</button></td>
-        </tr>
-
-        </tbody>
-    </table>
-
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
-
-
-
