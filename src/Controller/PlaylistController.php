@@ -14,6 +14,7 @@ use App\Controller\UserController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -24,13 +25,34 @@ class PlaylistController extends AbstractController
 
 {
     #[Route('/playlist/{id}', name: 'app_playlist', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function index(SongRepository $songRepository, Playlist $playlist, PlaylistRepository $playlistRepository): Response
+    public function index(Request $request, SongRepository $songRepository, Playlist $playlist, PlaylistRepository $playlistRepository)
     {
-        //dd($playlist);
         //dd($playlistRepository->find($playlist->getId())->getSongs()->toArray());
+
+        //on recupere les filtres
+        $filters = $request->get('type');
+        if ($filters != null) {
+            //on recupere les bonnes chansons en fonction des filtres
+            $songs = $songRepository->findSongsByType($filters);
+        } else {
+            $songs = $songRepository->findAll();
+        }
+        $allSongs = $songRepository->findAll();
+
+        //on verifie si on a une requete ajax
+        if ($request->get('ajax')) {
+            return new JsonResponse([
+                'content' => $this->renderView('playlist/_content.html.twig', [
+                    'songs' => $songs,
+                    'allSongs' => $allSongs,
+                    'playlist' => $playlist,
+                ])
+            ]);
+        }
         return $this->render('playlist/index.html.twig', [
-            'songs' => $songRepository->findAll(),
+            'songs' => $songs, //$songRepository->findAll(),
             'playlist' => $playlist,
+            'allSongs' => $allSongs,
         ]);
 
     }
@@ -115,10 +137,8 @@ class PlaylistController extends AbstractController
         $em->flush();
 
         //dd($playlistId);
-        return $this->render('playlist/index.html.twig', [
-            'playlist' => $playlistRepository->find($playlistId),
-            'song' => $songId,
-            'songs' => $songRepository->findAll(),
+        return $this->redirectToRoute('app_playlist', [
+            'id' => $playlistId->getId(),
         ]);
     }
 
@@ -142,10 +162,8 @@ class PlaylistController extends AbstractController
         $em->flush();
 
         //dd($playlistId);
-        return $this->render('playlist/index.html.twig', [
-            'playlist' => $playlistRepository->find($playlistId),
-            'song' => $songId,
-            'songs' => $songRepository->findAll(),
+        return $this->redirectToRoute('app_playlist', [
+            'id' => $playlistId->getId(),
         ]);
     }
 
@@ -215,7 +233,7 @@ class PlaylistController extends AbstractController
 
     }
 
-   }
+}
 
 
 

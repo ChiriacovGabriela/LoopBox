@@ -62,6 +62,14 @@ class SongRepository extends ServiceEntityRepository
 
     }
 
+    public function findSongsByType($filters = null)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->andWhere('s.type IN(:types)')
+            ->setParameter(':types', array_values($filters));
+        return $qb->getQuery()->getResult();
+    }
+
 
 
 
