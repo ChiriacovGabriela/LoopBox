@@ -25,7 +25,7 @@
                         </audio>
 
                         {% if prev %}
-                        <a href="{{ path('app_homepage_player',{id: prev.id}) }}">
+                        <a href="{{ path(name,{id: prev.id}) }}">
                             {% endif %}
                             <button class="buttons">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
@@ -44,7 +44,7 @@
                         </button>
 
                         {% if next %}
-                        <a href="{{ path('app_homepage_player',{id: next.id}) }}">
+                        <a href="{{ path(name,{id: next.id}) }}">
                             {% endif %}
                             <button class="buttons">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
@@ -61,7 +61,7 @@
 
             </div>
         </div>
-        {% include "homepage/popupComments.html.twig" %}
+
 
     </section>
 

@@ -2,16 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Song;
 use App\Repository\AlbumRepository;
+use App\Form\CommentFormType;
+use App\Repository\CommentRepository;
 use App\Repository\PlaylistRepository;
 use App\Form\SearchType;
 use App\Model\SearchData;
 use App\Repository\SongRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 class HomepageController extends AbstractController
 {
@@ -24,7 +28,6 @@ class HomepageController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $searchData->page=$request->query->getInt('page',1);
             $songs = $songRepository->findBySearch($searchData);
-
             return $this->render('homepage/index.html.twig',[
                 'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
                 'form' => $form,
@@ -40,12 +43,10 @@ class HomepageController extends AbstractController
             'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
             'albums' => $albumRepository->findAll(),
         ]);
-
-
     }
 
-    #[Route('/homepage/{id}/player', name: 'app_homepage_player', methods: ['GET'], requirements: ['id' =>'\d+'])]
-    public function player(Song $song, SongRepository $songRepository): Response
+    #[Route('/homepage/{id}/player', name: 'app_homepage_player', methods: ['GET', 'POST'], requirements: ['id' =>'\d+'])]
+    public function player(Request $request, Song $song, SongRepository $songRepository, CommentRepository $commentRepository, EntityManagerInterface $em): Response
     {
         $allSongs = $songRepository->findAll();
 
@@ -56,10 +57,27 @@ class HomepageController extends AbstractController
             }
         }
 
-        return $this->render('homepage/player.html.twig', [
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest($request);
+        //dd($form);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser());
+            $comment->setSong($song);
+            $em->persist($comment);
+            $em->flush();
+        }
+
+
+        return $this->render('player/index.html.twig', [
+            'name'=>'app_homepage_player',
+            'isPlaylist'=> false,
+            'isSong' => false,
             'song' => $song,
+            'form' => $form,
             'next' => array_key_exists($selectedSongKey+1, $allSongs) ? $allSongs[$selectedSongKey+1] : null,
             'prev' => array_key_exists($selectedSongKey-1, $allSongs) ? $allSongs[$selectedSongKey-1] : null,
+            'comments' => $commentRepository->findAll()
         ]);
 
 

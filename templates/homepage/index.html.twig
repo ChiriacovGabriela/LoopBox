@@ -18,8 +18,8 @@
         <thead>
         <tr class="white">
             <th class="th2">Name</th>
-            <th class="th2">Type</th>
             <th class="th2">Artist</th>
+            <th class="th2">Type</th>
             <th class="th2"></th>
             <th class="th2"></th>
         </tr>
@@ -28,8 +28,8 @@
         {% for song in songs %}
             <tr class="white">
                 <td class="td2">{{ song.name }}</td>
-                <td class="td2">{{ song.type }}</td>
                 <td class="td2">{{ song.artist }}</td>
+                <td class="td2">{{ song.type }}</td>
                 <td class="td2">
                     <button class="btn_space btn btn-outline-light">
                         <a class="white_hover neon" href="{{ path('app_homepage_player', {'id': song.id}) }}">Play</a>

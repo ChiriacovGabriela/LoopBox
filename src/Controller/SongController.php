@@ -9,8 +9,10 @@ use App\Form\SongType;
 
 use App\Repository\CommentRepository;
 use App\FormHandler\UploadFileHandler;
+use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -102,6 +104,22 @@ class SongController extends AbstractController
         ]);
     }
 
+    #[Route('/{songId}/comment/{commentId}', name: 'app_comment_delete', methods: ['GET', 'POST'])]
+    #[Entity('song', options: ['id' => 'songId'])]
+    #[Entity('comment', options: ['id' => 'commentId'])]
+    public function deleteComment(Request $request, Song $song, Comment $comment, CommentRepository $commentRepository): Response
+    {
+        $user = $this->getUser();
+        $id = $user->getId();
+        if ($id != $comment->getUser()->getId()) {
+            throw $this->createAccessDeniedException('You cant delete a comment you didnt post');
+        }
+        $commentRepository->remove($comment, true);
+
+
+        return $this->redirectToRoute('app_song_player', ['id' => $song->getId()], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}/edit', name: 'app_song_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Song $song, SongRepository $songRepository,SluggerInterface $slugger,UploadFileHandler $uploadFileHandler): Response
     {
@@ -145,18 +163,23 @@ class SongController extends AbstractController
         ]);
     }
 
+
     #[Route('/delete/{id}', name: 'app_song_delete', requirements: ['id' => '\d+'])]
-    public function delete(Request $request, Song $song, SongRepository $songRepository): Response
+    public function delete(Request $request, Song $song, SongRepository $songRepository, CommentRepository $commentRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $song->getId(), $request->request->get('_token'))) {
+            $comments = $commentRepository->findBy(['song' => $song]);
+            foreach ($comments as $comment) {
+                $commentRepository->remove($comment, true);
+            }
             $songRepository->remove($song, true);
         }
 
         return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/player', name: 'app_song_player', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function player(Song $song, SongRepository $songRepository): Response
+    #[Route('/{id}/player', name: 'app_song_player', methods: ['GET','POST'], requirements: ['id' => '\d+'])]
+    public function player(CommentRepository $commentRepository, PlaylistRepository $playlistRepository,Request $request,EntityManagerInterface $em,Song $song, SongRepository $songRepository): Response
     {
         $songs = $songRepository->findBy(['user' => $this->getUser()]);
 
@@ -166,11 +189,30 @@ class SongController extends AbstractController
                 $selectedSongKey = $key;
             }
         }
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest($request);
+        //dd($form);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser());
+            $comment->setSong($song);
+            $em->persist($comment);
+            $em->flush();
+        }
 
-        return $this->render('song/player.html.twig', [
+        /*return $this->render('song/player.html.twig', [
             'song' => $song,
             'next' => array_key_exists($selectedSongKey + 1, $songs) ? $songs[$selectedSongKey + 1] : null,
             'prev' => array_key_exists($selectedSongKey - 1, $songs) ? $songs[$selectedSongKey - 1] : null,
+        ]);*/
+        return $this->render('player/index.html.twig', [
+            'song' => $song,
+            'form' => $form,
+            'isSong' => true,
+            'isPlaylist' => false,
+            'next' => array_key_exists($selectedSongKey + 1, $songs) ? $songs[$selectedSongKey + 1] : null,
+            'prev' => array_key_exists($selectedSongKey - 1, $songs) ? $songs[$selectedSongKey - 1] : null,
+            'comments' => $commentRepository->findAll()
         ]);
 
 

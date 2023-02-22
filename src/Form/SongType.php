@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Song;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -15,7 +16,15 @@ class SongType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('type')
+            ->add('type',ChoiceType::class, [
+                'choices' => [
+                    'Rap' => 'rap',
+                    'Pop' => 'pop',
+                    'Metal' => 'metal',
+                    'Rock' => 'rock',
+                    'Classical Music' => 'classical music',
+                    'Jazz' => 'jazz',
+                ]])
             ->add('artist')
             ->add('pictureFileName',FileType::class,[
                 'label' => 'Image',
