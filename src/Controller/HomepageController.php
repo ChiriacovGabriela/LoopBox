@@ -77,10 +77,6 @@ class HomepageController extends AbstractController
             'comments' => $commentRepository->findAll()
         ]);
 
-
     }
-
-
-
 
 }

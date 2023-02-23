@@ -8,29 +8,6 @@
 
 
 
-    <div class="form-check">
-        {% if is_granted("ROLE_USER") %}
-            {% for favoris in song.favoris %}
-                {% if favoris.id == app.user.id %}
-                    <a href="{{ path('app_song_favoris_remove', {id: song.id}) }}">
-                        <button type="button" class="btn btn-danger"> <i class="bi bi-heart"></i> </button>
-                    </a>
-                {% else %}
-                    <a href="{{ path('app_song_favoris_add', {id: song.id}) }}">
-                        <button type="button" class="btn btn-outline-danger"> <i class="bi bi-heart"></i></button>
-                    </a>
-                {% endif %}
-            {% else %}
-                <a href="{{ path('app_song_favoris_add', {id: song.id}) }}">
-                    <button type="button" class="btn btn-outline-danger"><i class="bi bi-heart"></i></button>
-                </a>
-            {% endfor %}
-
-        {% endif %}
-
-    </div>
-
-
 
 
     <section class="background2 margins">
@@ -45,51 +22,53 @@
 
 
 
-
-
-
-                    <div class="card-body text-center">
-
+                    <div class="card-body text-center ">
+                           <div>
                         <h4 class="font-weight-bold">{{ song.name }}</h4>
-                        <p>{{ song.artist }}</p>
+                               <p>{{ song.artist }}</p> </div>
 
-                        <audio id="music" preload="true">
-                            <source src="#">
-                        </audio>
 
                         {% if prev %}
+
                             {% if not isPlaylist  and not isSong  %}
 
-                                <a href="{{ path('app_homepage_player',{id: prev.id})  }}"
+                                 <a  href="{{ path('app_homepage_player',{id: prev.id})  }}"
                             {% endif %}
 
 
                             {% if not isSong and isPlaylist  %}
 
-                                        <a href="{{ path('app_playlist_player',{'playlistId': playlist.id, 'songId': prev.id}) }}" >
+                                 <a  href="{{ path('app_playlist_player',{'playlistId': playlist.id, 'songId': prev.id}) }}" >
                             {% endif %}
 
                             {% if isSong  %}
 
-                                <a href="{{ path('app_song_player',{id: prev.id}) }}" >
+                                     <a href="{{ path('app_song_player',{id: prev.id}) }}" >
                             {% endif %}
                         {% endif %}
 
-                                    <button class="buttons">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                                    <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                            </button>
+                         <button class="b">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left dark t" viewBox="0 0 16 16">
+                                             <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                             <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
 
-                            {% if prev %}
-                        </a>
+
+                                </svg>
+                        </button>
+                        {% if prev %}
+                             </a>
                         {% endif %}
 
 
-                        <audio controls class="audio-play-button" onclick="this.nextElementSibling.play()">
+
+
+
+
+
+                        <audio controls class="audio" onclick="this.nextElementSibling.play()">
                             <source src="{{ asset('uploads/song/'~ song.audioFileName)}}" type="audio/mp3">
                         </audio>
+
 
 
                         {% if next %}
@@ -112,22 +91,57 @@
 
 
                         {% endif %}
-                            <button class="buttons">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                <button class="b">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right dark t" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
                                     <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
                                 </svg>
-                            </button>
+                                </button>
+
                             {% if next %}
                         </a>
                         {% endif %}
 
-                    </div>
+
+                </div>
                 </div>
 
             </div>
         </div>
-        {% include "homepage/popupComments.html.twig" %}
+
+
+
+
+        <div class="buttons_block">
+
+            {% if is_granted("ROLE_USER") %}
+                {% for favoris in song.favoris %}
+                    {% if favoris.id == app.user.id %}
+                        <a href="{{ path('app_song_favoris_remove', {id: song.id}) }}">
+                            <div class="center top-comment">
+                            <button type="button" class=" btn btn-outline-danger"> <i class="bi bi-heart">Like</i> </button>
+                            </div></a>
+                    {% else %}
+                        <a href="{{ path('app_song_favoris_add', {id: song.id}) }}">
+                            <div class="center top-comment">
+                            <button type="button" class="btn btn-outline-light"> <i class="bi bi-heart">Like</i></button>
+                            </div></a>
+                    {% endif %}
+            {% else %}
+                    <a href="{{ path('app_song_favoris_add', {id: song.id}) }}">
+                        <div class="center top-comment">
+                        <button type="button" class="btn btn-outline-light"><i class="bi bi-heart">Like</i></button>
+
+                        </div></a>
+                {% endfor %}
+
+            {% endif %}
+
+        <div class="position_right"> {% include "homepage/popupComments.html.twig" %}</div>
+
+        </div>
+
 
     </section>
 

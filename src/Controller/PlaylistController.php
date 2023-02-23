@@ -8,15 +8,12 @@ use App\Entity\Song;
 use App\Form\CommentFormType;
 use App\Form\PlaylistFormType;
 use App\Repository\CommentRepository;
-use App\Repository\PalylistRepository;
 use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\FormHandler\UploadFileHandler;
-use App\Controller\UserController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -29,13 +26,10 @@ class PlaylistController extends AbstractController
     #[Route('/playlist/{id}', name: 'app_playlist', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function index(SongRepository $songRepository, Playlist $playlist, PlaylistRepository $playlistRepository): Response
     {
-        //dd($playlist);
-        //dd($playlistRepository->find($playlist->getId())->getSongs()->toArray());
         return $this->render('playlist/index.html.twig', [
             'songs' => $songRepository->findAll(),
             'playlist' => $playlist,
         ]);
-
     }
 
     #[Route('/playlist/add', name: 'app_playlist_add')]
@@ -143,13 +137,6 @@ class PlaylistController extends AbstractController
         // Persist the changes to the database
         $em->persist($playlistId);
         $em->flush();
-
-        //dd($playlistId);
-        /*return $this->render('playlist/index.html.twig', [
-            'playlist' => $playlistRepository->find($playlistId),
-            'song' => $songId,
-            'songs' => $songRepository->findAll(),
-        ]);*/
         return $this->redirectToRoute('app_playlist', [
             'id' => $playlistId->getId(),
         ]);
@@ -167,8 +154,6 @@ class PlaylistController extends AbstractController
 
         return $this->redirectToRoute('app_user', [
             'userId' => $this->getUser()->getId()]);
-
-
     }
     #[Route('/playlist/{playlistId}/song/{songId}/player', name: 'app_playlist_player')]
     #[Entity('playlist', options: ['id' => 'playlistId'])]
@@ -229,13 +214,6 @@ class PlaylistController extends AbstractController
         $em->persist($playlistId);
         $em->flush();
 
-        //dd($playlistId);
-        /*return $this->render('homepage/index.html.twig', [
-            'playlist' => $playlistRepository->find($playlistId),
-            'song' => $songId,
-            'songs' => $songRepository->findAll(),
-            'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
-        ]);*/
         return $this->redirectToRoute('app_homepage');
 
     }
