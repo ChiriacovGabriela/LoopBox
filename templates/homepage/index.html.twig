@@ -20,6 +20,7 @@
             <th class="th2">Name</th>
             <th class="th2">Type</th>
             <th class="th2">Artist</th>
+            <th class="th2">Album</th>
             <th class="th2"></th>
             <th class="th2"></th>
         </tr>
@@ -30,6 +31,11 @@
                 <td class="td2">{{ song.name }}</td>
                 <td class="td2">{{ song.type }}</td>
                 <td class="td2">{{ song.artist }}</td>
+                {% for songAlbum in song.album %}
+                    <td class="td2">{{ songAlbum.name }}</td>
+                {% else %}
+                    <td class="td2"> None </td>
+                {% endfor %}
                 <td class="td2">
                     <button class="btn_space btn btn-outline-light">
                         <a class="white_hover neon" href="{{ path('app_homepage_player', {'id': song.id}) }}">play</a>
@@ -71,6 +77,7 @@
                     </div>
                 </div>
             </div>
+
         {% endfor %}
 
         </tbody>
