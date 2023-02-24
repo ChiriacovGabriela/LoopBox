@@ -16,7 +16,7 @@ class SongType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('type',ChoiceType::class, [
+            ->add('type', ChoiceType::class, [
                 'choices' => [
                     'Rap' => 'rap',
                     'Pop' => 'pop',

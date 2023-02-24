@@ -241,4 +241,9 @@ class SongController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('app_song_player', ['id'=>$id], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/favoris/{id}', name:'app_song_favoris')]
+    public function favoris()
+    {
+        return $this->render('user/favorites.html.twig');
+    }
 }
