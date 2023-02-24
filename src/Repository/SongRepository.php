@@ -42,12 +42,13 @@ class SongRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    public function findBySearch(SearchData $searchData): Array
+
+    public function findBySearch(SearchData $searchData): array
     {
         $data = $this->createQueryBuilder('p')
             ->addOrderBy('p.created_at', 'DESC');
 
-        if(!empty($searchData->q)) {
+        if (!empty($searchData->q)) {
             $data = $data
                 ->where('p.name LIKE :q')
                 ->orWhere('p.artist LIKE :q')

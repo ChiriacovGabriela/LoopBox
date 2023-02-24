@@ -1,6 +1,5 @@
 window.onload = () => {
     const FiltersForm = document.querySelector("#filters");
-    console.log('fmviuhiumvgb');
 
     document.querySelectorAll("#filters input").forEach(input => {
         input.addEventListener("change", () => {
