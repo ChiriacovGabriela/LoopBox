@@ -19,7 +19,9 @@ class SongFixtures extends Fixture implements DependentFixtureInterface
             $song->setName($faker->text(10));
             $user = $this->getReference('user' . rand(1, 4));
             $song->setUser($user);
-            $song->setAudioFileName($faker->text(10));
+            $song->setType($faker->text(10));
+            $song->setArtist($faker->text(10));
+
 
 
             $manager->persist($song);
