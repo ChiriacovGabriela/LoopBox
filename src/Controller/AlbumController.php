@@ -7,6 +7,7 @@ use App\Entity\Song;
 use App\Form\AlbumType;
 use App\FormHandler\UploadFileHandler;
 use App\Repository\AlbumRepository;
+use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +24,7 @@ class AlbumController extends AbstractController
     public function index(AlbumRepository $albumRepository): Response
     {
         return $this->render('album/index.html.twig', [
-            'albums' => $albumRepository->findAll(),
+            'albums' => $albumRepository->findBy(['user' => $this->getUser()]),
         ]);
     }
 
@@ -74,10 +75,11 @@ class AlbumController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_album_show', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function show(Album $album): Response
+    public function show(Album $album, PlaylistRepository $playlistRepository): Response
     {
         return $this->render('album/show.html.twig', [
             'album' => $album,
+            'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
         ]);
     }
 

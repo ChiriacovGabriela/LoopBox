@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Playlist;
 use App\Entity\Song;
 use App\Model\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -63,7 +64,7 @@ class SongRepository extends ServiceEntityRepository
 
     }
 
-    public function findSongsByType($filters = null)
+    public function findSongsByType($filters)
     {
         $qb = $this->createQueryBuilder('s');
         $qb->andWhere('s.type IN(:types)')
@@ -71,7 +72,16 @@ class SongRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-
+    public function findSongsByPlaylistAndType(Playlist $playlist, array $types)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->leftJoin('s.playlists', 'p')
+            ->andWhere('p.id = :playlistId')
+            ->andWhere('s.type IN (:types)')
+            ->setParameter('playlistId', $playlist->getId())
+            ->setParameter('types', array_values($types));
+        return $qb->getQuery()->getResult();
+    }
 
 
 

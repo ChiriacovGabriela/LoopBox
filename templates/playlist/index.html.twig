@@ -41,37 +41,49 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="filtre">
-                            <p>Filtrer par type</p>
-                            <form id="filters">
-                                <p><input type="checkbox" name="type[]" id="rap" value="rap">
-                                    <label for="rap">Rap</label></p>
-                                <p><input type="checkbox" name="type[]" id="pop" value="pop">
-                                    <label for="pop">Pop</label></p>
-                                <p><input type="checkbox" name="type[]" id="metal" value="metal">
-                                    <label for="metal">Metal</label></p>
-                                <p><input type="checkbox" name="type[]" id="rock" value="rock">
-                                    <label for="rock">Rock</label></p>
-                                <p><input type="checkbox" name="type[]" id="classical music" value="classical music">
-                                    <label for="classical music">Classical Music</label></p>
-                                <p><input type="checkbox" name="type[]" id="jazz" value="jazz">
-                                    <label for="jazz">Jazz</label></p>
+                        <div class="filtre white">
+                            <p>Select by type</p>
+                            <form id="filtersPopup">
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" name="type[]" id="rap" value="rap">
+                                    <label for="rap">Rap</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" name="type[]" id="pop" value="pop">
+                                    <label for="pop">Pop</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" name="type[]" id="metal" value="metal">
+                                    <label for="metal">Metal</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" name="type[]" id="rock" value="rock">
+                                    <label for="rock">Rock</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" name="type[]" id="classical music" value="classical music">
+                                    <label for="classical music">Classical Music</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" name="type[]" id="jazz" value="jazz">
+                                    <label for="jazz">Jazz</label>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-body">
 
                             <table class="table">
                                 <thead>
-                                <tr class="red-color">
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Artist</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col"></th>
+                                <tr class="white">
+                                    <th class="td1">Title</th>
+                                    <th class="td1">Artist</th>
+                                    <th class="td1">Type</th>
+                                    <th class="td1"></th>
                                 </tr>
                                 </thead>
 
-                                <tbody id="content">
-                                {% include "playlist/_content.html.twig" %}
+                                <tbody id="contentPopup">
+                                {% include "playlist/_contentPopup.html.twig" %}
                                 </tbody>
 
                             </table>
@@ -80,6 +92,36 @@
                 </div>
             </div>
             </p>
+        </div>
+
+        <div class="filtre white">
+            <p>Select by type</p>
+            <form id="filters">
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="type[]" id="rap" value="rap">
+                    <label for="rap">Rap</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="type[]" id="pop" value="pop">
+                    <label for="pop">Pop</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="type[]" id="metal" value="metal">
+                    <label for="metal">Metal</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="type[]" id="rock" value="rock">
+                    <label for="rock">Rock</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="type[]" id="classical music" value="classical music">
+                    <label for="classical music">Classical Music</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="type[]" id="jazz" value="jazz">
+                    <label for="jazz">Jazz</label>
+                </div>
+            </form>
         </div>
 
         <table class="table">
@@ -92,29 +134,8 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody>
-            {% for song in playlist.songs %}
-                <tr class="white">
-                    <td>{{ song.name }}</td>
-                    <td>{{ song.artist }}</td>
-                    <td>{{ song.type }}</td>
-                    <td>
-                        <button class="btn btn-outline-light">
-                            <a href="{{ path('app_playlist_player', {'playlistId': playlist.id, 'songId':song.id}) }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                     class="bi bi-caret-right white_hover" viewBox="0 0 16 16">
-                                    <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
-                                </svg>
-                            </a>
-                        </button>
-                    </td>
-                    <td>
-                        <a class="btn btn-outline-light"
-                           href= {{ path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Delete</a>
-                    </td>
-                </tr>
-            {% endfor %}
-
+            <tbody id="content">
+                {% include "playlist/_content.html.twig" %}
             </tbody>
         </table>
     </div>

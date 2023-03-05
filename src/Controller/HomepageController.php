@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Song;
+use App\Repository\AlbumRepository;
 use App\Form\CommentFormType;
 use App\Repository\CommentRepository;
 use App\Repository\PlaylistRepository;
@@ -20,19 +21,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomepageController extends AbstractController
 {
     #[Route('/homepage', name: 'app_homepage')]
-    public function index(SongRepository $songRepository, PlaylistRepository $playlistRepository, Request $request): Response
+    public function index(SongRepository $songRepository, PlaylistRepository $playlistRepository, Request $request, AlbumRepository $albumRepository): Response
     {
         $searchData = new SearchData();
         $form = $this->createForm(SearchType::class, $searchData);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $searchData->page = $request->query->getInt('page', 1);
             $songs = $songRepository->findBySearch($searchData);
-
             return $this->render('homepage/index.html.twig', [
                 'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
                 'form' => $form,
-                'songs' => $songs
+                'songs' => $songs,
+                'albums' => $albumRepository->findAll(),
+
             ]);
 
         }
@@ -55,6 +58,7 @@ class HomepageController extends AbstractController
                     'form' => $form->createView(),
                     'songs' => $songs,
                     'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
+
                 ])
             ]);
         }
@@ -63,9 +67,8 @@ class HomepageController extends AbstractController
             'form' => $form->createView(),
             'songs' => $songs,
             'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
+            'albums' => $albumRepository->findAll(),
         ]);
-
-
     }
 
     #[Route('/homepage/{id}/player', name: 'app_homepage_player', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
@@ -79,6 +82,7 @@ class HomepageController extends AbstractController
                 $selectedSongKey = $key;
             }
         }
+
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
@@ -90,7 +94,11 @@ class HomepageController extends AbstractController
             $em->flush();
         }
 
-        return $this->render('homepage/player.html.twig', [
+
+        return $this->render('player/index.html.twig', [
+            'name'=>'app_homepage_player',
+            'isPlaylist'=> false,
+            'isSong' => false,
             'song' => $song,
             'form' => $form,
             'next' => array_key_exists($selectedSongKey + 1, $allSongs) ? $allSongs[$selectedSongKey + 1] : null,

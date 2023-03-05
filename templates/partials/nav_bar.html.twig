@@ -4,14 +4,24 @@
         <a class="nav_link neon" href="{{ path('app_homepage')}}">LoopBox </a>
 
         <div class="header_nav">
+            <div class="nav_link">
+                <svg class="bi bi-person-circle" data-toggle="dropdown" aria-haspopup="true"
+                     xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="rgba(211, 25, 47, 1)" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </svg>
 
-        <a class="nav_link neon" href="{{ path('app_user', {userId: app.user.id})}}">My account</a>
+                <div class="dropdown-menu dropdown-menu-right neon dropdown">
+                    <a class="dropdown-item white" href="{{ path('app_user', {userId: app.user.id})}}">My playlists</a>
+                    <a class="dropdown-item white" href="{{ path('app_user_edit', {id: app.user.id}) }}">Edit my account</a>
+                    <a class="dropdown-item white" href="{{ path('app_album_index') }}">My albums</a>
+                    <a class="dropdown-item white" href="{{ path('app_song_index') }}">My songs</a>
+                    <a class="dropdown-item white" href="{{ path('app_logout')}}">Logout</a>
+                </div>
+            </div>
 
-        <a class="nav_link neon" href="{{ path('app_user_edit', {id: app.user.id}) }}">Edit my account</a>
-
-        <a class="nav_link neon" href="{{ path('app_logout')}}">Logout</a>
         </div>
-        
+
     </nav>
 
 
@@ -22,9 +32,9 @@
 
         <div class="header_nav">
 
-        <a class="nav_link neon " href="{{ path('app_register')}}">Sing up</a>
+            <a class="nav_link neon " href="{{ path('app_register')}}">Sign up</a>
 
-        <a class="nav_link neon " href="{{ path('app_login')}}">Login</a>
+            <a class="nav_link neon " href="{{ path('app_login')}}">Login</a>
 
         </div>
 
@@ -32,4 +42,3 @@
 
 
 {% endif %}
-

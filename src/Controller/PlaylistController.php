@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Playlist;
 use App\Entity\Song;
 use App\Form\PlaylistFormType;
-use App\Repository\PalylistRepository;
 use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,18 +33,23 @@ class PlaylistController extends AbstractController
         if ($filters != null) {
             //on recupere les bonnes chansons en fonction des filtres
             $songs = $songRepository->findSongsByType($filters);
+            $filteredPlaylistSongs = $songRepository->findSongsByPlaylistAndType($playlist, $filters);
         } else {
             $songs = $songRepository->findAll();
+            $filteredPlaylistSongs = $playlist->getSongs();
         }
         $allSongs = $songRepository->findAll();
 
         //on verifie si on a une requete ajax
         if ($request->get('ajax')) {
+            $view = $request->get('ajax') == 1 ? 'playlist/_content.html.twig' : 'playlist/_contentPopup.html.twig';
+            dump($request->get('ajax'));
             return new JsonResponse([
-                'content' => $this->renderView('playlist/_content.html.twig', [
+                'content' => $this->renderView($view, [
                     'songs' => $songs,
                     'allSongs' => $allSongs,
                     'playlist' => $playlist,
+                    'filteredPlaylistSongs' => $filteredPlaylistSongs,
                 ])
             ]);
         }
@@ -53,6 +57,7 @@ class PlaylistController extends AbstractController
             'songs' => $songs, //$songRepository->findAll(),
             'playlist' => $playlist,
             'allSongs' => $allSongs,
+            'filteredPlaylistSongs' => $filteredPlaylistSongs,
         ]);
 
     }

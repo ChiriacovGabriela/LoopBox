@@ -38,7 +38,7 @@ class Playlist
     public function __construct()
     {
         $this->songs = new ArrayCollection();
-        //$this->created_at = new \DateTimeImmutable();
+
     }
 
     #[ORM\PrePersist]
@@ -48,6 +48,17 @@ class Playlist
 
     }
 
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue():void
+    {
+        $this->updated_at = new \DateTime;
+
+    }
+    public function setUser(User $user):self
+    {
+        $this->user=$user;
+        return $this;
+    }
 
     public function getId(): ?int
     {
@@ -74,14 +85,6 @@ class Playlist
     public function setImageFileName(?string $imageFileName): self
     {
         $this->imageFileName = $imageFileName;
-
-        return $this;
-    }
-
-    public function setUpdated_at(?\DateTimeInterface $updated_at): self
-
-    {
-        $this->updated_at = $updated_at;
 
         return $this;
     }
@@ -131,7 +134,6 @@ class Playlist
         return $this->songs;
     }
 
-
     public function addSong(Song $song): self
     {
         if (!$this->songs->contains($song)) {
@@ -158,11 +160,6 @@ class Playlist
         return $this->user;
     }
 
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-        return $this;
-    }
 
 
 

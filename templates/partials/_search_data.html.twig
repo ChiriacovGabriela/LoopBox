@@ -1,11 +1,9 @@
 {% if form %}
     {{ form_start(form) }}
-    <div class="input-group center">
-
+    <div id='searchBar' class="input-group center">
         <div class="search_zone">{{ form_widget(form.q, {'attr':{'class':'transparent'}}) }}</div>
-
         <button type="submit" class="btn btn-outline-light red-color neon search_btn">search</button>
-
     </div>
     {{ form_end(form) }}
 {% endif %}
+

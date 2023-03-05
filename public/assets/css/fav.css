@@ -1,0 +1,9 @@
+.bg_fav_songs {
+    background-image: url("https://img.freepik.com/free-vector/musical-colorful-notes-dark-background_1017-32302.jpg");
+    background-size: cover;
+    background-position: center;
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
+    position: absolute;
+}

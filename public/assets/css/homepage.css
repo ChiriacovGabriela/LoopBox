@@ -20,10 +20,10 @@
 }
 .search_btn {
     margin-bottom: 35px;
-    border-radius: 5px;
+    border-radius: 0px;
 }
 .popup_homepage {
-    background-color: whitesmoke;
+    background-color: dimgrey;
 }
 .popup_homepage2 {
     background-image: url("img/music6.jpg");
