@@ -86,7 +86,7 @@ class HomepageController extends AbstractController
         $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
         //dd($form);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()){
             $comment->setUser($this->getUser());
             $comment->setSong($song);
             $em->persist($comment);
