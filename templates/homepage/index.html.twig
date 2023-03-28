@@ -8,7 +8,7 @@
 
     <div class="bg_homepage">
 
-    <h1 class="center red-color neon title">Welcome to Loopbox!</h1>
+    <h1 class="center red-color neon title">{% trans %}Welcome to{% endtrans %} Loopbox!</h1>
 
     {%include "partials/_search_data.html.twig" with {
         form: form ?? null
@@ -45,9 +45,9 @@
         <table class="table noline">
             <thead>
             <tr class="white">
-                <th class="th2">Name</th>
-                <th class="th2">Type</th>
-                <th class="th2">Artist</th>
+                <th class="th2">{% trans %}Name{% endtrans %}</th>
+                <th class="th2">{% trans %}Type{% endtrans %}</th>
+                <th class="th2">{% trans %}Artist{% endtrans %}</th>
                 <th class="th2"></th>
                 <th class="th2"></th>
             </tr>
@@ -75,9 +75,7 @@
         </div>
     </div>
 
-    </div>
-
-
 
 {% endblock %}
+
 
