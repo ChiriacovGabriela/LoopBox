@@ -6,6 +6,7 @@ window.onload = () => {
         updateContent('filtersPopup', 'contentPopup', 2);
     }
 }
+
 function updateContent(formId, contentId, id) {
     const form = document.querySelector(`#${formId}`);
     const content = document.querySelector(`#${contentId}`);
@@ -27,9 +28,8 @@ function updateContent(formId, contentId, id) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     content.innerHTML = data.content;
-                    console.log(content.innerHTML);
+                    //history.pushState({}, null, url.pathname + "?" + params.toString());
                 })
                 .catch(error => {
                     console.error(error);

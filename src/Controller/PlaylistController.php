@@ -27,16 +27,18 @@ class PlaylistController extends AbstractController
     public function index(Request $request, SongRepository $songRepository, Playlist $playlist, PlaylistRepository $playlistRepository)
     {
         //dd($playlistRepository->find($playlist->getId())->getSongs()->toArray());
-
+        $page = $request->query->getInt('page', 1);
+        //$songs = $songRepository->findSongsPaginated($playlist, $page, 2);
         //on recupere les filtres
         $filters = $request->get('type');
         if ($filters != null) {
             //on recupere les bonnes chansons en fonction des filtres
             $songs = $songRepository->findSongsByType($filters);
-            $filteredPlaylistSongs = $songRepository->findSongsByPlaylistAndType($playlist, $filters);
+            //$filteredPlaylistSongs = $songRepository->findSongsPaginated($playlist, $page, 2);
+            $filteredPlaylistSongs = $songRepository->findSongsByPlaylistAndType($playlist, $filters, $page, 2);
         } else {
             $songs = $songRepository->findAll();
-            $filteredPlaylistSongs = $playlist->getSongs();
+            $filteredPlaylistSongs = $songRepository->findSongsByPlaylistPaginated($playlist, $page, 2);
         }
         $allSongs = $songRepository->findAll();
 
@@ -59,7 +61,6 @@ class PlaylistController extends AbstractController
             'allSongs' => $allSongs,
             'filteredPlaylistSongs' => $filteredPlaylistSongs,
         ]);
-
     }
 
     #[Route('/playlist/add', name: 'app_playlist_add')]

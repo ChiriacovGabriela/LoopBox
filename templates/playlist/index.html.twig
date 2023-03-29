@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
+{% set queryParams = app.request.query.all %}
+{% set genres = ["Rap", "Pop", "Metal", "Rock", "Classical Music", "Jazz"] %}
 
 {% block title %}PlaylistController!{% endblock %}
 
 {% block body %}
-
     {% include "partials/nav_bar.html.twig" %}
 
     <div class="jumbotron text-center background_playlist">
@@ -44,30 +45,17 @@
                         <div class="filtre white">
                             <p>Select by type</p>
                             <form id="filtersPopup">
+                                {% for genre in genres %}
+                                    {% if queryParams is not empty and queryParams.type is defined %}
+                                        {% set checked = (genre in queryParams.type) ? "checked" : "" %}
+                                    {% else %}
+                                        {% set checked = "" %}
+                                    {% endif %}
                                 <div class="form-check form-check-inline">
-                                    <input type="checkbox" name="type[]" id="rap" value="rap">
-                                    <label for="rap">Rap</label>
+                                    <input type="checkbox" name="type[]" id="{{ genre }}" value="{{ genre }}" {{ checked }}>
+                                    <label for="{{ genre }}">{{ genre }}</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" name="type[]" id="pop" value="pop">
-                                    <label for="pop">Pop</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" name="type[]" id="metal" value="metal">
-                                    <label for="metal">Metal</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" name="type[]" id="rock" value="rock">
-                                    <label for="rock">Rock</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" name="type[]" id="classical music" value="classical music">
-                                    <label for="classical music">Classical Music</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" name="type[]" id="jazz" value="jazz">
-                                    <label for="jazz">Jazz</label>
-                                </div>
+                                {% endfor %}
                             </form>
                         </div>
                         <div class="modal-body">
@@ -93,37 +81,22 @@
             </div>
             </p>
         </div>
-
         <div class="filtre white">
             <p>Select by type</p>
             <form id="filters">
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="type[]" id="rap" value="rap">
-                    <label for="rap">Rap</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="type[]" id="pop" value="pop">
-                    <label for="pop">Pop</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="type[]" id="metal" value="metal">
-                    <label for="metal">Metal</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="type[]" id="rock" value="rock">
-                    <label for="rock">Rock</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="type[]" id="classical music" value="classical music">
-                    <label for="classical music">Classical Music</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="type[]" id="jazz" value="jazz">
-                    <label for="jazz">Jazz</label>
-                </div>
+                {% for genre in genres %}
+                    {% if queryParams is not empty and queryParams.type is defined %}
+                        {% set checked = (genre in queryParams.type) ? "checked" : "" %}
+                    {% else %}
+                        {% set checked = "" %}
+                    {% endif %}
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="type[]" id="{{ genre }}" value="{{ genre }}" {{ checked }}>
+                        <label for="{{ genre }}">{{ genre }}</label>
+                    </div>
+                {% endfor %}
             </form>
         </div>
-
         <table class="table">
             <thead>
             <tr class="white">
@@ -135,11 +108,10 @@
             </tr>
             </thead>
             <tbody id="content">
-                {% include "playlist/_content.html.twig" %}
+            {% include "playlist/_content.html.twig" %}
             </tbody>
         </table>
     </div>
-
     {% block javascripts %}
         <script src="{{ asset("js/filters.js") }}"></script>
     {% endblock %}

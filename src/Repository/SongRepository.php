@@ -7,6 +7,7 @@ use App\Entity\Song;
 use App\Model\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use PhpParser\Node\Expr\Array_;
 
@@ -72,17 +73,65 @@ class SongRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findSongsByPlaylistAndType(Playlist $playlist, array $types)
+    public function findSongsByPlaylistAndType(Playlist $playlist, array $types, int $page, int $limit): array
     {
+        $limit= abs($limit);
+        $result = [];
+
         $qb = $this->createQueryBuilder('s');
         $qb->leftJoin('s.playlists', 'p')
             ->andWhere('p.id = :playlistId')
             ->andWhere('s.type IN (:types)')
             ->setParameter('playlistId', $playlist->getId())
-            ->setParameter('types', array_values($types));
-        return $qb->getQuery()->getResult();
+            ->setParameter('types', array_values($types))
+            ->setMaxResults($limit)
+            ->setFirstResult($page * $limit - $limit);
+
+        $paginator = new Paginator($qb);
+        $data = $paginator->getQuery()->getResult();
+
+        if(empty($data)){
+            return $result;
+        }
+
+        $pages = ceil($paginator->count() / $limit);
+
+        $result['data'] = $data;
+        $result['pages'] = $pages;
+        $result['page'] = $page;
+        $result['limit'] = $limit;
+
+        return $result;
     }
 
+    public function findSongsByPlaylistPaginated(Playlist $playlist, int $page, int $limit): array
+    {
+        $limit= abs($limit);
+        $result = [];
+
+        $qb = $this->createQueryBuilder('s');
+        $qb->leftJoin('s.playlists', 'p')
+            ->andWhere('p.id = :playlistId')
+            ->setParameter('playlistId', $playlist->getId())
+            ->setMaxResults($limit)
+            ->setFirstResult($page * $limit - $limit);
+
+        $paginator = new Paginator($qb);
+        $data = $paginator->getQuery()->getResult();
+
+        if(empty($data)){
+            return $result;
+        }
+
+        $pages = ceil($paginator->count() / $limit);
+
+        $result['data'] = $data;
+        $result['pages'] = $pages;
+        $result['page'] = $page;
+        $result['limit'] = $limit;
+
+        return $result;
+    }
 
 
 //    /**
