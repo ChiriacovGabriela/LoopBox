@@ -17,6 +17,14 @@
                     <a class="dropdown-item white" href="{{ path('app_album_index') }}">My albums</a>
                     <a class="dropdown-item white" href="{{ path('app_song_index') }}">My songs</a>
                     <a class="dropdown-item white" href="{{ path('app_logout')}}">Logout</a>
+                    <a class="dropdown-item white">
+                    {% for locale in locales %}
+                        {% if locale!=app.request.locale %}
+                            <a class="nav_link neon" href="{{ path('app_change_locale', {'locale': locale}) }}"><img src="{{ asset('assets/css/img/'~locale~'.png') }}" alt="{{ locale }}" width="23" height="18"></a>
+                        {% endif %}
+                    {% endfor %}
+                    </a>
+
                 </div>
             </div>
 
@@ -32,9 +40,15 @@
 
         <div class="header_nav">
 
-            <a class="nav_link neon " href="{{ path('app_register')}}">Sign up</a>
+            <a class="nav_link neon " href="{{ path('app_register')}}">{% trans %}Sign up{% endtrans %}</a>
 
-            <a class="nav_link neon " href="{{ path('app_login')}}">Login</a>
+            <a class="nav_link neon " href="{{ path('app_login')}}">{% trans %}Login{% endtrans %}</a>
+
+            {% for locale in locales %}
+                {% if locale!=app.request.locale %}
+                    <a class="nav_link neon" href="{{ path('app_change_locale', {'locale': locale}) }}"><img src="{{ asset('assets/css/img/'~locale~'.png') }}" alt="{{ locale }}" width="23" height="18"></a>
+                {% endif %}
+            {% endfor %}
 
         </div>
 

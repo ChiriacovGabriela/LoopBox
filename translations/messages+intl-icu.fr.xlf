@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="GF_NsyJ" resname="Hello">
+        <source>Hello</source>
+        <target>Bonjour</target>
+      </trans-unit>
+      <trans-unit id="DmuOXFN" resname="Welcome to">
+        <source>Welcome to</source>
+        <target>Bienvenue sur</target>
+      </trans-unit>
+      <trans-unit id="3NHVIj9" resname="Name">
+        <source>Name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="uq3fcPt" resname="Type">
+        <source>Type</source>
+        <target>Type</target>
+      </trans-unit>
+      <trans-unit id="HTmBuh4" resname="Artist">
+        <source>Artist</source>
+        <target>Artiste</target>
+      </trans-unit>
+      <trans-unit id="XiuOllA" resname="Sign up">
+        <source>Sign up</source>
+        <target>S'inscrire</target>
+      </trans-unit>
+      <trans-unit id="nWMiwfT" resname="Login">
+        <source>Login</source>
+        <target>Se connecter</target>
+      </trans-unit>
+      <trans-unit id="nxYmTYX" resname="Welcome on your page! Here you can see all your playlists and create others if you want.">
+        <source>Welcome on your page! Here you can see all your playlists and create others if you want.</source>
+        <target>Bienvenue sur votre page ! Ici, vous pouvez voir toutes vos listes de lecture et en créer d'autres si vous le souhaitez.</target>
+      </trans-unit>
+      <trans-unit id="6gaCTie" resname="Do you want to add something on LoopBox ?">
+        <source>Do you want to add something on LoopBox ?</source>
+        <target>Voulez-vous ajouter quelque chose LoopBox ?</target>
+      </trans-unit>
+      <trans-unit id="ahrX7NQ" resname="Add Song">
+        <source>Add Song</source>
+        <target>Ajouter chanson</target>
+      </trans-unit>
+      <trans-unit id="8BDdtuq" resname="Add Album">
+        <source>Add Album</source>
+        <target>Ajouter album</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
