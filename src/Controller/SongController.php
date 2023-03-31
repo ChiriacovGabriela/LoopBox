@@ -6,11 +6,11 @@ use App\Entity\Comment;
 use App\Entity\Song;
 use App\Form\CommentFormType;
 use App\Form\SongType;
-
 use App\Repository\CommentRepository;
 use App\FormHandler\UploadFileHandler;
 use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/song')]
-class SongController extends AbstractController
+class  SongController extends AbstractController
 {
     #[Route('/', name: 'app_song_index', methods: ['GET'])]
     public function index(SongRepository $songRepository): Response

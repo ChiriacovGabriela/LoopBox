@@ -55,11 +55,8 @@ class PlaylistController extends AbstractController
             $em->flush();
 
             //On redirige
-            $user = $this->getUser();
-            $id = $user->getId();
-
             return $this->redirectToRoute('app_user', [
-                'userId' => $id]);
+                'userId' => $this->getUser()->getId()]);
         }
         return $this->render('playlist/add.html.twig', [
             'playlistForm' => $playlistForm->createView()
@@ -67,7 +64,7 @@ class PlaylistController extends AbstractController
     }
 
     #[Route('/playlist/edit/{id}', name: 'app_playlist_edit')]
-    public function edit(Playlist $playlist, Request $request, EntityManagerInterface $em): Response
+    public function edit(Playlist $playlist, Request $request, EntityManagerInterface $em, SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         //On crée le formulaire
         $playlistForm = $this->createForm(PlaylistFormType::class, $playlist);
@@ -75,6 +72,13 @@ class PlaylistController extends AbstractController
         $playlistForm->handleRequest($request);
         // on verifie si le formulaire est soumis et valide
         if ($playlistForm->isSubmitted() && $playlistForm->isValid()) {
+
+            $imagePathFile = $playlistForm->get('imageFileName')->getData();
+            if ($imagePathFile) {
+                $directory = $this->getParameter('image_directory');
+                $newFilename = $uploadFileHandler->upload($slugger, $imagePathFile, $directory);
+                $playlist->setImageFileName($newFilename);
+            }
             //On stock
             //$em-> persist($playlist);
             $em->flush();
