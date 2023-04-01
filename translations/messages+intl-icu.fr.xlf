@@ -13,14 +13,6 @@
         <source>Welcome to</source>
         <target>Bienvenue sur</target>
       </trans-unit>
-      <trans-unit id="3NHVIj9" resname="Name">
-        <source>Name</source>
-        <target>Nom</target>
-      </trans-unit>
-      <trans-unit id="uq3fcPt" resname="Type">
-        <source>Type</source>
-        <target>Type</target>
-      </trans-unit>
       <trans-unit id="HTmBuh4" resname="Artist">
         <source>Artist</source>
         <target>Artiste</target>
@@ -39,7 +31,7 @@
       </trans-unit>
       <trans-unit id="6gaCTie" resname="Do you want to add something on LoopBox ?">
         <source>Do you want to add something on LoopBox ?</source>
-        <target>Voulez-vous ajouter quelque chose LoopBox ?</target>
+        <target>Voulez-vous ajouter quelque chose sur LoopBox ?</target>
       </trans-unit>
       <trans-unit id="ahrX7NQ" resname="Add Song">
         <source>Add Song</source>
@@ -48,6 +40,258 @@
       <trans-unit id="8BDdtuq" resname="Add Album">
         <source>Add Album</source>
         <target>Ajouter album</target>
+      </trans-unit>
+      <trans-unit id="8yWWA5n" resname="Albums that you have added on LoopBox">
+        <source>Albums that you have added on LoopBox</source>
+        <target>Albums que vous avez ajoutés sur LoopBox</target>
+      </trans-unit>
+      <trans-unit id="tPoAqBk" resname="New album">
+        <source>New album</source>
+        <target>Nouveau album</target>
+      </trans-unit>
+      <trans-unit id="eXR42QN" resname="It's time to add a new album on LoopBox!">
+        <source>It's time to add a new album on LoopBox!</source>
+        <target>C'est le moment d'ajouter un nouvel album sur LoopBox !</target>
+      </trans-unit>
+      <trans-unit id="AO_nWhT" resname="Album details">
+        <source>Album details</source>
+        <target>Détails de l'album</target>
+      </trans-unit>
+      <trans-unit id="fozSBW2" resname="Title">
+        <source>Title</source>
+        <target>Titre</target>
+      </trans-unit>
+      <trans-unit id="vGdhNXl" resname="Songs">
+        <source>Songs</source>
+        <target>Chansons</target>
+      </trans-unit>
+      <trans-unit id="Q25hAW4" resname="Play">
+        <source>Play</source>
+        <target>Lecture</target>
+      </trans-unit>
+      <trans-unit id="n9coxmy" resname="Add">
+        <source>Add</source>
+        <target>Ajouter</target>
+      </trans-unit>
+      <trans-unit id="g074Mwd" resname="Edit Album">
+        <source>Edit Album</source>
+        <target>Editer Album</target>
+      </trans-unit>
+      <trans-unit id="KYYlqoz" resname="'Are you sure you want to delete this item?'">
+        <source>'Are you sure you want to delete this item?'</source>
+        <target>Êtes-vous sûr de bien vouloir supprimer cet élément?</target>
+      </trans-unit>
+      <trans-unit id="4tClSWj" resname="Delete">
+        <source>Delete</source>
+        <target>Supprimer</target>
+      </trans-unit>
+      <trans-unit id="HJoMMul" resname="Classical Music">
+        <source>Classical Music</source>
+        <target>Musique Classique</target>
+      </trans-unit>
+      <trans-unit id="q6TMm4r" resname="play">
+        <source>play</source>
+        <target>lecture</target>
+      </trans-unit>
+      <trans-unit id="gfZ42tt" resname="My playlists">
+        <source>My playlists</source>
+        <target>Mes playlists</target>
+      </trans-unit>
+      <trans-unit id="Vxf9Ofb" resname="Edit my account">
+        <source>Edit my account</source>
+        <target>Modifier mon compte</target>
+      </trans-unit>
+      <trans-unit id="nxxffR_" resname="My albums">
+        <source>My albums</source>
+        <target>Mes albums</target>
+      </trans-unit>
+      <trans-unit id="vV.e379" resname="My songs">
+        <source>My songs</source>
+        <target>Mes chansons</target>
+      </trans-unit>
+      <trans-unit id="0FJ_Sz1" resname="Logout">
+        <source>Logout</source>
+        <target>Se déconnecter</target>
+      </trans-unit>
+      <trans-unit id="nMxnH8R" resname="Comments for this song">
+        <source>Comments for this song</source>
+        <target>Commentaires sur cette chanson</target>
+      </trans-unit>
+      <trans-unit id="dcVW3Ah" resname="Please login to leave a comment ...">
+        <source>Please login to leave a comment ...</source>
+        <target>Merci de vous connecter pour laisser un commentaire ...</target>
+      </trans-unit>
+      <trans-unit id="XmHCJBA" resname="login here">
+        <source>login here</source>
+        <target>se connecter ici</target>
+      </trans-unit>
+      <trans-unit id="QmdNGdX" resname="commented">
+        <source>commented</source>
+        <target>a commenté</target>
+      </trans-unit>
+      <trans-unit id="Xxvbb8J" resname="CHOOSE THE PLAYLIST">
+        <source>CHOOSE THE PLAYLIST</source>
+        <target>CHOISIR LE PLAYLIST</target>
+      </trans-unit>
+      <trans-unit id="Q_40fLn" resname="Sorry ... you must be connected">
+        <source>Sorry ... you must be connected</source>
+        <target>Désolé ... vous devez être connecté</target>
+      </trans-unit>
+      <trans-unit id="e0QGrNQ" resname="Click here to sing in:">
+        <source>Click here to sing in:</source>
+        <target>Cliquez ici pour vous connecter:</target>
+      </trans-unit>
+      <trans-unit id="6tRM3Cl" resname="SING IN">
+        <source>SING IN</source>
+        <target>SE CONNECTER</target>
+      </trans-unit>
+      <trans-unit id="JBkykGe" resname="search">
+        <source>search</source>
+        <target>rechercher</target>
+      </trans-unit>
+      <trans-unit id="O5P.DBm" resname="It's time to create your playlist!">
+        <source>It's time to create your playlist!</source>
+        <target>C'est le moment de créer votre playlist!</target>
+      </trans-unit>
+      <trans-unit id="D5lam8." resname="no records found">
+        <source>no records found</source>
+        <target>aucun enregistrement trouvé</target>
+      </trans-unit>
+      <trans-unit id="u3I07BJ" resname="Register">
+        <source>Register</source>
+        <target>S'enregistrer</target>
+      </trans-unit>
+      <trans-unit id="vXs5Utp" resname="It's time to create your account!">
+        <source>It's time to create your account!</source>
+        <target>C'est le moment de créer votre compte !</target>
+      </trans-unit>
+      <trans-unit id="dDUw20Q" resname="Please sign in">
+        <source>Please sign in</source>
+        <target>Veuillez vous connecter</target>
+      </trans-unit>
+      <trans-unit id="BC2F0qz" resname="Nice to see you again. Welcome back!">
+        <source>Nice to see you again. Welcome back!</source>
+        <target>C'est un plaisir de vous revoir.</target>
+      </trans-unit>
+      <trans-unit id="acVpEs4" resname="You are logged in as">
+        <source>You are logged in as</source>
+        <target>Vous êtes connecté en tant que</target>
+      </trans-unit>
+      <trans-unit id="588_9PF" resname="Password">
+        <source>Password</source>
+        <target>Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="v9QCsvb" resname="Sign in">
+        <source>Sign in</source>
+        <target>Se connecter</target>
+      </trans-unit>
+      <trans-unit id="hyXq0ba" resname="Songs that you have added on LoopBox">
+        <source>Songs that you have added on LoopBox</source>
+        <target>Chansons que vous avez ajoutées sur LoopBox</target>
+      </trans-unit>
+      <trans-unit id="HGMzUJ3" resname="show">
+        <source>show</source>
+        <target>visualiser</target>
+      </trans-unit>
+      <trans-unit id="bi6mN7M" resname="No records found">
+        <source>No records found</source>
+        <target>Aucun enregistrement trouvé</target>
+      </trans-unit>
+      <trans-unit id="8z3fT_W" resname="Add song">
+        <source>Add song</source>
+        <target>Ajouter chanson</target>
+      </trans-unit>
+      <trans-unit id=".2PpUnP" resname="New Song">
+        <source>New Song</source>
+        <target>Nouveau chanson</target>
+      </trans-unit>
+      <trans-unit id="5llmsUT" resname="It's time to import a new song on LoopBox !">
+        <source>It's time to import a new song on LoopBox !</source>
+        <target>Il est temps d'importer un nouveau morceau sur LoopBox !</target>
+      </trans-unit>
+      <trans-unit id="tANmCaO" resname="Back to Song list">
+        <source>Back to Song list</source>
+        <target>Retour à la liste des chansons</target>
+      </trans-unit>
+      <trans-unit id="QiTpkKn" resname="Edit Song">
+        <source>Edit Song</source>
+        <target>Modifier la chanson</target>
+      </trans-unit>
+      <trans-unit id="9vRoj.I" resname="Send">
+        <source>Send</source>
+        <target>Envoyer</target>
+      </trans-unit>
+      <trans-unit id="DsuhNwu" resname="ADD">
+        <source>ADD</source>
+        <target>AJOUTER</target>
+      </trans-unit>
+      <trans-unit id="NX0oSHN" resname="All my favorites songs">
+        <source>All my favorites songs</source>
+        <target>Toutes mes chansons préférées</target>
+      </trans-unit>
+      <trans-unit id="Hkmh4Tp" resname="Repeat Password">
+        <source>Repeat Password</source>
+        <target>Confirmation du mot de passe</target>
+      </trans-unit>
+      <trans-unit id="92LaBfT" resname="Surname">
+        <source>Surname</source>
+        <target>Nom de famille</target>
+      </trans-unit>
+      <trans-unit id="oNwZG8H" resname="Preference">
+        <source>Preference</source>
+        <target>Préférence</target>
+      </trans-unit>
+      <trans-unit id="c1prjRW" resname="Agree terms">
+        <source>Agree terms</source>
+        <target>Accepter les conditions</target>
+      </trans-unit>
+      <trans-unit id="3NHVIj9" resname="Name">
+        <source>Name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="R1lJisK" resname="Create">
+        <source>Create</source>
+        <target>Créer</target>
+      </trans-unit>
+      <trans-unit id="Cw324_o" resname="Edit album">
+        <source>Edit album</source>
+        <target>Modifier album</target>
+      </trans-unit>
+      <trans-unit id="MFb6RFr" resname="It's time to edit your album!">
+        <source>It's time to edit your album!</source>
+        <target>C'est le moment de créer votre album!</target>
+      </trans-unit>
+      <trans-unit id="s3wF2Eu" resname="Add album">
+        <source>Add album</source>
+        <target>Ajouter album</target>
+      </trans-unit>
+      <trans-unit id="RkxP.QG" resname="Edit">
+        <source>Edit</source>
+        <target>Modifier</target>
+      </trans-unit>
+      <trans-unit id="M0pAn1b" resname="Song details">
+        <source>Song details</source>
+        <target>Détails chanson</target>
+      </trans-unit>
+      <trans-unit id="8Zm2Olc" resname="It's time to edit your playlist!">
+        <source>It's time to edit your playlist!</source>
+        <target>C'est le moment pour modifier votre playlist!</target>
+      </trans-unit>
+      <trans-unit id="hiev83T" resname="All songs">
+        <source>All songs</source>
+        <target>Toutes les chansons</target>
+      </trans-unit>
+      <trans-unit id="UnshGjO" resname="Select by type">
+        <source>Select by type</source>
+        <target>Sélectionnez par type</target>
+      </trans-unit>
+      <trans-unit id="gTRQZKY" resname="Edit your account!">
+        <source>Edit your account!</source>
+        <target>Modifiez votre compte!</target>
+      </trans-unit>
+      <trans-unit id="lTI5Ffk" resname="It's time to edit your song">
+        <source>It's time to edit your song</source>
+        <target>C'est le moment de modifier ton compte</target>
       </trans-unit>
     </body>
   </file>

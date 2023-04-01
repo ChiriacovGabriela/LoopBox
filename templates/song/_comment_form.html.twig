@@ -1,9 +1,7 @@
 {{ form_start(form) }}
-<div class="input-group ">
 
-    {{ form_widget(form) }}
+    {{ form_widget(form, { 'attr': {'class': 'width'} }) }}
 
-    <button type="submit" class="btn btn-outline-primary">Send</button>
+    <button type="submit" class="bottom no_bg_border red-color emphasized">{% trans %}Send{% endtrans %}</button>
 
-</div>
 {{ form_end(form) }}

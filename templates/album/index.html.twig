@@ -4,10 +4,10 @@
 
 {% block body %}
 
-    {% include "partials/nav_bar.html.twig" %}
+    {% include "/partials/_nav_bar.html.twig" %}
 
     <section class="bg_index_album">
-        <h1 class="red-color neon center margin_top">Albums that you have added on LoopBox</h1>
+        <h1 class="red-color neon center margin_top">{% trans %}Albums that you have added on LoopBox{% endtrans %}</h1>
         <div class="container1 margin_top">
             <div class="row">
                 {% for album in albums %}
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="center btn1">
-        <button class="btn btn-outline-light btn-lg px-5"><a class="neon red-color" href="{{ path('app_album_new') }}">Add album</a></button>
+        <button class="btn btn-outline-light btn-lg px-5"><a class="neon red-color" href="{{ path('app_album_new') }}">{% trans %}Add album{% endtrans %}</a></button>
         </div>
     </section>
 

@@ -7,17 +7,14 @@ use App\Entity\Playlist;
 use App\Entity\Song;
 use App\Form\CommentFormType;
 use App\Form\PlaylistFormType;
-
 use App\Repository\AlbumRepository;
 use App\Repository\CommentRepository;
 use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\FormHandler\UploadFileHandler;
-use App\Controller\UserController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,18 +35,23 @@ class PlaylistController extends AbstractController
         if ($filters != null) {
             //on recupere les bonnes chansons en fonction des filtres
             $songs = $songRepository->findSongsByType($filters);
+            $filteredPlaylistSongs = $songRepository->findSongsByPlaylistAndType($playlist, $filters);
         } else {
             $songs = $songRepository->findAll();
+            $filteredPlaylistSongs = $playlist->getSongs();
         }
         $allSongs = $songRepository->findAll();
 
         //on verifie si on a une requete ajax
         if ($request->get('ajax')) {
+            $view = $request->get('ajax') == 1 ? 'playlist/_content.html.twig' : 'playlist/_contentPopup.html.twig';
+            dump($request->get('ajax'));
             return new JsonResponse([
-                'content' => $this->renderView('playlist/_content.html.twig', [
+                'content' => $this->renderView($view, [
                     'songs' => $songs,
                     'allSongs' => $allSongs,
                     'playlist' => $playlist,
+                    'filteredPlaylistSongs' => $filteredPlaylistSongs,
                 ])
             ]);
         }
@@ -57,6 +59,7 @@ class PlaylistController extends AbstractController
             'songs' => $songs, //$songRepository->findAll(),
             'playlist' => $playlist,
             'allSongs' => $allSongs,
+            'filteredPlaylistSongs' => $filteredPlaylistSongs,
         ]);
 
     }
@@ -177,6 +180,7 @@ class PlaylistController extends AbstractController
             'songs' => $songRepository->findAll(),
         ]);*/
 
+
         return $this->redirectToRoute('app_playlist', [
             'id' => $playlistId->getId(),
         ]);
@@ -194,8 +198,6 @@ class PlaylistController extends AbstractController
 
         return $this->redirectToRoute('app_user', [
             'userId' => $this->getUser()->getId()]);
-
-
     }
     #[Route('/playlist/{playlistId}/song/{songId}/player', name: 'app_playlist_player')]
     #[Entity('playlist', options: ['id' => 'playlistId'])]
@@ -213,7 +215,7 @@ class PlaylistController extends AbstractController
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
-        //dd($form);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setUser($this->getUser());
             $comment->setSong($song);
@@ -221,12 +223,13 @@ class PlaylistController extends AbstractController
             $em->flush();
         }
 
-
           return $this->render('player/index.html.twig', [
             'name' => 'app_playlist_player',
             'song' => $song,
             'form' => $form,
             'isSong' => false,
+            'isAlbum' => false,
+            'isFavoris' => false,
             'isPlaylist' => true,
             'playlist' => $playlistRepository->find($playlist->getId()),
             'next' => array_key_exists($selectedSongKey + 1, $playlistSongs) ? $playlistSongs[$selectedSongKey + 1] : null,

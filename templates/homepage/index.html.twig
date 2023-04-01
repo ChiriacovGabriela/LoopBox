@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    {% include "partials/nav_bar.html.twig" %}
+    {% include "partials/_nav_bar.html.twig" %}
 
     <div class="bg_homepage">
 
@@ -33,7 +33,7 @@
                 </div>
                 <div class="form-check form-check-inline test">
                     <input type="checkbox" name="type[]" id="classical music" value="classical music">
-                    <label for="classical music">Classical Music</label>
+                    <label for="classical music">{% trans %}Classical Music{% endtrans %}</label>
                 </div>
                 <div class="form-check form-check-inline test">
                     <input type="checkbox" name="type[]" id="jazz" value="jazz">
@@ -45,8 +45,8 @@
         <table class="table noline">
             <thead>
             <tr class="white">
-                <th class="th2">{% trans %}Name{% endtrans %}</th>
-                <th class="th2">{% trans %}Type{% endtrans %}</th>
+                <th class="th2">{% trans %}Title{% endtrans %}</th>
+                <th class="th2">Type</th>
                 <th class="th2">{% trans %}Artist{% endtrans %}</th>
                 <th class="th2"></th>
                 <th class="th2"></th>
@@ -62,10 +62,11 @@
         <script src="{{ asset("js/filters.js") }}"></script>
     {% endblock %}
 
-    <div class="container1 margin_top">
+
+    <div class="container3 margin_top">
         <div class="row">
             {% for album in albums %}
-                <div class="card2">
+                <div class="card3">
                     <div class="center">
                         <img class="picture" src="{{ asset('uploads/images/'~album.pictureFileName) }}" alt="Card image cap" width="220" height="220">
                     </div>

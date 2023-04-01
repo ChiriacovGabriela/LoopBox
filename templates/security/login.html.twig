@@ -5,7 +5,7 @@
 
 {% block body %}
 
-    {% include "partials/nav_bar.html.twig" %}
+    {% include "partials/_nav_bar.html.twig" %}
 
     <section class="vh-100 gradient bgg" >
 
@@ -17,8 +17,8 @@
 
                             <div class="mb-md-5 mt-md-4 pb-5">
 
-                                <h2 class="fw-bold mb-2 text-uppercase neon red-color">Please sign in</h2>
-                                <p class="text-white-50 mb-5">Nice to see you again. Welcome back!</p>
+                                <h2 class="fw-bold mb-2 text-uppercase neon red-color">{% trans %}Please sign in{% endtrans %}</h2>
+                                <p class="text-white-50 mb-5">{% trans %}Nice to see you again. Welcome back!{% endtrans %}</p>
 
                                 <form method="post">
 
@@ -28,14 +28,14 @@
 
                                     {% if app.user %}
                                         <div class="mb-3">
-                                        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                                        {% trans %}You are logged in as{% endtrans%} {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
                                         </div>
                                     {% endif %}
 
                                     <label for="inputEmail">Email</label>
                                     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control form-outline form-white mb-4" autocomplete="email" required autofocus>
 
-                                    <label for="inputPassword">Password</label>
+                                    <label for="inputPassword">{% trans %}Password{% endtrans %}</label>
                                     <input type="password" name="password" id="inputPassword" class="form-control form-outline form-white mb-4" autocomplete="current-password" required>
 
                                     <input type="hidden" name="_csrf_token"
@@ -53,7 +53,7 @@
         </div>
     #}
                                 <div class="btn1"><button class="btn btn-outline-light btn-lg px-5" type="submit">
-                                    Sign in
+                                    {% trans %}Sign in{% endtrans %}
                                 </button></div>
 
                                 </form>

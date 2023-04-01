@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content popup_homepage2">
             <div class="modal-header popup_homepage">
-                <h5 class="modal-title" id="exampleModalLongTitle">CHOOSE THE PLAYLIST</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">{% trans %}CHOOSE THE PLAYLIST{% endtrans %}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -17,9 +17,9 @@
                             </div>
                         {% endfor %}
                     {% else %}
-                        <div class="neon white_hover">Sorry ... you must be connected</div>
-                        <div class="neon white_hover">Click here to sing in:
-                            <a class="neon white_hover" href="{{ path('app_login') }}">SING IN</a>
+                        <div class="neon white_hover">{% trans %}Sorry ... you must be connected{% endtrans %}</div>
+                        <div class="neon white_hover">{% trans %}Click here to sing in:{% endtrans %}
+                            <a class="neon white_hover" href="{{ path('app_login') }}">{% trans %}SING IN{% endtrans %}</a>
                         </div>
 
                     {% endif %}

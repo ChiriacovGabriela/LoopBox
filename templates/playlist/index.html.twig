@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    {% include "partials/nav_bar.html.twig" %}
+    {% include "partials/_nav_bar.html.twig" %}
 
     <div class="jumbotron text-center background_playlist">
 
@@ -22,11 +22,11 @@
             <p>
                 <button type="button" class="btn btn-outline-light btn_space btn_margin" data-toggle="modal"
                         data-target="#exampleModalLong">
-                    Add Song
+                    {% trans %}Add Song{% endtrans %}
                 </button>
 
-                <a href="{{ path('app_playlist_edit',{id: playlist.id}) }}" class="btn btn-outline-light btn_margin">Edit
-                    playlist</a>
+                <a href="{{ path('app_playlist_edit',{id: playlist.id}) }}" class="btn btn-outline-light btn_margin">{% trans %}Edit
+                    playlist{% endtrans %}</a>
 
 
                 {{ include('playlist/_delete_form.html.twig') }}
@@ -36,13 +36,13 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content color_popup2">
                         <div class="modal-header color_popup">
-                            <h5 class="modal-title red-color" id="exampleModalLongTitle">All songs</h5>
+                            <h5 class="modal-title red-color" id="exampleModalLongTitle">{% trans %}All songs{% endtrans %}</h5>
                             <button type="button" class="close btn_add_close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="filtre white">
-                            <p>Select by type</p>
+                            <p>{% trans %}Select by type{% endtrans %}</p>
                             <form id="filters">
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" name="type[]" id="rap" value="rap">
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" name="type[]" id="classical music" value="classical music">
-                                    <label for="classical music">Classical Music</label>
+                                    <label for="classical music">{% trans %}Classical Music{% endtrans %}</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" name="type[]" id="jazz" value="jazz">
@@ -75,9 +75,9 @@
                             <table class="table">
                                 <thead>
                                 <tr class="white">
-                                    <th class="td1">Title</th>
-                                    <th class="td1">Artist</th>
-                                    <th class="td1">Type</th>
+                                    <th class="td1">{% trans %}Title{% endtrans %}</th>
+                                    <th class="td1">{% trans %}Artist{% endtrans %}</th>
+                                    <th class="td1">{% trans %}Type{% endtrans %}</th>
                                     <th class="td1"></th>
                                 </tr>
                                 </thead>
@@ -97,9 +97,9 @@
         <table class="table">
             <thead>
             <tr class="white">
-                <th>Title</th>
-                <th>Artist</th>
-                <th>Type</th>
+                <th>{% trans %}Title{% endtrans %}</th>
+                <th>{% trans %}Artist{% endtrans %}</th>
+                <th>{% trans %}Type{% endtrans %}</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -122,7 +122,7 @@
                     </td>
                     <td>
                         <a class="btn btn-outline-light"
-                           href= {{ path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Delete</a>
+                           href= {{ path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>{% trans %}Delete{% endtrans %}</a>
                     </td>
                 </tr>
             {% endfor %}

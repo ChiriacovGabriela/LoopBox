@@ -22,6 +22,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
+
 #[Route('/song')]
 class SongController extends AbstractController
 {
@@ -52,7 +53,6 @@ class SongController extends AbstractController
                 $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $songFile->guessExtension();
-
                 try {
                     $songFile->move(
                         $this->getParameter('song_directory'),
@@ -85,20 +85,8 @@ class SongController extends AbstractController
     #[Route('/{id}', name: 'app_song_show', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function show(Request $request, Song $song, CommentRepository $commentRepository, EntityManagerInterface $em): Response
     {
-        $comment = new Comment();
-        $form = $this->createForm(CommentFormType::class, $comment);
-        $form->handleRequest($request);
-        //dd($form);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setUser($this->getUser());
-            $comment->setSong($song);
-            $em->persist($comment);
-            $em->flush();
-        }
-
         return $this->render('song/show.html.twig', [
             'song' => $song,
-            'form' => $form,
             'id' => $song->getId(),
             'comments' => $commentRepository->findAll()
         ]);
@@ -192,7 +180,7 @@ class SongController extends AbstractController
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
-        //dd($form);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setUser($this->getUser());
             $comment->setSong($song);
@@ -200,16 +188,13 @@ class SongController extends AbstractController
             $em->flush();
         }
 
-        /*return $this->render('song/player.html.twig', [
-            'song' => $song,
-            'next' => array_key_exists($selectedSongKey + 1, $songs) ? $songs[$selectedSongKey + 1] : null,
-            'prev' => array_key_exists($selectedSongKey - 1, $songs) ? $songs[$selectedSongKey - 1] : null,
-        ]);*/
         return $this->render('player/index.html.twig', [
             'song' => $song,
             'form' => $form,
             'isSong' => true,
             'isPlaylist' => false,
+            'isAlbum' => false,
+            'isFavoris' => false,
             'next' => array_key_exists($selectedSongKey + 1, $songs) ? $songs[$selectedSongKey + 1] : null,
             'prev' => array_key_exists($selectedSongKey - 1, $songs) ? $songs[$selectedSongKey - 1] : null,
             'comments' => $commentRepository->findAll()
@@ -246,4 +231,46 @@ class SongController extends AbstractController
     {
         return $this->render('user/favorites.html.twig');
     }
+
+    #[Route('/favoris/{userId}/song/{songId}/player', name:'app_song_favoris_player')]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('song', options: ['id' => 'songId'])]
+    public function playerLikedSongs(CommentRepository $commentRepository, Request $request,EntityManagerInterface $em,Song $song, SongRepository $songRepository): Response
+    {
+
+        $favoriteSongs = $this->getUser()->getFavoris()->toArray();
+
+        $selectedSongKey = null;
+        foreach ($favoriteSongs as $key => $value) {
+            if ($value->getId() === $song->getId()) {
+                $selectedSongKey = $key;
+            }
+        }
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser());
+            $comment->setSong($song);
+            $em->persist($comment);
+            $em->flush();
+        }
+
+        return $this->render('player/index.html.twig', [
+            'song' => $song,
+            'form' => $form,
+            'user' => $this->getUser(),
+            'isSong' => false,
+            'isPlaylist' => false,
+            'isAlbum' => false,
+            'isFavoris' => true,
+            'next' => array_key_exists($selectedSongKey + 1, $favoriteSongs) ? $favoriteSongs[$selectedSongKey + 1] : null,
+            'prev' => array_key_exists($selectedSongKey - 1, $favoriteSongs) ? $favoriteSongs[$selectedSongKey - 1] : null,
+            'comments' => $commentRepository->findAll()
+        ]);
+
+
+    }
+
 }
