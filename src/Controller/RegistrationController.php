@@ -20,8 +20,20 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
+        $users = $entityManager->getRepository(User::class)->findAll();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($users as $u) {
+                if ($u->getEmail() == $user->getEmail()) {
+                    return $this->render('registration/register.html.twig', [
+                        'emailAlreadyUsed' => true,
+                        'registrationForm' => $form->createView(),
+                    ]);
+                }
+            }
+
+            if($user->getEmail())
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
