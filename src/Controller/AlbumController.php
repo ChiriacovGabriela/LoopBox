@@ -36,7 +36,7 @@ class AlbumController extends AbstractController
     }
 
     #[Route('/new', name: 'app_album_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, AlbumRepository $albumRepository,EntityManagerInterface $em,SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
+    public function new(Request $request,EntityManagerInterface $em,SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         $album = new Album();
         $form = $this->createForm(AlbumType::class, $album);
@@ -61,6 +61,7 @@ class AlbumController extends AbstractController
                     $this->getParameter('song_directory'),$songFile
                 );
                 $newSong=new Song();
+                $newSong->setUser($this->getUser());
                 $newSong->setArtist($artist);
                 $newSong->setType($type);
                 $newSong->setName($originalFilename);
@@ -114,6 +115,7 @@ class AlbumController extends AbstractController
                     $this->getParameter('song_directory'),$songFile
                 );
                 $newSong=new Song();
+                $newSong->setUser($this->getUser());
                 $newSong->setArtist($artist);
                 $newSong->setType($type);
                 $newSong->setName($originalFilename);

@@ -7,6 +7,7 @@
     {% include "partials/_nav_bar.html.twig" %}
 
     <section class="background_user">
+
         <h1 class="red-color neon center margin_top" >{% trans %}Hello{% endtrans %}, {{ app.user.name }}
             <a href="{{path('app_song_favoris',{id: app.user.id})}}">
                 <div>&#10084;</div></a>
@@ -20,30 +21,32 @@
 
         <div class="container1 margin_top">
             <div class="row">
-            {% for playlist in playlists %}
-                <div class="card2">
-                    <div class="center">
+                {% for playlist in playlists %}
+                    <div class="card2">
+                        <div class="center">
 
-                        {% if playlist.imageFileName == null %}
-                            <img class="picture" src="https://cdn.dribbble.com/users/1752437/screenshots/14183305/ep_4x.png" alt="Card image cap" width="220" height="220">
-                        {% else %}
-                            <img class="picture" src="{{ asset('uploads/images/'~playlist.imageFileName) }}" alt="Card image cap" width="220" height="220">
-                        {% endif %}
+                            {% if playlist.imageFileName == null %}
+                                <img class="picture" src="https://cdn.dribbble.com/users/1752437/screenshots/14183305/ep_4x.png" alt="Card image cap" width="220" height="220">
+                            {% else %}
+                                <img class="picture" src="{{ asset('uploads/images/'~playlist.imageFileName) }}" alt="Card image cap" width="220" height="220">
+                            {% endif %}
+                        </div>
+
+                        <p><h4 class="center"><a class="red-color neon" href="{{path('app_playlist', {id: playlist.id})}}">{{ playlist.name }}</a></h4></p>
                     </div>
 
-                    <p><h4 class="center"><a class="red-color neon" href="{{path('app_playlist', {id: playlist.id})}}">{{ playlist.name }}</a></h4></p>
-                </div>
-
-            {% endfor %}
+                {% endfor %}
             </div>
         </div>
 
         {% include "user/_footer.html.twig" %}
 
-        </section>
+    </section>
 
-        {% block javascripts %}
-            <script src="{{ asset("js/move.js") }}"></script>
-        {% endblock %}
+    {% block javascripts %}
+        <script src="{{ asset("js/move.js") }}"></script>
+    {% endblock %}
 
 {% endblock %}
+
+

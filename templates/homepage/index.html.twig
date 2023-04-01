@@ -14,35 +14,34 @@
         form: form ?? null
     } only %}
 
-            <form id="filters" class="white center margin_bottom">
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="rap" value="rap">
-                    <label for="rap">Rap</label>
-                </div>
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="pop" value="pop">
-                    <label for="pop">Pop</label>
-                </div>
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="metal" value="metal">
-                    <label for="metal">Metal</label>
-                </div>
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="rock" value="rock">
-                    <label for="rock">Rock</label>
-                </div>
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="classical music" value="classical music">
-                    <label for="classical music">{% trans %}Classical Music{% endtrans %}</label>
-                </div>
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="jazz" value="jazz">
-                    <label for="jazz">Jazz</label>
-                </div>
-            </form>
+    <form id="filters" class="white center margin_bottom">
+        <div class="form-check form-check-inline test">
+            <input type="checkbox" name="type[]" id="rap" value="rap">
+            <label for="rap">Rap</label>
+        </div>
+        <div class="form-check form-check-inline test">
+             <input type="checkbox" name="type[]" id="pop" value="pop">
+             <label for="pop">Pop</label>
+        </div>
+        <div class="form-check form-check-inline test">
+              <input type="checkbox" name="type[]" id="metal" value="metal">
+              <label for="metal">Metal</label>
+        </div>
+        <div class="form-check form-check-inline test">
+              <input type="checkbox" name="type[]" id="rock" value="rock">
+              <label for="rock">Rock</label>
+        </div>
+        <div class="form-check form-check-inline test">
+              <input type="checkbox" name="type[]" id="classical music" value="classical music">
+              <label for="classical music">{% trans %}Classical Music{% endtrans %}</label>
+        </div>
+        <div class="form-check form-check-inline test">
+              <input type="checkbox" name="type[]" id="jazz" value="jazz">
+              <label for="jazz">Jazz</label>
+        </div>
+    </form>
 
-
-        <table class="table noline">
+    <table class="table noline">
             <thead>
             <tr class="white">
                 <th class="th2">{% trans %}Title{% endtrans %}</th>
@@ -55,8 +54,7 @@
             <tbody id="content">
             {% include "homepage/_content.html.twig" %}
             </tbody>
-        </table>
-
+    </table>
 
     {% block javascripts %}
         <script src="{{ asset("js/filters.js") }}"></script>

@@ -23,11 +23,16 @@ services:
         resource: '../src/*'
         exclude: '../src/{Entity,Migrations,Tests,Kernel.php}'
 
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
     App\Controller\:
         resource: '../src/Controller'
         tags: [ 'controller.service_arguments' ]
+
+    App\EventListener\ExceptionListener:
+        tags:
+            - {name: kernel.event_listener, event: kernel.exception}
 
 
