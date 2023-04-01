@@ -57,9 +57,12 @@ class AlbumController extends AbstractController
                 $newSong->setArtist($artist);
                 $newSong->setType($type);
                 $newSong->setName($originalFilename);
+                if($imageFile){
+                    $newSong->setPictureFileName($newFilename);
+                    $album->setPictureFileName($newFilename);
+                }
                 $newSong->setAudioFileName($songFile);
-                $newSong->setPictureFileName($newFilename);
-                $album->setPictureFileName($newFilename);
+
                 $album->addSong($newSong);
             }
 
@@ -111,8 +114,10 @@ class AlbumController extends AbstractController
                 $newSong->setType($type);
                 $newSong->setName($originalFilename);
                 $newSong->setAudioFileName($songFile);
-                $newSong->setPictureFileName($newFilename);
-                $album->setPictureFileName($newFilename);
+                if($imageFile){
+                    $newSong->setPictureFileName($newFilename);
+                    $album->setPictureFileName($newFilename);
+                }
                 $album->addSong($newSong);
             }
 
