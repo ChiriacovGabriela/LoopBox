@@ -44,7 +44,7 @@ class SongType extends AbstractType
             ->add('audioFileName', FileType::class, [
                 'label'=> 'Song (MP3 file)',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '6000k',

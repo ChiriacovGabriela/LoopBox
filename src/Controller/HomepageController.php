@@ -99,6 +99,8 @@ class HomepageController extends AbstractController
             'name'=>'app_homepage_player',
             'isPlaylist'=> false,
             'isSong' => false,
+            'isAlbum' => false,
+            'isFavoris' => false,
             'song' => $song,
             'form' => $form,
             'next' => array_key_exists($selectedSongKey + 1, $allSongs) ? $allSongs[$selectedSongKey + 1] : null,
@@ -106,10 +108,6 @@ class HomepageController extends AbstractController
             'comments' => $commentRepository->findAll()
         ]);
 
-
     }
-
-
-
 
 }

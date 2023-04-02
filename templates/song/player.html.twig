@@ -4,12 +4,13 @@
 
 {% block body %}
 
-    {% include "partials/nav_bar.html.twig" %}
+    {% include "partials/_nav_bar.html.twig" %}
 
     <section class="background2 margins">
     <div class="d-flex justify-content-center">
 
         <div id="mobile-box">
+
 
             <div class="card1">
                 <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
@@ -18,6 +19,27 @@
                     {% else %}
                         <img class="card-img-top img" src="{{ asset('uploads/images/'~song.pictureFileName) }}" alt="Card image cap" height="450" width="390">
                     {% endif %}
+                </div>
+                <div class="form-check">
+                    {% if is_granted("ROLE_USER") %}
+                        {% for favoris in song.favoris %}
+                            {% if favoris.id == app.user.id %}
+                                <a href="{{ path('app_song_favoris_remove', {id: song.id}) }}">
+                                    <button type="button" class="btn btn-danger"> <i class="bi bi-heart"></i> </button>
+                                </a>
+                            {% else %}
+                                <a href="{{ path('app_song_favoris_add', {id: song.id}) }}">
+                                    <button type="button" class="btn btn-outline-danger"> <i class="bi bi-heart"></i></button>
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ path('app_song_favoris_add', {id: song.id}) }}">
+                                <button type="button" class="btn btn-outline-danger"><i class="bi bi-heart"></i></button>
+                            </a>
+                        {% endfor %}
+
+                    {% endif %}
+
                 </div>
 
                 <div class="card-body text-center">

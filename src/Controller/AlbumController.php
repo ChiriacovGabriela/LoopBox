@@ -15,6 +15,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use App\Repository\CommentRepository;
+use App\Entity\Comment;
+use App\Form\CommentFormType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+
+
+
 
 
 #[Route('/album')]
@@ -29,7 +36,7 @@ class AlbumController extends AbstractController
     }
 
     #[Route('/new', name: 'app_album_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, AlbumRepository $albumRepository,EntityManagerInterface $em,SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
+    public function new(Request $request,EntityManagerInterface $em,SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         $album = new Album();
         $form = $this->createForm(AlbumType::class, $album);
@@ -54,6 +61,7 @@ class AlbumController extends AbstractController
                     $this->getParameter('song_directory'),$songFile
                 );
                 $newSong=new Song();
+                $newSong->setUser($this->getUser());
                 $newSong->setArtist($artist);
                 $newSong->setType($type);
                 $newSong->setName($originalFilename);
@@ -107,6 +115,7 @@ class AlbumController extends AbstractController
                     $this->getParameter('song_directory'),$songFile
                 );
                 $newSong=new Song();
+                $newSong->setUser($this->getUser());
                 $newSong->setArtist($artist);
                 $newSong->setType($type);
                 $newSong->setName($originalFilename);
@@ -145,5 +154,50 @@ class AlbumController extends AbstractController
         return $this->redirectToRoute('app_album_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{albumId}/song/{songId}/player', name: 'app_album_player')]
+    #[Entity('album', options: ['id' => 'albumId'])]
+    #[Entity('song', options: ['id' => 'songId'])]
+    public function player(Request $request, EntityManagerInterface $em, Album $album, AlbumRepository $albumRepository, CommentRepository $commentRepository, Song $song): Response
+    {
+        $albumSongs = $album->getSongs()->toArray();
 
-}
+        $selectedSongKey = null;
+        foreach ($albumSongs as $key => $value) {
+            if ($value->getId() === $song->getId()) {
+                $selectedSongKey = $key;
+            }
+        }
+
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest($request);
+        //dd($form);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser());
+            $comment->setSong($song);
+            $em->persist($comment);
+            $em->flush();
+        }
+
+        return $this->render('player/index.html.twig', [
+            'name' => 'app_album_player',
+            'song' => $song,
+            'form' => $form,
+            'isSong' => false,
+            'isAlbum' => true,
+            'isPlaylist' => false,
+            'isFavoris' => false,
+            'album' => $albumRepository->find($album->getId()),
+            'next' => array_key_exists($selectedSongKey + 1, $albumSongs) ? $albumSongs[$selectedSongKey + 1] : null,
+            'prev' => array_key_exists($selectedSongKey - 1, $albumSongs) ? $albumSongs[$selectedSongKey - 1] : null,
+            'comments' => $commentRepository->findAll()
+        ]);
+
+
+
+
+    }
+
+
+
+    }

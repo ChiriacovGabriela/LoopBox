@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    {% include "partials/nav_bar.html.twig" %}
+    {% include "partials/_nav_bar.html.twig" %}
 
     <div class="bg_homepage">
 
@@ -14,39 +14,38 @@
         form: form ?? null
     } only %}
 
-            <form id="filters" class="white center margin_bottom">
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="rap" value="rap">
-                    <label for="rap">Rap</label>
-                </div>
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="pop" value="pop">
-                    <label for="pop">Pop</label>
-                </div>
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="metal" value="metal">
-                    <label for="metal">Metal</label>
-                </div>
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="rock" value="rock">
-                    <label for="rock">Rock</label>
-                </div>
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="classical music" value="classical music">
-                    <label for="classical music">Classical Music</label>
-                </div>
-                <div class="form-check form-check-inline test">
-                    <input type="checkbox" name="type[]" id="jazz" value="jazz">
-                    <label for="jazz">Jazz</label>
-                </div>
-            </form>
+    <form id="filters" class="white center margin_bottom">
+        <div class="form-check form-check-inline test">
+            <input type="checkbox" name="type[]" id="rap" value="rap">
+            <label for="rap">Rap</label>
+        </div>
+        <div class="form-check form-check-inline test">
+             <input type="checkbox" name="type[]" id="pop" value="pop">
+             <label for="pop">Pop</label>
+        </div>
+        <div class="form-check form-check-inline test">
+              <input type="checkbox" name="type[]" id="metal" value="metal">
+              <label for="metal">Metal</label>
+        </div>
+        <div class="form-check form-check-inline test">
+              <input type="checkbox" name="type[]" id="rock" value="rock">
+              <label for="rock">Rock</label>
+        </div>
+        <div class="form-check form-check-inline test">
+              <input type="checkbox" name="type[]" id="classical music" value="classical music">
+              <label for="classical music">{% trans %}Classical Music{% endtrans %}</label>
+        </div>
+        <div class="form-check form-check-inline test">
+              <input type="checkbox" name="type[]" id="jazz" value="jazz">
+              <label for="jazz">Jazz</label>
+        </div>
+    </form>
 
-
-        <table class="table noline">
+    <table class="table noline">
             <thead>
             <tr class="white">
-                <th class="th2">{% trans %}Name{% endtrans %}</th>
-                <th class="th2">{% trans %}Type{% endtrans %}</th>
+                <th class="th2">{% trans %}Title{% endtrans %}</th>
+                <th class="th2">Type</th>
                 <th class="th2">{% trans %}Artist{% endtrans %}</th>
                 <th class="th2"></th>
                 <th class="th2"></th>
@@ -55,17 +54,17 @@
             <tbody id="content">
             {% include "homepage/_content.html.twig" %}
             </tbody>
-        </table>
-
+    </table>
 
     {% block javascripts %}
         <script src="{{ asset("js/filters.js") }}"></script>
     {% endblock %}
 
-    <div class="container1 margin_top">
+
+    <div class="container3 margin_top">
         <div class="row">
             {% for album in albums %}
-                <div class="card2">
+                <div class="card3">
                     <div class="center">
                         <img class="picture" src="{{ asset('uploads/images/'~album.pictureFileName) }}" alt="Card image cap" width="220" height="220">
                     </div>
