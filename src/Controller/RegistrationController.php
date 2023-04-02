@@ -32,8 +32,20 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
+        $users = $entityManager->getRepository(User::class)->findAll();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($users as $u) {
+                if ($u->getEmail() == $user->getEmail()) {
+                    return $this->render('registration/register.html.twig', [
+                        'emailAlreadyUsed' => true,
+                        'registrationForm' => $form->createView(),
+                    ]);
+                }
+            }
+
+            if($user->getEmail())
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -47,31 +59,38 @@ class RegistrationController extends AbstractController
 
             // do anything else you need here, like send an email
 
+
             $mailer->sendEmail($user);
 
-            return $this->redirectToRoute('app_homepage');
+            //return $this->redirectToRoute('app_homepage');
+
+            return $this->redirectToRoute('app_login');
+
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
+
     #[Route('/user/edit/{id}', name: 'app_user_edit')]
-    public function edit (User $user, Request $request, EntityManagerInterface $em ):Response
+    public function edit(User $user, Request $request, EntityManagerInterface $em): Response
     {
         //On crée le formulaire
         $registrationForm = $this->createForm(RegistrationFormType::class, $user);
         // On traite la requete du formulaire
         $registrationForm->handleRequest($request);
         // on verifie si le formulaire est soumis et valide
-        if($registrationForm->isSubmitted() && $registrationForm->isValid()){
+        if ($registrationForm->isSubmitted() && $registrationForm->isValid()) {
             //On stock
-            $em-> persist($user);
+            $em->persist($user);
             $em->flush();
 
 
             //On redirige
-            return $this->redirectToRoute('app_user');
+            return $this->redirectToRoute('app_user',[
+                'userId'=>$user->getId()
+            ]);
 
         }
         return $this->render('registration/edit.html.twig', [

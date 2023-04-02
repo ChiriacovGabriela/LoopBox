@@ -16,9 +16,13 @@ class CommentFormType extends AbstractType
         $builder
             ->add('Text', TextareaType::class, [
                 'attr' => ['class' => 'tinymce'],
+
                 'label'=>'Leave a comment !'
             ])
             //->add('submit', SubmitType::class)
+
+
+
         ;
     }
 

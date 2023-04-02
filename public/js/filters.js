@@ -1,35 +1,39 @@
 window.onload = () => {
-    const FiltersForm = document.querySelector("#filters");
-    //console.log('fmviuhiumvgb');
+    if (document.getElementById('filters')) {
+        updateContent('filters', 'content', 1);
+    }
+    if (document.getElementById('filtersPopup')) {
+        updateContent('filtersPopup', 'contentPopup', 2);
+    }
+}
 
-    document.querySelectorAll("#filters input").forEach(input => {
-        input.addEventListener("change", () => {
-            //on interroge les clics
-            const Form = new FormData(FiltersForm);
+function updateContent(formId, contentId, id) {
+    const form = document.querySelector(`#${formId}`);
+    const content = document.querySelector(`#${contentId}`);
 
-            // on fabrique la "querystring"
-            const Params = new URLSearchParams();
+    form.querySelectorAll('input').forEach(input => {
+        input.addEventListener('change', () => {
+            const formData = new FormData(form);
+            const params = new URLSearchParams();
 
-            Form.forEach((value, key) => {
-                Params.append(key, value);
-                //console.log(Params.toString());
-            })
+            formData.forEach((value, key) => {
+                params.append(key, value);
+            });
 
-            //on recupere l'url active
-            const Url = new URL(window.location.href);
-
-
-            //on lance la requete ajax
-            fetch(Url.pathname + "?" + Params.toString() + "&ajax=1", {
+            const url = new URL(window.location.href);
+            fetch(`${url.pathname}?${params.toString()}&ajax=${id}`, {
                 headers: {
-                    "X-Requested-With": "XMLHttpRequest"
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
-            }).then(response =>
-                response.json()
-            ).then(data => {
-                const content = document.querySelector("#content");
-                content.innerHTML = data.content;
-            }).catch(e => alert(e));
+            })
+                .then(response => response.json())
+                .then(data => {
+                    content.innerHTML = data.content;
+                    //history.pushState({}, null, url.pathname + "?" + params.toString());
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         });
     });
 }

@@ -1,10 +1,14 @@
 {% extends 'base.html.twig' %}
+{% set queryParams = app.request.query.all %}
+{% set genres = ["Rap", "Pop", "Metal", "Rock", "Classical Music", "Jazz"] %}
 
 {% block title %}PlaylistController!{% endblock %}
 
 {% block body %}
 
+
     {% include "partials/_nav_bar.html.twig" %}
+
 
     <div class="jumbotron text-center background_playlist">
 
@@ -42,7 +46,8 @@
                             </button>
                         </div>
                         <div class="filtre white">
-                            <p>{% trans %}Select by type{% endtrans %}</p>
+
+                          {#   <p>{% trans %}Select by type{% endtrans %}</p>
                             <form id="filters">
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" name="type[]" id="rap" value="rap">
@@ -66,8 +71,22 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" name="type[]" id="jazz" value="jazz">
-                                    <label for="jazz">Jazz</label>
+                                    <label for="jazz">Jazz</label>#}
+
+                            <p>Select by type</p>
+                            <form id="filtersPopup">
+                                {% for genre in genres %}
+                                    {% if queryParams is not empty and queryParams.type is defined %}
+                                        {% set checked = (genre in queryParams.type) ? "checked" : "" %}
+                                    {% else %}
+                                        {% set checked = "" %}
+                                    {% endif %}
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" name="type[]" id="{{ genre }}" value="{{ genre }}" {{ checked }}>
+                                    <label for="{{ genre }}">{{ genre }}</label>
+
                                 </div>
+                                {% endfor %}
                             </form>
                         </div>
                         <div class="modal-body">
@@ -82,8 +101,8 @@
                                 </tr>
                                 </thead>
 
-                                <tbody id="content">
-                                {% include "playlist/_content.html.twig" %}
+                                <tbody id="contentPopup">
+                                {% include "playlist/_contentPopup.html.twig" %}
                                 </tbody>
 
                             </table>
@@ -93,7 +112,22 @@
             </div>
             </p>
         </div>
-
+        <div class="filtre white">
+            <p>Select by type</p>
+            <form id="filters">
+                {% for genre in genres %}
+                    {% if queryParams is not empty and queryParams.type is defined %}
+                        {% set checked = (genre in queryParams.type) ? "checked" : "" %}
+                    {% else %}
+                        {% set checked = "" %}
+                    {% endif %}
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="type[]" id="{{ genre }}" value="{{ genre }}" {{ checked }}>
+                        <label for="{{ genre }}">{{ genre }}</label>
+                    </div>
+                {% endfor %}
+            </form>
+        </div>
         <table class="table">
             <thead>
             <tr class="white">
@@ -104,7 +138,8 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody>
+
+           {#  <tbody>
             {% for song in playlist.songs %}
                 <tr class="white">
                     <td>{{ song.name }}</td>
@@ -125,12 +160,15 @@
                            href= {{ path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>{% trans %}Delete{% endtrans %}</a>
                     </td>
                 </tr>
-            {% endfor %}
+            {% endfor %}#}
+
+
+            <tbody id="content">
+            {% include "playlist/_content.html.twig" %}
 
             </tbody>
         </table>
     </div>
-
     {% block javascripts %}
         <script src="{{ asset("js/filters.js") }}"></script>
     {% endblock %}
