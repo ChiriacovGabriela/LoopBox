@@ -40,9 +40,9 @@
 
         <div class="header_nav">
 
-            <a class="nav_link neon " href="{{ path('app_register')}}">{% trans %}Sign up{% endtrans %}</a>
+            <a class="nav_link neon " href="{{ path('app_register')}}">Sign up</a>
 
-            <a class="nav_link neon " href="{{ path('app_login')}}">{% trans %}Login{% endtrans %}</a>
+            <a class="nav_link neon " href="{{ path('app_login')}}">Login</a>
 
             {% for locale in locales %}
                 {% if locale!=app.request.locale %}

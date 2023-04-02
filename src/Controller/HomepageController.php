@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class HomepageController extends AbstractController
 {
@@ -27,6 +27,7 @@ class HomepageController extends AbstractController
         $searchData = new SearchData();
         $form = $this->createForm(SearchType::class, $searchData);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $searchData->page = $request->query->getInt('page', 1);
             $songs = $songRepository->findBySearch($searchData);

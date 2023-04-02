@@ -1,21 +1,39 @@
-{% for song in songs %}
-    {% if song not in playlist.songs %}
+{% if filteredPlaylistSongs is not empty %}
+    {% for song in filteredPlaylistSongs.data %}
         <tr class="white">
-            <td class="td2">{{ song.name }}</td>
-            <td class="td2">{{ song.artist }}</td>
-            <td class="td2">{{ song.type }}</td>
-            <td class="td2">
+            <td class="td1">{{ song.name }}</td>
+            <td class="td1">{{ song.artist }}</td>
+            <td class="td1">{{ song.type }}</td>
+            <td>
                 <button class="btn btn-outline-light">
-                    <a class="white_hover neon" href= {{ path('add_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>
-                        {% trans %}Add{% endtrans %}
+                    <a href="{{ path('app_playlist_player', {'playlistId': playlist.id, 'songId':song.id}) }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-caret-right white_hover" viewBox="0 0 16 16">
+                            <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
+                        </svg>
                     </a>
                 </button>
             </td>
+            <td>
+                <a class="btn btn-outline-light"
+                   href= {{ path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Delete</a>
+            </td>
         </tr>
+    {% endfor %}
+
+    {% set path = 'app_playlist' %}
+    {% set playlistId = playlist.id %}
+    {% if filteredPlaylistSongs is not empty %}
+        {% set pages = filteredPlaylistSongs.pages %}
+        {% set currentPage = filteredPlaylistSongs.page %}
+    {% else %}
+        {% set pages = 1 %}
+        {% set currentPage = 1 %}
     {% endif %}
-{% endfor %}
-{% if allSongs|length == playlist.songs|length %}
-    <tr>
-        <td colspan="10" class="white">{% trans %}no records found{% endtrans %}</td>
-    </tr>
+
+    {% include "partials/_pagination.html.twig" %}
+
+
+
+
 {% endif %}

@@ -23,8 +23,15 @@ services:
         resource: '../src/*'
         exclude: '../src/{Entity,Migrations,Tests,Kernel.php}'
 
+    App\Subscribers\UserLocaleSubscriber:
+        arguments:
+            $session: '@session'
 
-    # add more service definitions when explicit configuration is needed
+    session:
+        class: Symfony\Component\HttpFoundation\Session\SessionInterface
+
+
+        # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
     App\Controller\:

@@ -4,6 +4,9 @@
 {{ form_row(registrationForm.surname) }}
 {{ form_row(registrationForm.preference) }}
 {{ form_row(registrationForm.email) }}
+{% if emailAlreadyUsed is defined %}
+    Email is already used
+{% endif %}
 {{ form_row(registrationForm.plainPassword, {
     label: 'Password'
 }) }}

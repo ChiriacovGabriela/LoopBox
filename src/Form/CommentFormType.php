@@ -4,10 +4,11 @@ namespace App\Form;
 
 use App\Entity\Comment;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+
 
 class CommentFormType extends AbstractType
 {
@@ -17,8 +18,7 @@ class CommentFormType extends AbstractType
             ->add('Text', TextareaType::class, [
                 'attr' => ['class' => 'tinymce'],
                 'label'=>'Leave a comment !'
-            ])
-            //->add('submit', SubmitType::class)
+            ])//->add('submit', SubmitType::class)
         ;
     }
 

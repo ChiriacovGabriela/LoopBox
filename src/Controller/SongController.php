@@ -38,7 +38,7 @@ class SongController extends AbstractController
 
 
     #[Route('/new', name: 'app_song_new', methods: ['GET', 'POST'])]
-    public function new(Request $request,EntityManagerInterface $em ,SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
+    public function new(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         $song = new Song();
         $song->setUser($this->getUser());
@@ -48,8 +48,8 @@ class SongController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $songFile */
             $songFile = $form->get('audioFileName')->getData();
-            $imageFile = $form ->get('pictureFileName')->getData();
-            if ($songFile){
+            $imageFile = $form->get('pictureFileName')->getData();
+            if ($songFile) {
                 $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $songFile->guessExtension();
@@ -63,9 +63,9 @@ class SongController extends AbstractController
                 }
                 $song->setAudioFileName($newFilename);
             }
-            if($imageFile){
+            if ($imageFile) {
                 $directory = $this->getParameter('image_directory');
-                $newFilename = $uploadFileHandler->upload($slugger,$imageFile,$directory);
+                $newFilename = $uploadFileHandler->upload($slugger, $imageFile, $directory);
                 $song->setPictureFileName($newFilename);
             }
 
@@ -109,7 +109,7 @@ class SongController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_song_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Song $song, SongRepository $songRepository,SluggerInterface $slugger,UploadFileHandler $uploadFileHandler): Response
+    public function edit(Request $request, Song $song, SongRepository $songRepository, SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         $song->setUpdatedAt(new \DateTimeImmutable());
         $form = $this->createForm(SongType::class, $song);
@@ -117,11 +117,11 @@ class SongController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $songFile = $form->get('audioFileName')->getData();
-            $imageFile = $form ->get('pictureFileName')->getData();
-            if ($songFile){
+            $imageFile = $form->get('pictureFileName')->getData();
+            if ($songFile) {
                 $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$songFile->guessExtension();
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $songFile->guessExtension();
 
                 try {
                     $songFile->move(
@@ -133,9 +133,9 @@ class SongController extends AbstractController
                 }
                 $song->setAudioFileName($newFilename);
             }
-            if($imageFile){
+            if ($imageFile) {
                 $directory = $this->getParameter('image_directory');
-                $newFilename = $uploadFileHandler->upload($slugger,$imageFile,$directory);
+                $newFilename = $uploadFileHandler->upload($slugger, $imageFile, $directory);
                 $song->setPictureFileName($newFilename);
             }
 
@@ -204,27 +204,27 @@ class SongController extends AbstractController
     }
 
     #[Route('/favoris/add/{id}', name: 'app_song_favoris_add')]
-    public function addFavoris(Song $song, EntityManagerInterface $em,int $id)
+    public function addFavoris(Song $song, EntityManagerInterface $em, int $id)
     {
-        if (!$song){
+        if (!$song) {
             throw  new NotFoundHttpException('Musique introuvable');
         }
         $song->addFavori($this->getUser());
         $em->persist($song);
         $em->flush();
-        return $this->redirectToRoute('app_song_player', ['id'=>$id], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_song_player', ['id' => $id], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/favoris/remove/{id}', name: 'app_song_favoris_remove')]
-    public function removeFavoris(Song $song, EntityManagerInterface $em,int $id)
+    public function removeFavoris(Song $song, EntityManagerInterface $em, int $id)
     {
-        if (!$song){
+        if (!$song) {
             throw  new NotFoundHttpException('Musique introuvable');
         }
         $song->removeFavori($this->getUser());
         $em->persist($song);
         $em->flush();
-        return $this->redirectToRoute('app_song_player', ['id'=>$id], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_song_player', ['id' => $id], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/favoris/{id}', name:'app_song_favoris')]
