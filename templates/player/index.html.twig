@@ -29,7 +29,7 @@
                             {% endif %}
 
 
-                            {% if not isSong and isPlaylist  %}
+                            {% if playlist is defined %}
 
                                  <a  href="{{ path('app_playlist_player',{'playlistId': playlist.id, 'songId': prev.id}) }}" >
                             {% endif %}

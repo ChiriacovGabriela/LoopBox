@@ -7,12 +7,17 @@ use App\Entity\Playlist;
 use App\Entity\Song;
 use App\Form\CommentFormType;
 use App\Form\PlaylistFormType;
+use App\FormHandler\CommentHandler;
 use App\Repository\CommentRepository;
 use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use App\FormHandler\UploadFileHandler;
+use App\FormHandler\PlaylistFormHandler;
+
+use Doctrine\ORM\EntityManagerInterface;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +29,7 @@ class PlaylistController extends AbstractController
 
 {
     #[Route('/playlist/{id}', name: 'app_playlist', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function index(SongRepository $songRepository, Playlist $playlist, PlaylistRepository $playlistRepository): Response
+    public function index(SongRepository $songRepository, Playlist $playlist): Response
     {
         return $this->render('playlist/index.html.twig', [
             'songs' => $songRepository->findAll(),
@@ -33,7 +38,10 @@ class PlaylistController extends AbstractController
     }
 
     #[Route('/playlist/add', name: 'app_playlist_add')]
-    public function add(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
+    public function add(Request $request,
+                        SluggerInterface $slugger,
+                        UploadFileHandler $uploadFileHandler,
+                        PlaylistFormHandler $playlistFormHandler ): Response
     {
         //On crée un nouveau Playlist
         $playlist = new Playlist();
@@ -45,14 +53,8 @@ class PlaylistController extends AbstractController
         // on verifie si le formulaire est soumis et valide
         if ($playlistForm->isSubmitted() && $playlistForm->isValid()) {
             $imagePathFile = $playlistForm->get('imageFileName')->getData();
-            if ($imagePathFile) {
-                $directory = $this->getParameter('image_directory');
-                $newFilename = $uploadFileHandler->upload($slugger, $imagePathFile, $directory);
-                $playlist->setImageFileName($newFilename);
-            }
-            //On stock
-            $em->persist($playlist);
-            $em->flush();
+            $directory = $this->getParameter('image_directory');
+            $playlistFormHandler->addPlaylist($playlist, $imagePathFile, $uploadFileHandler, $slugger,$directory);
 
             //On redirige
             return $this->redirectToRoute('app_user', [
@@ -64,7 +66,11 @@ class PlaylistController extends AbstractController
     }
 
     #[Route('/playlist/edit/{id}', name: 'app_playlist_edit')]
-    public function edit(Playlist $playlist, Request $request, EntityManagerInterface $em, SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
+    public function edit(Playlist $playlist,
+                         Request $request,
+                         SluggerInterface $slugger,
+                         UploadFileHandler $uploadFileHandler,
+                         PlaylistFormHandler $playlistFormHandler): Response
     {
         //On crée le formulaire
         $playlistForm = $this->createForm(PlaylistFormType::class, $playlist);
@@ -74,17 +80,11 @@ class PlaylistController extends AbstractController
         if ($playlistForm->isSubmitted() && $playlistForm->isValid()) {
 
             $imagePathFile = $playlistForm->get('imageFileName')->getData();
-            if ($imagePathFile) {
-                $directory = $this->getParameter('image_directory');
-                $newFilename = $uploadFileHandler->upload($slugger, $imagePathFile, $directory);
-                $playlist->setImageFileName($newFilename);
-            }
-            //On stock
-            //$em-> persist($playlist);
-            $em->flush();
-            //On redirige
+            $directory = $this->getParameter('image_directory');
+            $playlistFormHandler->addPlaylist($playlist, $imagePathFile, $uploadFileHandler, $slugger,$directory);
 
-            return $this->redirectToRoute('app_playlist', ['id' => $playlist->getId()]);
+            //On redirige
+             return $this->redirectToRoute('app_playlist', ['id' => $playlist->getId()]);
 
         }
         return $this->render('playlist/edit.html.twig', [
@@ -112,18 +112,12 @@ class PlaylistController extends AbstractController
         $em->persist($playlistId);
         $em->flush();
 
-        //dd($playlistId);
-       /* return $this->render('playlist/index.html.twig', [
-            'playlist' => $playlistRepository->find($playlistId),
-            'song' => $songId,
-            'songs' => $songRepository->findAll(),
-        ]);*/
         return $this->redirectToRoute('app_playlist', [
             'id' => $playlistId->getId(),
         ]);
     }
 
-    #[Route('/playlist/{playlistId}/dsong/{songId}', name: 'delete_song_playlist')]
+    #[Route('/playlist/{playlistId}/song/{songId}', name: 'delete_song_playlist')]
     #[Entity('playlist', options: ['id' => 'playlistId'])]
     #[Entity('song', options: ['id' => 'songId'])]
     public function deleteSongPlaylist(Playlist $playlistId, Song $songId, SongRepository $songRepository, PlaylistRepository $playlistRepository, EntityManagerInterface $em, Request $request): Response
@@ -153,16 +147,18 @@ class PlaylistController extends AbstractController
             $playlistRepository->remove($playlist, true);
         }
 
-        $user = $this->getUser();
-        $id = $user->getId();
-
         return $this->redirectToRoute('app_user', [
             'userId' => $this->getUser()->getId()]);
     }
     #[Route('/playlist/{playlistId}/song/{songId}/player', name: 'app_playlist_player')]
     #[Entity('playlist', options: ['id' => 'playlistId'])]
     #[Entity('song', options: ['id' => 'songId'])]
-    public function player(Request $request,EntityManagerInterface $em, Song $song, Playlist $playlist, PlaylistRepository $playlistRepository, CommentRepository $commentRepository): Response
+    public function player(Request $request,
+                           EntityManagerInterface $em,
+                           Song $song, Playlist $playlist,
+                           PlaylistRepository $playlistRepository,
+                           CommentRepository $commentRepository,
+                           CommentHandler $commentHandler): Response
     {
         $playlistSongs = $playlist->getSongs()->toArray();
 
@@ -175,12 +171,10 @@ class PlaylistController extends AbstractController
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
-        //dd($form);
+        $user = $this->getUser();
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setUser($this->getUser());
-            $comment->setSong($song);
-            $em->persist($comment);
-            $em->flush();
+            $commentHandler->addComment($comment, $song,$user);
         }
 
 

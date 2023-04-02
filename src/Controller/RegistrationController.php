@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\FormHandler\SendMailHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +22,7 @@ class RegistrationController extends AbstractController
     public function register(Request $request,
                              UserPasswordHasherInterface $userPasswordHasher,
                              EntityManagerInterface $entityManager,
-                             MailerInterface $mailer): Response
+                             SendMailHandler $mailer): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -39,13 +41,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // do anything else you need here, like send an email
-            $email = (new Email())
-                ->from('gabrielachiriacov@gmail.com')
-                ->to($user->getEmail())
-                ->subject('Time for Symfony Mailer!')
-                ->text('Sending emails is fun again!');
-
-            $mailer->send($email);
+            $mailer->sendEmail($user);
 
             return $this->redirectToRoute('app_homepage');
         }

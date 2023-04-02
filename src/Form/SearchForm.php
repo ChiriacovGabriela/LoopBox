@@ -13,11 +13,10 @@ class SearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options){
 
-
         $builder
             ->add('q', TextType::class,[
                 'attr' => [
-                    'placeholder' => 'Search by keyword ... '
+                    'placeholder' => 'Search ... '
                 ]
             ]);
     }
