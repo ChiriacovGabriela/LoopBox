@@ -26,6 +26,15 @@
     border-color: rgba(201,30,30);
     background-color: orange;
 }
+.padding_right {
+    padding-right: 70px;
+}
+.pagination_hover {
+    color: white;
+}
+.pagination_hover:hover{
+    color: white;
+}
 
 
 

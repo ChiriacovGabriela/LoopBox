@@ -54,10 +54,10 @@ class PlaylistController extends AbstractController
             //$filteredPlaylistSongs = $playlist->getSongs();
 
             //$filteredPlaylistSongs = $songRepository->findSongsPaginated($playlist, $page, 2);
-            $filteredPlaylistSongs = $songRepository->findSongsByPlaylistAndType($playlist, $filters, $page, 2);
+            $filteredPlaylistSongs = $songRepository->findSongsByPlaylistAndType($playlist, $filters, $page, 5);
         } else {
             $songs = $songRepository->findAll();
-            $filteredPlaylistSongs = $songRepository->findSongsByPlaylistPaginated($playlist, $page, 2);
+            $filteredPlaylistSongs = $songRepository->findSongsByPlaylistPaginated($playlist, $page, 5);
         }
         $allSongs = $songRepository->findAll();
 
@@ -273,7 +273,7 @@ class PlaylistController extends AbstractController
     #[Route('/song/{songId}/playlist/{playlistId}', name: 'add_song_homepage')]
     #[Entity('playlist', options: ['id' => 'playlistId'])]
     #[Entity('song', options: ['id' => 'songId'])]
-    public function addSongHomepage(Playlist $playlist, Song $song, SongRepository $songRepository, PlaylistRepository $playlistRepository, EntityManagerInterface $em, Request $request): Response
+    public function addSongHomepage(Playlist $playlist, Song $song, EntityManagerInterface $em): Response
     {
 
         // Check if the playlist and song exist
@@ -290,12 +290,13 @@ class PlaylistController extends AbstractController
         $em->flush();
 
         //dd($playlistId);
-        return $this->render('homepage/index.html.twig', [
+        /*return $this->render('homepage/index.html.twig', [
             'playlist' => $playlistRepository->find($playlist),
             'song' => $song,
             'songs' => $songRepository->findAll(),
             'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
-        ]);
+        ]);*/
+        return $this->redirectToRoute('app_homepage');
 
     }
 

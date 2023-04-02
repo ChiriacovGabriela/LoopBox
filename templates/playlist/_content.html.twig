@@ -1,16 +1,6 @@
 {% if filteredPlaylistSongs is not empty %}
     {% for song in filteredPlaylistSongs.data %}
         <tr class="white">
-
-          {#  <td class="td2">{{ song.name }}</td>
-            <td class="td2">{{ song.artist }}</td>
-            <td class="td2">{{ song.type }}</td>
-            <td class="td2">
-                <button class="btn btn-outline-light">
-                    <a class="white_hover neon" href= {{ path('add_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>
-                        {% trans %}Add{% endtrans %}
-                        #}
-
             <td>{{ song.name }}</td>
             <td>{{ song.artist }}</td>
             <td>{{ song.type }}</td>
