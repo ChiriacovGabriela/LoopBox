@@ -3,53 +3,52 @@
 {% block title %}Album{% endblock %}
 
 {% block body %}
-    <h1>Album</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ album.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ album.name }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ album.type }}</td>
-            </tr>
-            <tr>
-                <th>Artist</th>
-                <td>{{ album.artist }}</td>
-            </tr>
+    {% include "partials/_nav_bar.html.twig" %}
 
-            <tr>
-                <th>Created_at</th>
-                <td>{{ album.createdAt ? album.createdAt|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated_at</th>
-                <td>{{ album.updatedAt ? album.updatedAt|date('Y-m-d') : '' }}</td>
-            </tr>
+    <div class="bg_show_album">
+        <h1 class="center neon red-color title">{% trans %}Album details{% endtrans %}</h1>
+
+        <div class="center">
+            <img src="{{ asset('uploads/images/'~album.pictureFileName) }}" alt="Album" width="350" height="250">
+        </div>
+
+        <div class="white center text_size emphasized neon">
+            {{ album.name }}, {{ album.artist }}, {{ album.type }}
+        </div>
+
+        {% if app.user is not null and app.user.id == album.user.id %}
+            <div class="buttons_block_album">
+                <button class="btn1 btn btn-outline-light btn-lg px-5 red-color neon buttons_space margin_bottom">
+                    <a class="white_hover neon" href="{{ path('app_album_edit', {'id': album.id}) }}">{% trans %}Edit{% endtrans %}</a>
+                </button>
+                <div class="position_right">{{ include('album/_delete_form.html.twig') }}</div>
+            </div>
+        {% endif %}
+
+
+        <h2 class="center neon red-color title">{% trans %}Songs{% endtrans %}</h2>
+
+        <table class="center">
             {% for song in album.songs %}
-            <tr>
-                <th>Song in Album</th>
-                <td>{{ song.Name }}</td>
-                <td>
-                    <audio controls>
-                        <source src="{{ asset('uploads/song/'~ song.audioFileName)}}" type="audio/mp3">
-                    </audio>
-                </td>
-                <td><br></td>
-            </tr>
+                <tr class="white">
+                    <td class="td3">{{ song.Name }}</td>
+                    <td class="td3">
+                        <button class=" btn btn_space btn-outline-light white_hover neon">
+                            <a class="white_hover" href="{{ path('app_album_player', {'albumId': album.id, 'songId':song.id}) }}">
+                                {% trans %}Play{% endtrans %}
+                            </a>
+                        </button>
+                        <button class="btn btn-outline-light white_hover neon" data-toggle="modal"
+                                data-target="#exampleModalLong{{ song.id }}">{% trans %}Add{% endtrans %}</button>
+                    </td>
+                </tr>
+                {% include "partials/_popupPlaylists.html.twig"%}
             {% endfor %}
-        </tbody>
-    </table>
+        </table>
 
-    <a href="{{ path('app_album_index') }}">back to list</a>
 
-    <a href="{{ path('app_album_edit', {'id': album.id}) }}">edit</a>
 
-    {{ include('album/_delete_form.html.twig') }}
+    </div>
+
 {% endblock %}

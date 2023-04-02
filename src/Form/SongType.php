@@ -16,7 +16,7 @@ class SongType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('type',ChoiceType::class, [
+            ->add('type', ChoiceType::class, [
                 'choices' => [
                     'Rap' => 'rap',
                     'Pop' => 'pop',
@@ -44,7 +44,7 @@ class SongType extends AbstractType
             ->add('audioFileName', FileType::class, [
                 'label'=> 'Song (MP3 file)',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '6000k',

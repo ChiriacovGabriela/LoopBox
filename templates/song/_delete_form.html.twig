@@ -1,6 +1,6 @@
-<form method="post" action="{{ path('app_song_delete', {'id': song.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+<form method="post" action="{{ path('app_song_delete', {'id': song.id}) }}" onsubmit="return confirm({% trans %}'Are you sure you want to delete this item?'{% endtrans %});">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ song.id) }}">
-    <button class="btn1 btn btn-outline-light btn-lg px-5 red-color neon">Delete</button>
+    <button class="red-color neon btn_space btn btn-outline-light">{% trans %}Delete{% endtrans %}</button>
 </form>
 
 

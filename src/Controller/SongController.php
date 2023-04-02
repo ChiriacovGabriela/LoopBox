@@ -22,6 +22,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
+
 #[Route('/song')]
 class  SongController extends AbstractController
 {
@@ -192,6 +193,8 @@ class  SongController extends AbstractController
             'form' => $form,
             'isSong' => true,
             'isPlaylist' => false,
+            'isAlbum' => false,
+            'isFavoris' => false,
             'next' => array_key_exists($selectedSongKey + 1, $songs) ? $songs[$selectedSongKey + 1] : null,
             'prev' => array_key_exists($selectedSongKey - 1, $songs) ? $songs[$selectedSongKey - 1] : null,
             'comments' => $commentRepository->findAll()
@@ -223,4 +226,54 @@ class  SongController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('app_song_player', ['id'=>$id], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/favoris/{id}', name:'app_song_favoris')]
+    public function favoris()
+    {
+        return $this->render('user/favorites.html.twig');
+    }
+
+
+    #[Route('/favoris/{userId}/song/{songId}/player', name:'app_song_favoris_player')]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('song', options: ['id' => 'songId'])]
+    public function playerLikedSongs(CommentRepository $commentRepository, Request $request,EntityManagerInterface $em,Song $song, SongRepository $songRepository): Response
+    {
+
+        $favoriteSongs = $this->getUser()->getFavoris()->toArray();
+
+        $selectedSongKey = null;
+        foreach ($favoriteSongs as $key => $value) {
+            if ($value->getId() === $song->getId()) {
+                $selectedSongKey = $key;
+            }
+        }
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser());
+            $comment->setSong($song);
+            $em->persist($comment);
+            $em->flush();
+        }
+
+        return $this->render('player/index.html.twig', [
+            'song' => $song,
+            'form' => $form,
+            'user' => $this->getUser(),
+            'isSong' => false,
+            'isPlaylist' => false,
+            'isAlbum' => false,
+            'isFavoris' => true,
+            'next' => array_key_exists($selectedSongKey + 1, $favoriteSongs) ? $favoriteSongs[$selectedSongKey + 1] : null,
+            'prev' => array_key_exists($selectedSongKey - 1, $favoriteSongs) ? $favoriteSongs[$selectedSongKey - 1] : null,
+            'comments' => $commentRepository->findAll()
+        ]);
+
+
+    }
+
+
 }

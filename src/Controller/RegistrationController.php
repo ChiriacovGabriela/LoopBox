@@ -16,13 +16,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
+
+
+
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
+
     public function register(Request $request,
                              UserPasswordHasherInterface $userPasswordHasher,
                              EntityManagerInterface $entityManager,
                              SendMailHandler $mailer): Response
+
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -41,6 +46,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // do anything else you need here, like send an email
+
             $mailer->sendEmail($user);
 
             return $this->redirectToRoute('app_homepage');

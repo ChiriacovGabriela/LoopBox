@@ -22,7 +22,6 @@
 .buttons_block {
     display: inline-block;
     padding-left: 545px;
-
 }
 .position_right {
     float: right;
@@ -30,4 +29,3 @@
 .buttons_space {
     margin-right: 40px;
 }
-
