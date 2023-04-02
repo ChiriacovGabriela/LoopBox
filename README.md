@@ -4,6 +4,12 @@ LoopBox est un site de streaming audio. Il permet non seulement d'écouter de la
 On peut acceder au site sans être connecté à un compte utilisateur pour écouter les musiques disponibles.
 Le site est disponible en anglais et en français.
 
+## Technologies
+La grande majorité de notre site est codé en PHP avec les templates en Twig.
+Nous avons ajouté un système de filtre à l'aide de JavaScript.
+
+## Fonctionnalités
+
 ### Création de compte
 Lors de la création du compte, il est demandé de renseigner son prénom, son nom, ses préfences musicales, son email et un mot de passe. L'email doit être unique pour chaque compte.
 A la suite de votre création de compte, vous recevrez un mail de confirmation.
