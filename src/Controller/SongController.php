@@ -120,6 +120,7 @@ class  SongController extends AbstractController
                 $song->setPictureFileName($newFilename);
             }
 
+
             $songRepository->save($song, true);
 
             return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
