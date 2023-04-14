@@ -24,32 +24,9 @@
                             <p>{{ song.artist }}</p>
                         </div>
 
+
                         {% if prev %}
-
-
-                            {% if isHomepage is defined %}
-                                <a  href="{{ path('app_homepage_player',{id: prev.id})  }}"
-                            {% endif %}
-
-
-                            {% if playlist is defined %}
-
-                                 <a  href="{{ path('app_playlist_player',{'playlistId': playlist.id, 'songId': prev.id}) }}" >
-
-                            {% endif %}
-
-                            {% if isSong is defined %}
-                                <a href="{{ path('app_song_player',{id: prev.id}) }}" >
-                            {% endif %}
-
-                            {% if album is defined %}
-                                <a  href="{{ path('app_album_player',{'albumId': album.id, 'songId': prev.id}) }}" >
-                            {% endif %}
-
-                             {% if isFavoris is defined %}
-                                 <a href="{{ path('app_song_favoris_player',{'userId': user.id, 'songId': prev.id}) }}">
-                             {% endif%}
-
+                            {%include "partials/_playerRedirection.html.twig" with { 'idSong':prev.id }  %}
                         {% endif %}
 
 
@@ -70,29 +47,7 @@
                         </audio>
 
                         {% if next %}
-
-                            {% if isHomepage is defined  %}
-                                <a href="{{ path('app_homepage_player',{id:next.id}) }}"
-                            {% endif %}
-
-                            {% if playlist is defined  %}
-                                <a href="{{ path('app_playlist_player',{'playlistId': playlist.id, 'songId': next.id}) }}" >
-                            {% endif %}
-
-                            {% if isSong is defined  %}
-                                 <a href="{{ path('app_song_player',{id: next.id}) }}" >
-                            {% endif %}
-
-                            {% if album is defined %}
-                                 <a href="{{ path('app_album_player',{'albumId': album.id, 'songId': next.id}) }}" >
-                            {% endif %}
-
-                            {% if isFavoris is defined %}
-                                  <a href="{{ path('app_song_favoris_player',{'userId': user.id, 'songId': next.id}) }}">
-
-                            {% endif %}
-
-
+                            {%include "partials/_playerRedirection.html.twig" with { 'idSong':next.id }  %}
                         {% endif %}
 
                         <button class="no_bg_border">

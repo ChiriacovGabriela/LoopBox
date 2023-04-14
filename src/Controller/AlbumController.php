@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Album;
 use App\Entity\Song;
 use App\Form\AlbumType;
+use App\FormHandler\CommentHandler;
 use App\FormHandler\UploadFileHandler;
 use App\Repository\AlbumRepository;
 use App\Repository\PlaylistRepository;
@@ -19,9 +20,6 @@ use App\Repository\CommentRepository;
 use App\Entity\Comment;
 use App\Form\CommentFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-
-
-
 
 
 #[Route('/album')]
@@ -157,7 +155,10 @@ class AlbumController extends AbstractController
     #[Route('/{albumId}/song/{songId}/player', name: 'app_album_player')]
     #[Entity('album', options: ['id' => 'albumId'])]
     #[Entity('song', options: ['id' => 'songId'])]
-    public function player(Request $request, EntityManagerInterface $em, Album $album, AlbumRepository $albumRepository, CommentRepository $commentRepository, Song $song): Response
+    public function player(Request $request, EntityManagerInterface $em,
+                           Album $album, AlbumRepository $albumRepository,
+                           CommentRepository $commentRepository, Song $song,
+                           CommentHandler $commentHandler): Response
     {
         $albumSongs = $album->getSongs()->toArray();
 
@@ -173,20 +174,13 @@ class AlbumController extends AbstractController
         $form->handleRequest($request);
         //dd($form);
         if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setUser($this->getUser());
-            $comment->setSong($song);
-            $em->persist($comment);
-            $em->flush();
+            $commentHandler->addComment($comment, $song,$this->getUser());
         }
 
         return $this->render('player/index.html.twig', [
             'name' => 'app_album_player',
             'song' => $song,
             'form' => $form,
-            //'isSong' => false,
-            //'isAlbum' => true,
-            //'isPlaylist' => false,
-            //'isFavoris' => false,
             'album' => $albumRepository->find($album->getId()),
             'next' => array_key_exists($selectedSongKey + 1, $albumSongs) ? $albumSongs[$selectedSongKey + 1] : null,
             'prev' => array_key_exists($selectedSongKey - 1, $albumSongs) ? $albumSongs[$selectedSongKey - 1] : null,

@@ -37,21 +37,12 @@ class PlaylistController extends AbstractController
     public function index(Request $request,SongRepository $songRepository, Playlist $playlist): Response
 
     {
-        //dd($playlistRepository->find($playlist->getId())->getSongs()->toArray());
         $page = $request->query->getInt('page', 1);
-        //$songs = $songRepository->findSongsPaginated($playlist, $page, 2);
         //on recupere les filtres
         $filters = $request->get('type');
         if ($filters != null) {
             //on recupere les bonnes chansons en fonction des filtres
             $songs = $songRepository->findSongsByType($filters);
-
-            //$filteredPlaylistSongs = $songRepository->findSongsByPlaylistAndType($playlist, $filters);
-        //} else {
-            //$songs = $songRepository->findAll();
-            //$filteredPlaylistSongs = $playlist->getSongs();
-
-            //$filteredPlaylistSongs = $songRepository->findSongsPaginated($playlist, $page, 2);
             $filteredPlaylistSongs = $songRepository->findSongsByPlaylistAndType($playlist, $filters, $page, 5);
         } else {
             $songs = $songRepository->findAll();
@@ -115,9 +106,6 @@ class PlaylistController extends AbstractController
                          UploadFileHandler $uploadFileHandler,
                          PlaylistFormHandler $playlistFormHandler): Response
     {
-        // ajouter la date pour update
-        //$playlist->setUpdated_at(new \DateTimeImmutable());
-
         //On crée le formulaire
         $playlistForm = $this->createForm(PlaylistFormType::class, $playlist);
         // On traite la requete du formulaire
@@ -149,17 +137,9 @@ class PlaylistController extends AbstractController
         if (!$playlist || !$song) {
             throw new NotFoundHttpException();
         }
-
         // Add the song to the playlist
         $playlist->addSongPlaylist($song);
-        //dd($playlistId);
-
-        // Persist the changes to the database
-        //$em->persist($playlist);
         $em->flush();
-
-
-        //dd($playlistId);
 
         return $this->redirectToRoute('app_playlist', [
             'id' => $playlist->getId(),
@@ -169,41 +149,16 @@ class PlaylistController extends AbstractController
     #[Route('/playlist/{playlistId}/dsong/{songId}', name: 'delete_song_playlist')]
     #[Entity('playlist', options: ['id' => 'playlistId'])]
     #[Entity('song', options: ['id' => 'songId'])]
-
-    //public function deleteSongPlaylist(Playlist $playlist, Song $song, EntityManagerInterface $em): Response
-
     public function deleteSongPlaylist(Playlist $playlist, Song $song, SongRepository $songRepository, PlaylistRepository $playlistRepository, EntityManagerInterface $em, Request $request): Response
 
     {
-
         // Check if the playlist and song exist
         if (!$playlist || !$song) {
             throw new NotFoundHttpException();
         }
-
         // Add the song to the playlist
         $playlist->removeSong($song);
-        //dd($playlistId);
-
-        // Persist the changes to the database
-
-        /*$em->persist($playlist);
         $em->flush();
-
-        //dd($playlistId);
-
-        /*return $this->render('playlist/index.html.twig', [
-            'playlist' => $playlistRepository->find($playlistId),
-            'song' => $songId,
-            'songs' => $songRepository->findAll(),
-        ]);*/
-
-
-
-        //$em->persist($playlist);
-        $em->flush();
-
-        //dd($playlistId);
 
         return $this->redirectToRoute('app_playlist', [
             'id' => $playlist->getId(),
@@ -216,8 +171,6 @@ class PlaylistController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $playlist->getId(), $request->request->get('_token'))) {
             $playlistRepository->remove($playlist, true);
         }
-
-
         return $this->redirectToRoute('app_user', [
             'userId' => $this->getUser()->getId()]);
     }
@@ -225,9 +178,7 @@ class PlaylistController extends AbstractController
     #[Route('/playlist/{playlistId}/song/{songId}/player', name: 'app_playlist_player')]
     #[Entity('playlist', options: ['id' => 'playlistId'])]
     #[Entity('song', options: ['id' => 'songId'])]
-    public function player(Request $request,
-                           EntityManagerInterface $em,
-                           Song $song, Playlist $playlist,
+    public function player(Request $request, Song $song, Playlist $playlist,
                            PlaylistRepository $playlistRepository,
                            CommentRepository $commentRepository,
                            CommentHandler $commentHandler): Response
@@ -245,25 +196,18 @@ class PlaylistController extends AbstractController
         $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
 
-        $user = $this->getUser();
-
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $commentHandler->addComment($comment, $song,$user);
+            $commentHandler->addComment($comment, $song,$this->getUser());
         }
 
           return $this->render('player/index.html.twig', [
             'name' => 'app_playlist_player',
             'song' => $song,
             'form' => $form,
-            //'isSong' => false,
-            //'isAlbum' => false,
-            //'isFavoris' => false,
-            //'isPlaylist' => true,
             'playlist' => $playlistRepository->find($playlist->getId()),
             'next' => array_key_exists($selectedSongKey + 1, $playlistSongs) ? $playlistSongs[$selectedSongKey + 1] : null,
             'prev' => array_key_exists($selectedSongKey - 1, $playlistSongs) ? $playlistSongs[$selectedSongKey - 1] : null,
-             'comments' => $commentRepository->findAll()
+            'comments' => $commentRepository->findAll()
         ]);
     }
 
@@ -273,27 +217,16 @@ class PlaylistController extends AbstractController
     #[Entity('song', options: ['id' => 'songId'])]
     public function addSongHomepage(Playlist $playlist, Song $song, EntityManagerInterface $em): Response
     {
-
         // Check if the playlist and song exist
         if (!$playlist || !$song) {
             throw new NotFoundHttpException();
         }
-
         // Add the song to the playlist
         $playlist->addSongPlaylist($song);
-        //dd($playlistId);
 
         // Persist the changes to the database
         $em->persist($playlist);
         $em->flush();
-
-        //dd($playlistId);
-        /*return $this->render('homepage/index.html.twig', [
-            'playlist' => $playlistRepository->find($playlist),
-            'song' => $song,
-            'songs' => $songRepository->findAll(),
-            'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
-        ]);*/
         return $this->redirectToRoute('app_homepage');
 
     }
