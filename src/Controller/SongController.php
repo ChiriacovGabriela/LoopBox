@@ -6,11 +6,11 @@ use App\Entity\Comment;
 use App\Entity\Song;
 use App\Form\CommentFormType;
 use App\Form\SongType;
-
+use App\FormHandler\CommentHandler;
 use App\Repository\CommentRepository;
 use App\FormHandler\UploadFileHandler;
-use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 #[Route('/song')]
-class SongController extends AbstractController
+class  SongController extends AbstractController
 {
     #[Route('/', name: 'app_song_index', methods: ['GET'])]
     public function index(SongRepository $songRepository): Response
@@ -50,17 +50,8 @@ class SongController extends AbstractController
             $songFile = $form->get('audioFileName')->getData();
             $imageFile = $form->get('pictureFileName')->getData();
             if ($songFile) {
-                $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $songFile->guessExtension();
-                try {
-                    $songFile->move(
-                        $this->getParameter('song_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+                $directory = $this->getParameter('song_directory');
+                $newFilename = $uploadFileHandler->upload($slugger, $songFile, $directory);
                 $song->setAudioFileName($newFilename);
             }
             if ($imageFile) {
@@ -119,18 +110,8 @@ class SongController extends AbstractController
             $songFile = $form->get('audioFileName')->getData();
             $imageFile = $form->get('pictureFileName')->getData();
             if ($songFile) {
-                $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $songFile->guessExtension();
-
-                try {
-                    $songFile->move(
-                        $this->getParameter('song_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+                $directory = $this->getParameter('song_directory');
+                $newFilename = $uploadFileHandler->upload($slugger, $songFile, $directory);
                 $song->setAudioFileName($newFilename);
             }
             if ($imageFile) {
@@ -138,7 +119,6 @@ class SongController extends AbstractController
                 $newFilename = $uploadFileHandler->upload($slugger, $imageFile, $directory);
                 $song->setPictureFileName($newFilename);
             }
-
 
             $songRepository->save($song, true);
 
@@ -167,7 +147,9 @@ class SongController extends AbstractController
     }
 
     #[Route('/{id}/player', name: 'app_song_player', methods: ['GET','POST'], requirements: ['id' => '\d+'])]
-    public function player(CommentRepository $commentRepository, PlaylistRepository $playlistRepository,Request $request,EntityManagerInterface $em,Song $song, SongRepository $songRepository): Response
+    public function player(CommentRepository $commentRepository, Request $request,
+                           Song $song, SongRepository $songRepository,
+                           CommentHandler $commentHandler): Response
     {
         $songs = $songRepository->findBy(['user' => $this->getUser()]);
 
@@ -182,19 +164,13 @@ class SongController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setUser($this->getUser());
-            $comment->setSong($song);
-            $em->persist($comment);
-            $em->flush();
+            $commentHandler->addComment($comment, $song,$this->getUser());
         }
 
         return $this->render('player/index.html.twig', [
             'song' => $song,
             'form' => $form,
             'isSong' => true,
-            'isPlaylist' => false,
-            'isAlbum' => false,
-            'isFavoris' => false,
             'next' => array_key_exists($selectedSongKey + 1, $songs) ? $songs[$selectedSongKey + 1] : null,
             'prev' => array_key_exists($selectedSongKey - 1, $songs) ? $songs[$selectedSongKey - 1] : null,
             'comments' => $commentRepository->findAll()
@@ -237,7 +213,8 @@ class SongController extends AbstractController
     #[Route('/favoris/{userId}/song/{songId}/player', name:'app_song_favoris_player')]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('song', options: ['id' => 'songId'])]
-    public function playerLikedSongs(CommentRepository $commentRepository, Request $request,EntityManagerInterface $em,Song $song, SongRepository $songRepository): Response
+    public function playerLikedSongs(CommentRepository $commentRepository, Request $request,
+                                     Song $song, CommentHandler $commentHandler): Response
     {
 
         $favoriteSongs = $this->getUser()->getFavoris()->toArray();
@@ -253,19 +230,13 @@ class SongController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setUser($this->getUser());
-            $comment->setSong($song);
-            $em->persist($comment);
-            $em->flush();
+            $commentHandler->addComment($comment, $song,$this->getUser());
         }
 
         return $this->render('player/index.html.twig', [
             'song' => $song,
             'form' => $form,
             'user' => $this->getUser(),
-            'isSong' => false,
-            'isPlaylist' => false,
-            'isAlbum' => false,
             'isFavoris' => true,
             'next' => array_key_exists($selectedSongKey + 1, $favoriteSongs) ? $favoriteSongs[$selectedSongKey + 1] : null,
             'prev' => array_key_exists($selectedSongKey - 1, $favoriteSongs) ? $favoriteSongs[$selectedSongKey - 1] : null,

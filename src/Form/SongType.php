@@ -47,7 +47,7 @@ class SongType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new File([
-                        'maxSize' => '6000k',
+                        'maxSize' => '10000k',
                         'mimeTypes' => [
                             'audio/mpeg',
 

@@ -146,12 +146,10 @@ class Playlist
 
     public function removeSong(Song $song): self
     {
-        //dd($song);
         if ($this->songs->contains($song)) {
             $this->songs->removeElement($song);
             $song->removePlaylist($this);
         }
-
         return $this;
     }
 

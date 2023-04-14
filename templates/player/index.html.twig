@@ -26,35 +26,16 @@
 
 
                         {% if prev %}
-
-
-                            {% if not isPlaylist  and not isSong and not isAlbum and not isFavoris  %}
-                                <a  href="{{ path('app_homepage_player',{id: prev.id})  }}"
-                            {% endif %}
-
-                            {% if not isSong and isPlaylist %}
-                                <a  href="{{ path('app_playlist_player',{'playlistId': playlist.id, 'songId': prev.id}) }}" >
-                            {% endif %}
-
-                            {% if isSong %}
-                                <a href="{{ path('app_song_player',{id: prev.id}) }}" >
-                            {% endif %}
-
-                            {% if isAlbum %}
-                                <a  href="{{ path('app_album_player',{'albumId': album.id, 'songId': prev.id}) }}" >
-                            {% endif %}
-
-                             {% if isFavoris %}
-                                 <a href="{{ path('app_song_favoris_player',{'userId': user.id, 'songId': prev.id}) }}">
-                             {% endif%}
-
+                            {%include "partials/_playerRedirection.html.twig" with { 'idSong':prev.id }  %}
                         {% endif %}
+
 
                         <button class="no_bg_border">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left black t" viewBox="0 0 16 16">
-                               <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                               <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                             </svg>
+
                         </button>
 
                         {% if prev %}
@@ -62,32 +43,11 @@
                         {% endif %}
 
                         <audio controls class="audio" onclick="this.nextElementSibling.play()">
-                           <source src="{{ asset('uploads/song/'~ song.audioFileName)}}" type="audio/mp3">
+                            <source src="{{ asset('uploads/song/'~ song.audioFileName)}}" type="audio/mp3">
                         </audio>
 
                         {% if next %}
-
-                            {% if not isPlaylist  and not isSong and not isAlbum and not isFavoris  %}
-                                <a href="{{ path('app_homepage_player',{id:next.id}) }}"
-                            {% endif %}
-
-                            {% if not isSong and isPlaylist  %}
-                                <a href="{{ path('app_playlist_player',{'playlistId': playlist.id, 'songId': next.id}) }}" >
-                            {% endif %}
-
-                            {% if isSong  %}
-                                 <a href="{{ path('app_song_player',{id: next.id}) }}" >
-                            {% endif %}
-
-                            {% if isAlbum %}
-                                 <a href="{{ path('app_album_player',{'albumId': album.id, 'songId': next.id}) }}" >
-                            {% endif %}
-
-                            {% if isFavoris %}
-                                  <a href="{{ path('app_song_favoris_player',{'userId': user.id, 'songId': next.id}) }}">
-                            {% endif %}
-
-
+                            {%include "partials/_playerRedirection.html.twig" with { 'idSong':next.id }  %}
                         {% endif %}
 
                         <button class="no_bg_border">
@@ -98,7 +58,7 @@
                         </button>
 
                         {% if next %}
-                           </a>
+                            </a>
                         {% endif %}
 
                     </div>
@@ -154,5 +114,6 @@
         </div>
 
     </section>
+
 
 {% endblock %}

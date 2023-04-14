@@ -14,7 +14,6 @@
         form: form ?? null
     } only %}
 
-
     <form id="filters" class="white center margin_bottom">
         {% for genre in genres %}
             <div class="form-check form-check-inline">
@@ -24,20 +23,19 @@
         {% endfor %}
     </form>
 
-
     <table class="table noline">
-            <thead>
-            <tr class="white">
-                <th class="th2">{% trans %}Title{% endtrans %}</th>
-                <th class="th2">Type</th>
-                <th class="th2">{% trans %}Artist{% endtrans %}</th>
-                <th class="th2"></th>
-                <th class="th2"></th>
-            </tr>
-            </thead>
-            <tbody id="content">
-            {% include "homepage/_content.html.twig" %}
-            </tbody>
+        <thead>
+        <tr class="white">
+            <th class="th2">{% trans %}Title{% endtrans %}</th>
+            <th class="th2">Type</th>
+            <th class="th2">{% trans %}Artist{% endtrans %}</th>
+            <th class="th2"></th>
+            <th class="th2"></th>
+        </tr>
+        </thead>
+        <tbody id="content">
+        {% include "homepage/_content.html.twig" %}
+        </tbody>
     </table>
 
     {% block javascripts %}
@@ -60,5 +58,3 @@
 
 
 {% endblock %}
-
-

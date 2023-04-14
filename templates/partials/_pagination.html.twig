@@ -2,31 +2,31 @@
 {% set queryString = queryParams|filter((v,k) => k != "page" and k != "ajax")|url_encode %}
 {% if pages >= 1 %}
 
-  <div class="inline position_right padding_right">
-  <ul class="inline">
-    {% if currentPage > 1 %}
-        <li class="inline">
-            <a href="{{ path(path, {id: playlistId, page: currentPage - 1}) }}&{{ queryString }}" class="inline pagination_hover">&lt;</a>
-        </li>
-    {% else %}
-        <li class="inline">
-            <a class="inline pagination_hover">&lt;</a>
-        </li>
-    {% endif %}
-    {% for page in 1..pages %}
-        <li class="inline">
-            <a href="{{ path(path, {id: playlistId, page: page}) }}&{{ queryString }}" class="inline pagination_hover">{{ page }}</a>
-        </li>
-    {% endfor %}
-    {% if currentPage < pages %}
-         <li class="inline">
-            <a href="{{ path(path, {id: playlistId, page: currentPage + 1}) }}&{{ queryString }}" class="inline pagination_hover">&gt;</a>
-         </li>
-    {% else %}
-          <li class="inline">
-             <a class="inline pagination_hover">&gt;</a>
-          </li>
-    {% endif %}
-  </ul></div>
+    <div class="inline position_right padding_right">
+        <ul class="inline">
+            {% if currentPage > 1 %}
+                <li class="inline">
+                    <a href="{{ path(path, {id: playlistId, page: currentPage - 1}) }}&{{ queryString }}" class="inline pagination_hover">&lt;</a>
+                </li>
+            {% else %}
+                <li class="inline">
+                    <a class="inline pagination_hover">&lt;</a>
+                </li>
+            {% endif %}
+            {% for page in 1..pages %}
+                <li class="inline">
+                    <a href="{{ path(path, {id: playlistId, page: page}) }}&{{ queryString }}" class="inline pagination_hover">{{ page }}</a>
+                </li>
+            {% endfor %}
+            {% if currentPage < pages %}
+                <li class="inline">
+                    <a href="{{ path(path, {id: playlistId, page: currentPage + 1}) }}&{{ queryString }}" class="inline pagination_hover">&gt;</a>
+                </li>
+            {% else %}
+                <li class="inline">
+                    <a class="inline pagination_hover">&gt;</a>
+                </li>
+            {% endif %}
+        </ul></div>
 
 {% endif %}
