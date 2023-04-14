@@ -10,8 +10,6 @@ Use App\Form\CommentFormType;
 
 use App\FormHandler\CommentHandler;
 
-use App\Repository\AlbumRepository;
-
 use App\Repository\CommentRepository;
 
 use App\Repository\PlaylistRepository;
@@ -258,10 +256,10 @@ class PlaylistController extends AbstractController
             'name' => 'app_playlist_player',
             'song' => $song,
             'form' => $form,
-            'isSong' => false,
-            'isAlbum' => false,
-            'isFavoris' => false,
-            'isPlaylist' => true,
+            //'isSong' => false,
+            //'isAlbum' => false,
+            //'isFavoris' => false,
+            //'isPlaylist' => true,
             'playlist' => $playlistRepository->find($playlist->getId()),
             'next' => array_key_exists($selectedSongKey + 1, $playlistSongs) ? $playlistSongs[$selectedSongKey + 1] : null,
             'prev' => array_key_exists($selectedSongKey - 1, $playlistSongs) ? $playlistSongs[$selectedSongKey - 1] : null,

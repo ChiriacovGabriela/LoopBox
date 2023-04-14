@@ -27,7 +27,7 @@
                         {% if prev %}
 
 
-                            {% if not isPlaylist  and not isSong and not isAlbum and not isFavoris  %}
+                            {% if isHomepage is defined %}
                                 <a  href="{{ path('app_homepage_player',{id: prev.id})  }}"
                             {% endif %}
 
@@ -38,15 +38,15 @@
 
                             {% endif %}
 
-                            {% if isSong %}
+                            {% if isSong is defined %}
                                 <a href="{{ path('app_song_player',{id: prev.id}) }}" >
                             {% endif %}
 
-                            {% if isAlbum %}
+                            {% if album is defined %}
                                 <a  href="{{ path('app_album_player',{'albumId': album.id, 'songId': prev.id}) }}" >
                             {% endif %}
 
-                             {% if isFavoris %}
+                             {% if isFavoris is defined %}
                                  <a href="{{ path('app_song_favoris_player',{'userId': user.id, 'songId': prev.id}) }}">
                              {% endif%}
 
@@ -71,23 +71,23 @@
 
                         {% if next %}
 
-                            {% if not isPlaylist  and not isSong and not isAlbum and not isFavoris  %}
+                            {% if isHomepage is defined  %}
                                 <a href="{{ path('app_homepage_player',{id:next.id}) }}"
                             {% endif %}
 
-                            {% if not isSong and isPlaylist  %}
+                            {% if playlist is defined  %}
                                 <a href="{{ path('app_playlist_player',{'playlistId': playlist.id, 'songId': next.id}) }}" >
                             {% endif %}
 
-                            {% if isSong  %}
+                            {% if isSong is defined  %}
                                  <a href="{{ path('app_song_player',{id: next.id}) }}" >
                             {% endif %}
 
-                            {% if isAlbum %}
+                            {% if album is defined %}
                                  <a href="{{ path('app_album_player',{'albumId': album.id, 'songId': next.id}) }}" >
                             {% endif %}
 
-                            {% if isFavoris %}
+                            {% if isFavoris is defined %}
                                   <a href="{{ path('app_song_favoris_player',{'userId': user.id, 'songId': next.id}) }}">
 
                             {% endif %}

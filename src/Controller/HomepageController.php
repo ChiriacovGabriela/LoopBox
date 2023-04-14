@@ -17,7 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HomepageController extends AbstractController
 {
@@ -98,10 +97,7 @@ class HomepageController extends AbstractController
 
         return $this->render('player/index.html.twig', [
             'name'=>'app_homepage_player',
-            'isPlaylist'=> false,
-            'isSong' => false,
-            'isAlbum' => false,
-            'isFavoris' => false,
+            'isHomepage'=> true,
             'song' => $song,
             'form' => $form,
             'next' => array_key_exists($selectedSongKey + 1, $allSongs) ? $allSongs[$selectedSongKey + 1] : null,
