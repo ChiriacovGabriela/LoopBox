@@ -1,4 +1,4 @@
-.background2 {
+.bg_player {
     background-image: url("https://images.unsplash.com/photo-1530128051436-3ab3663a4683?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
     background-size: cover;
     background-position: center;
@@ -21,15 +21,14 @@
 .black:hover {
     color: black;
 }
-.no_bg_border{
-    border: none;
-    background-color: transparent;
-}
-.audio{
+.padding_audio{
     padding-top: 0px;
 }
-.inline{
-    display: inline-block;
+audio {
+    width: 300px;
+    height: 35px;
+    overflow: hidden;
+
 }
 .top-comment{
     padding-top: 30px;
@@ -53,7 +52,7 @@
     padding-right: 470px;
     float: right;
 }
-.t{
+.bottom23{
     margin-bottom: 23px;
 }
 

@@ -10,7 +10,7 @@
     {% include "partials/_nav_bar.html.twig" %}
 
 
-    <div class="jumbotron text-center background_playlist">
+    <div class="jumbotron text-center background_playlist bg_properties">
 
         <div class="container">
             <h1 class="red-color neon center title">Playlist {{ playlist.name }}</h1>
@@ -29,65 +29,58 @@
                     {% trans %}Add Song{% endtrans %}
                 </button>
 
-                <a href="{{ path('app_playlist_edit',{id: playlist.id}) }}" class="btn btn-outline-light btn_margin">{% trans %}Edit
-                        playlist{% endtrans %}</a>
-
+                <a href="{{ path('app_playlist_edit',{id: playlist.id}) }}" class="btn btn-outline-light btn_margin">
+                    {% trans %}Edit{% endtrans %} playlist</a>
 
                 {{ include('playlist/_delete_form.html.twig') }}
 
-            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content color_popup2">
-                        <div class="modal-header color_popup">
-                            <h5 class="modal-title red-color" id="exampleModalLongTitle">{% trans %}All songs{% endtrans %}</h5>
-                            <button type="button" class="close btn_add_close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="filtre white">
-
-                            <p>Select by type</p>
-                            <form id="filtersPopup">
-                                {% for genre in genres %}
-                                    {% if queryParams is not empty and queryParams.type is defined %}
-                                        {% set checked = (genre in queryParams.type) ? "checked" : "" %}
-                                    {% else %}
-                                        {% set checked = "" %}
-                                    {% endif %}
-                                    <div class="form-check form-check-inline">
-                                        <input type="checkbox" name="type[]" id="{{ genre }}" value="{{ genre }}" {{ checked }}>
-                                        <label for="{{ genre }}">{{ genre }}</label>
-
-                                    </div>
-                                {% endfor %}
-                            </form>
-                        </div>
-                        <div class="modal-body">
-
-                            <table class="table">
-                                <thead>
-                                <tr class="white">
-                                    <th class="td1">{% trans %}Title{% endtrans %}</th>
-                                    <th class="td1">{% trans %}Artist{% endtrans %}</th>
-                                    <th class="td1">{% trans %}Type{% endtrans %}</th>
-                                    <th class="td1"></th>
-                                </tr>
-                                </thead>
-
-                                <tbody id="contentPopup">
-                                {% include "playlist/_contentPopup.html.twig" %}
-                                </tbody>
-
-                            </table>
+                <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content color_popup2">
+                            <div class="modal-header color_popup">
+                                <h5 class="modal-title red-color" id="exampleModalLongTitle">{% trans %}All songs{% endtrans %}</h5>
+                                <button type="button" class="close btn_add_close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="filtre white">
+                                <div>{% trans %}Select by type{% endtrans %}</div>
+                                <form id="filtersPopup">
+                                    {% for genre in genres %}
+                                        {% if queryParams is not empty and queryParams.type is defined %}
+                                            {% set checked = (genre in queryParams.type) ? "checked" : "" %}
+                                        {% else %}
+                                            {% set checked = "" %}
+                                        {% endif %}
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" name="type[]" id="{{ genre }}" value="{{ genre }}" {{ checked }}>
+                                            <label for="{{ genre }}">{{ genre }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </form>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr class="white">
+                                        <th class="td1">{% trans %}Title{% endtrans %}</th>
+                                        <th class="td1">{% trans %}Artist{% endtrans %}</th>
+                                        <th class="td1">{% trans %}Type{% endtrans %}</th>
+                                        <th class="td1"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="contentPopup">
+                                        {% include "playlist/_contentPopup.html.twig" %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </p>
         </div>
         <div class="filtre white">
-            <p>Select by type</p>
+            <p>{% trans %}Select by type{% endtrans %}</p>
             <form id="filters">
                 {% for genre in genres %}
                     {% if queryParams is not empty and queryParams.type is defined %}
@@ -138,8 +131,7 @@
 
 
             <tbody id="content">
-            {% include "playlist/_content.html.twig" %}
-
+                {% include "playlist/_content.html.twig" %}
             </tbody>
         </table>
     </div>

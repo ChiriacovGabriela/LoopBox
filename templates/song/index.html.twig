@@ -6,7 +6,7 @@
 
     {% include "partials/_nav_bar.html.twig" %}
 
-    <div class="background_song">
+    <div class="background_song bg_properties">
 
     <h1 class="red-color neon center title">{% trans %}Songs that you have added on LoopBox{% endtrans %}</h1>
 
@@ -45,7 +45,14 @@
         </tbody>
     </table>
 
-    <div class="center btn1"><button class="btn btn-outline-light btn-lg px-5"><a class="white_hover neon" href="{{ path('app_song_new') }}">{% trans %}Add song{% endtrans %}</a></button></div>
+    <div class="center btn1">
+        <button class="btn btn-outline-light btn-lg px-5">
+            <a class="white_hover neon" href="{{ path('app_song_new') }}">
+                {% trans %}Add song{% endtrans %}
+            </a>
+        </button>
+    </div>
+
     </div>
 
 {% endblock %}

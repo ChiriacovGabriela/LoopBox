@@ -6,12 +6,19 @@
 
     {% include "partials/_nav_bar.html.twig" %}
 
-    <div class="bg_show_album">
+    <div class="bg_show_album bg_properties">
+
         <h1 class="center neon red-color title">{% trans %}Album details{% endtrans %}</h1>
 
-        <div class="center">
-            <img src="{{ asset('uploads/images/'~album.pictureFileName) }}" alt="Album" width="350" height="250">
-        </div>
+        {% if album.pictureFileName == null %}
+            <div class="center">
+                <img src="https://cdn.dribbble.com/users/1752437/screenshots/14183305/ep_4x.png" alt="Music Note" width="350" height="250">
+            </div>
+        {% else %}
+            <div class="center">
+                <img src="{{ asset('uploads/images/'~album.pictureFileName) }}" alt="Album" width="350" height="250">
+            </div>
+        {% endif %}
 
         <div class="white center text_size emphasized neon">
             {{ album.name }}, {{ album.artist }}, {{ album.type }}
@@ -26,7 +33,6 @@
             </div>
         {% endif %}
 
-
         <h2 class="center neon red-color title">{% trans %}Songs{% endtrans %}</h2>
 
         <table class="center">
@@ -40,14 +46,13 @@
                             </a>
                         </button>
                         <button class="btn btn-outline-light white_hover neon" data-toggle="modal"
-                                data-target="#exampleModalLong{{ song.id }}">{% trans %}Add{% endtrans %}</button>
+                                data-target="#exampleModalLong{{ song.id }}">{% trans %}Add{% endtrans %}
+                        </button>
                     </td>
                 </tr>
                 {% include "partials/_popupPlaylists.html.twig"%}
             {% endfor %}
         </table>
-
-
 
     </div>
 

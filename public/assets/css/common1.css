@@ -1,0 +1,71 @@
+.neon {
+    color: #fff;
+    text-shadow: 0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 42px rgb(255,0,0),
+    0 0 77px rgb(255, 0, 0),
+    0 0 100px rgb(255, 0, 0)
+}
+.red-color {
+    color: rgba(201,30,30);
+}
+.red-color:hover{
+    color: black;
+}
+.bg-color {
+    background-color: rgba(33,7,7,0.65);
+}
+.bg_properties {
+    background-size: cover;
+    background-position: center;
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
+    position: absolute;
+}
+.td1, .th1  {
+    text-align: center;
+    vertical-align: middle;
+    height: 40px;
+    width: 50px;
+}
+.td2, .th2{
+    height: 40px;
+    width: 160px;
+    text-align: center;
+    vertical-align: middle;
+}
+.th3 {
+    width: 50%;
+    text-align: right;
+    border: none;
+    font-size: large;
+}
+.td4 {
+    width: 50%;
+    text-align: left;
+    border: none;
+    font-size: large;
+}
+.td3 {
+    height: 40px;
+    width: 225px;
+    text-align: center;
+    vertical-align: middle;
+}
+a {
+    text-decoration: none;
+}
+.no_bg_border{
+    border: none;
+    background-color: transparent;
+}
+.inline{
+    display: inline-block;
+}
+.noline {
+    border: none;
+}
+.position_right {
+    float: right;
+}

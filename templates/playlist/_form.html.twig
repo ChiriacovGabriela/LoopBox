@@ -11,6 +11,10 @@
         <div>{{ form_label(playlistForm.imageFileName) }}</div>
     </div>
 
-    <div class="btn1"><button class="btn btn-outline-light btn-lg px-5" type="submit">{{ button_label| default('Create') }}</button></div>
+    {% if app.request.locale=="en" %}
+        <div class="btn1"><button class="btn btn-outline-light btn-lg px-5" type="submit">{{ button_label| default('Create') }}</button></div>
+    {% else %}
+        <div class="btn1"><button class="btn btn-outline-light btn-lg px-5" type="submit">{{ button_label| default('Créer') }}</button></div>
+    {% endif %}
 
 {{ form_end(playlistForm) }}
