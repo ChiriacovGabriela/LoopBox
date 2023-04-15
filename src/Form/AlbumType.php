@@ -36,7 +36,7 @@ class AlbumType extends AbstractType
                 'label'=> 'Song',
                 'multiple'=> true,
                 'mapped'=> false,
-                'required'=> false,
+                'required'=> true,
                 'constraints' => [
                     new All([
                         new File([

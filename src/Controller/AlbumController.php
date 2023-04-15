@@ -8,6 +8,7 @@ use App\Form\AlbumType;
 use App\FormHandler\UploadFileHandler;
 use App\Repository\AlbumRepository;
 use App\Repository\SongRepository;
+use App\Service\AlbumManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,8 +32,8 @@ class AlbumController extends AbstractController
     public function new(Request $request,EntityManagerInterface $em,SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         $album = new Album();
-        $form = $this->createForm(AlbumType::class, $album);
         $album->setUser($this->getUser());
+        $form = $this->createForm(AlbumType::class, $album);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

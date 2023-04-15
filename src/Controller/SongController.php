@@ -6,7 +6,6 @@ use App\Entity\Comment;
 use App\Entity\Song;
 use App\Form\CommentFormType;
 use App\Form\SongType;
-
 use App\Repository\CommentRepository;
 use App\FormHandler\UploadFileHandler;
 use App\Repository\SongRepository;
@@ -205,7 +204,6 @@ class SongController extends AbstractController
             throw  new NotFoundHttpException('Musique introuvable');
         }
         $song->addFavori($this->getUser());
-        $em->persist($song);
         $em->flush();
         return $this->redirectToRoute('app_song_player', ['id'=>$id], Response::HTTP_SEE_OTHER);
     }
@@ -217,7 +215,6 @@ class SongController extends AbstractController
             throw  new NotFoundHttpException('Musique introuvable');
         }
         $song->removeFavori($this->getUser());
-        $em->persist($song);
         $em->flush();
         return $this->redirectToRoute('app_song_player', ['id'=>$id], Response::HTTP_SEE_OTHER);
     }
