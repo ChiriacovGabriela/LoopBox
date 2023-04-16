@@ -34,7 +34,6 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
         $users = $entityManager->getRepository(User::class)->findAll();
 
-
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($users as $u) {
                 if ($u->getEmail() == $user->getEmail()) {
@@ -46,7 +45,6 @@ class RegistrationController extends AbstractController
             }
 
             if($user->getEmail())
-            // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -57,12 +55,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
-
-
             $mailer->sendEmail($user);
-
-            //return $this->redirectToRoute('app_homepage');
 
             return $this->redirectToRoute('app_login');
 
@@ -76,18 +69,12 @@ class RegistrationController extends AbstractController
     #[Route('/user/edit/{id}', name: 'app_user_edit')]
     public function edit(User $user, Request $request, EntityManagerInterface $em): Response
     {
-        //On crée le formulaire
         $registrationForm = $this->createForm(RegistrationFormType::class, $user);
-        // On traite la requete du formulaire
         $registrationForm->handleRequest($request);
-        // on verifie si le formulaire est soumis et valide
         if ($registrationForm->isSubmitted() && $registrationForm->isValid()) {
-            //On stock
             $em->persist($user);
             $em->flush();
 
-
-            //On redirige
             return $this->redirectToRoute('app_user',[
                 'userId'=>$user->getId()
             ]);

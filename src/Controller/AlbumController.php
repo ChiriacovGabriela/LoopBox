@@ -10,6 +10,7 @@ use App\FormHandler\UploadFileHandler;
 use App\Repository\AlbumRepository;
 use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
+use App\Service\PlayerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +35,7 @@ class AlbumController extends AbstractController
     }
 
     #[Route('/new', name: 'app_album_new', methods: ['GET', 'POST'])]
-    public function new(Request $request,EntityManagerInterface $em,SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
+    public function new(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         $album = new Album();
         $form = $this->createForm(AlbumType::class, $album);
@@ -42,23 +43,23 @@ class AlbumController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $songs= $form->get('songs')->getData();
-            $artist= $form->get('artist')->getData();
-            $type= $form->get('type')->getData();
-            $imageFile = $form ->get('pictureFileName')->getData();
-            if($imageFile){
+            $songs = $form->get('songs')->getData();
+            $artist = $form->get('artist')->getData();
+            $type = $form->get('type')->getData();
+            $imageFile = $form->get('pictureFileName')->getData();
+            if ($imageFile) {
                 $directory = $this->getParameter('image_directory');
-                $newFilename = $uploadFileHandler->upload($slugger,$imageFile,$directory);
+                $newFilename = $uploadFileHandler->upload($slugger, $imageFile, $directory);
             }
-            foreach ($songs as $song){
-                $songFile= $song;
+            foreach ($songs as $song) {
+                $songFile = $song;
                 $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $songFile =  $safeFilename.'-'.uniqid().'.'.$songFile->guessExtension();;
+                $songFile = $safeFilename . '-' . uniqid() . '.' . $songFile->guessExtension();;
                 $song->move(
-                    $this->getParameter('song_directory'),$songFile
+                    $this->getParameter('song_directory'), $songFile
                 );
-                $newSong=new Song();
+                $newSong = new Song();
                 $newSong->setUser($this->getUser());
                 $newSong->setArtist($artist);
                 $newSong->setType($type);
@@ -90,29 +91,29 @@ class AlbumController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_album_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Album $album, AlbumRepository $albumRepository,SluggerInterface $slugger,UploadFileHandler $uploadFileHandler): Response
+    public function edit(Request $request, Album $album, AlbumRepository $albumRepository, SluggerInterface $slugger, UploadFileHandler $uploadFileHandler): Response
     {
         $form = $this->createForm(AlbumType::class, $album);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $songs= $form->get('songs')->getData();
-            $artist= $form->get('artist')->getData();
-            $type= $form->get('type')->getData();
-            $imageFile = $form ->get('pictureFileName')->getData();
-            if($imageFile){
+            $songs = $form->get('songs')->getData();
+            $artist = $form->get('artist')->getData();
+            $type = $form->get('type')->getData();
+            $imageFile = $form->get('pictureFileName')->getData();
+            if ($imageFile) {
                 $directory = $this->getParameter('image_directory');
-                $newFilename = $uploadFileHandler->upload($slugger,$imageFile,$directory);
+                $newFilename = $uploadFileHandler->upload($slugger, $imageFile, $directory);
             }
-            foreach ($songs as $song){
-                $songFile= $song;
+            foreach ($songs as $song) {
+                $songFile = $song;
                 $originalFilename = pathinfo($songFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $songFile =  $safeFilename.'-'.uniqid().'.'.$songFile->guessExtension();;
+                $songFile = $safeFilename . '-' . uniqid() . '.' . $songFile->guessExtension();;
                 $song->move(
-                    $this->getParameter('song_directory'),$songFile
+                    $this->getParameter('song_directory'), $songFile
                 );
-                $newSong=new Song();
+                $newSong = new Song();
                 $newSong->setUser($this->getUser());
                 $newSong->setArtist($artist);
                 $newSong->setType($type);
@@ -139,9 +140,9 @@ class AlbumController extends AbstractController
     public function delete(Request $request, Album $album, AlbumRepository $albumRepository, SongRepository $songRepository): Response
     {
 
-        if ($this->isCsrfTokenValid('delete'.$album->getId(), $request->request->get('_token'))) {
-            $songs= $album->getSongs();
-            foreach ($songs as $song){
+        if ($this->isCsrfTokenValid('delete' . $album->getId(), $request->request->get('_token'))) {
+            $songs = $album->getSongs();
+            foreach ($songs as $song) {
                 $songRepository->remove($song, true);
             }
             $albumRepository->remove($album, true);
@@ -155,26 +156,20 @@ class AlbumController extends AbstractController
     #[Route('/{albumId}/song/{songId}/player', name: 'app_album_player')]
     #[Entity('album', options: ['id' => 'albumId'])]
     #[Entity('song', options: ['id' => 'songId'])]
-    public function player(Request $request, EntityManagerInterface $em,
-                           Album $album, AlbumRepository $albumRepository,
+    public function player(Request           $request, EntityManagerInterface $em,
+                           Album             $album, AlbumRepository $albumRepository,
                            CommentRepository $commentRepository, Song $song,
-                           CommentHandler $commentHandler): Response
+                           CommentHandler    $commentHandler, PlayerService $playerService): Response
     {
-        $albumSongs = $album->getSongs()->toArray();
+        $albumSongs = $playerService->getSongsArray($album);
 
-        $selectedSongKey = null;
-        foreach ($albumSongs as $key => $value) {
-            if ($value->getId() === $song->getId()) {
-                $selectedSongKey = $key;
-            }
-        }
+        $selectedSongKey = $playerService->getKeySongs($albumSongs, $song);
 
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
-        //dd($form);
         if ($form->isSubmitted() && $form->isValid()) {
-            $commentHandler->addComment($comment, $song,$this->getUser());
+            $commentHandler->addComment($comment, $song, $this->getUser());
         }
 
         return $this->render('player/index.html.twig', [
@@ -188,10 +183,7 @@ class AlbumController extends AbstractController
         ]);
 
 
-
-
     }
 
 
-
-    }
+}

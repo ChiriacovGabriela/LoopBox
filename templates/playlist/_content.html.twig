@@ -21,18 +21,4 @@
             </td>
         </tr>
     {% endfor %}
-    {% set path = 'app_playlist' %}
-    {% set playlistId = playlist.id %}
-    {% if filteredPlaylistSongs is not empty %}
-        {% set pages = filteredPlaylistSongs.pages %}
-        {% set currentPage = filteredPlaylistSongs.page %}
-    {% else %}
-        {% set pages = 1 %}
-        {% set currentPage = 1 %}
-    {% endif %}
-    <tr>
-
-    {% include "partials/_pagination.html.twig" %}
-
-    </tr>
 {% endif %}

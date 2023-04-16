@@ -139,9 +139,9 @@
 
             <tbody id="content">
             {% include "playlist/_content.html.twig" %}
-
             </tbody>
         </table>
+        {% include "partials/_pagination.html.twig" %}
     </div>
     {% block javascripts %}
         <script src="{{ asset("js/filters.js") }}"></script>

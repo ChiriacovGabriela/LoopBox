@@ -9,7 +9,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use PhpParser\Node\Expr\Array_;
 
 
 /**
@@ -55,14 +54,10 @@ class SongRepository extends ServiceEntityRepository
                 ->where('p.name LIKE :q')
                 ->orWhere('p.artist LIKE :q')
                 ->orWhere('p.type LIKE :q')
-                ->setParameter('q', "%{$searchData->q}%");
+                ->setParameter('q', "%$searchData->q%");
         }
-        $data = $data
-            ->getQuery()
-            ->getResult();
 
-        return $data;
-
+        return $data->getQuery()->getResult();
     }
 
     public function findSongsByType($filters)
@@ -75,8 +70,7 @@ class SongRepository extends ServiceEntityRepository
 
     public function findSongsByPlaylistAndType(Playlist $playlist, array $types, int $page, int $limit): array
     {
-        $limit= abs($limit);
-        $result = [];
+        $limit = abs($limit);
 
         $qb = $this->createQueryBuilder('s');
         $qb->leftJoin('s.playlists', 'p')
@@ -87,27 +81,12 @@ class SongRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->setFirstResult($page * $limit - $limit);
 
-        $paginator = new Paginator($qb);
-        $data = $paginator->getQuery()->getResult();
-
-        if(empty($data)){
-            return $result;
-        }
-
-        $pages = ceil($paginator->count() / $limit);
-
-        $result['data'] = $data;
-        $result['pages'] = $pages;
-        $result['page'] = $page;
-        $result['limit'] = $limit;
-
-        return $result;
+        return $this->pagination($qb, $page, $limit);
     }
 
     public function findSongsByPlaylistPaginated(Playlist $playlist, int $page, int $limit): array
     {
-        $limit= abs($limit);
-        $result = [];
+        $limit = abs($limit);
 
         $qb = $this->createQueryBuilder('s');
         $qb->leftJoin('s.playlists', 'p')
@@ -116,10 +95,16 @@ class SongRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->setFirstResult($page * $limit - $limit);
 
+        return $this->pagination($qb, $page, $limit);
+    }
+
+    private function pagination(QueryBuilder $qb, int $page, int $limit): array
+    {
+        $result = [];
         $paginator = new Paginator($qb);
         $data = $paginator->getQuery()->getResult();
 
-        if(empty($data)){
+        if (empty($data)) {
             return $result;
         }
 

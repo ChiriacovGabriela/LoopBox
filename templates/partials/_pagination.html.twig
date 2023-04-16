@@ -1,3 +1,12 @@
+{% set path = 'app_playlist' %}
+    {% set playlistId = playlist.id %}
+    {% if filteredPlaylistSongs is not empty %}
+        {% set pages = filteredPlaylistSongs.pages %}
+        {% set currentPage = filteredPlaylistSongs.page %}
+    {% else %}
+        {% set pages = 1 %}
+        {% set currentPage = 1 %}
+    {% endif %}
 {% set queryParams = app.request.query.all %}
 {% set queryString = queryParams|filter((v,k) => k != "page" and k != "ajax")|url_encode %}
 {% if pages >= 1 %}

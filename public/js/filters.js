@@ -29,7 +29,6 @@ function updateContent(formId, contentId, id) {
                 .then(response => response.json())
                 .then(data => {
                     content.innerHTML = data.content;
-                    //history.pushState({}, null, url.pathname + "?" + params.toString());
                 })
                 .catch(error => {
                     console.error(error);
