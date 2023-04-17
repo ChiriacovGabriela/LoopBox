@@ -6,7 +6,7 @@
 
     {% include "partials/_nav_bar.html.twig" %}
 
-    <div class="bg_homepage">
+    <div class="bg_homepage bg_properties">
 
     <h1 class="center red-color neon title">{% trans %}Welcome to{% endtrans %} Loopbox!</h1>
 
@@ -34,7 +34,7 @@
             </tr>
             </thead>
             <tbody id="content">
-            {% include "homepage/_content.html.twig" %}
+                {% include "homepage/_content.html.twig" %}
             </tbody>
     </table>
 
@@ -58,5 +58,3 @@
 
 
 {% endblock %}
-
-

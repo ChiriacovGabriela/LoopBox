@@ -6,7 +6,7 @@
             <td class="td2">{{ song.type }}</td>
             <td class="td2">
                 <button class="btn btn-outline-light"><a class="white_hover neon"
-                                                 href= {{ path('add_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Add</a>
+                      href= {{ path('add_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>{% trans %}Add{% endtrans %}</a>
                 </button>
             </td>
         </tr>
@@ -14,6 +14,6 @@
 {% endfor %}
 {% if allSongs|length == playlist.songs|length %}
     <tr>
-        <td colspan="10" class="white">no records found</td>
+        <td colspan="10" class="white">{% trans %}no records found{% endtrans %}</td>
     </tr>
 {% endif %}

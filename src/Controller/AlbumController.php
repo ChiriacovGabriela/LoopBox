@@ -105,7 +105,6 @@ class AlbumController extends AbstractController
             }
             $albumRepository->remove($album, true);
 
-
         }
 
         return $this->redirectToRoute('app_album_index', [], Response::HTTP_SEE_OTHER);

@@ -6,7 +6,7 @@
 
     {% include "partials/_nav_bar.html.twig" %}
 
-    <section class="background_user">
+    <section class="background_user bg_properties">
 
         <h1 class="red-color neon center margin_top" >{% trans %}Hello{% endtrans %}, {{ app.user.name }}
             <a href="{{path('app_song_favoris',{id: app.user.id})}}">
@@ -16,7 +16,7 @@
         <p class="lead white center">{% trans %}Welcome on your page! Here you can see all your playlists and create others if you want.{% endtrans %}</p>
 
         <p class="center">
-            <button class="btn btn-outline-light button_create_playlist"><a class="red-color neon" href="{{path('app_playlist_add')}}">Create Playlist</a></button>
+            <button class="btn btn-outline-light button_create_playlist"><a class="red-color neon" href="{{path('app_playlist_add')}}">{% trans %}Create{% endtrans%} Playlist</a></button>
         </p>
 
         <div class="container1 margin_top">
@@ -42,10 +42,6 @@
         {% include "user/_footer.html.twig" %}
 
     </section>
-
-    {% block javascripts %}
-        <script src="{{ asset("js/move.js") }}"></script>
-    {% endblock %}
 
 {% endblock %}
 

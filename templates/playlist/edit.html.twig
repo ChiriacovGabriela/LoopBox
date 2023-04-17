@@ -18,7 +18,11 @@
 
                                 <h2 class="fw-bold mb-2 text-uppercase neon red-color">Playlist</h2>
                                 <p class="text-white-50 mb-5">{% trans %}It's time to edit your playlist!{% endtrans %}</p>
-                                {% include "playlist/_form.html.twig" with {'button_label':'Edit'} %}
+                                {% if app.request.locale=="en" %}
+                                    {% include "playlist/_form.html.twig" with {'button_label':'Edit'} %}
+                                {% else %}
+                                    {% include "playlist/_form.html.twig" with {'button_label':'Modifier'} %}
+                                {% endif %}
                             </div>
                         </div>
                     </div>

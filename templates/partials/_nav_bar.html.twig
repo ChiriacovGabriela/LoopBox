@@ -1,7 +1,7 @@
 {% if app.user %}
 
     <nav>
-        <a class="nav_link neon" href="{{ path('app_homepage')}}">LoopBox </a>
+        <a class="nav_link neon red-color" href="{{ path('app_homepage')}}">LoopBox </a>
 
         <div class="header_nav">
             <div class="nav_link">
@@ -18,11 +18,11 @@
                     <a class="dropdown-item white" href="{{ path('app_song_index') }}">{% trans %}My songs{% endtrans %}</a>
                     <a class="dropdown-item white" href="{{ path('app_logout')}}">{% trans %}Logout{% endtrans %}</a>
                     <a class="dropdown-item white">
-                    {% for locale in locales %}
-                        {% if locale!=app.request.locale %}
-                            <a class="nav_link neon" href="{{ path('app_change_locale', {'locale': locale}) }}"><img src="{{ asset('assets/css/img/'~locale~'.png') }}" alt="{{ locale }}" width="23" height="18"></a>
-                        {% endif %}
-                    {% endfor %}
+                        {% for locale in locales %}
+                            {% if locale!=app.request.locale %}
+                                <a class="nav_link neon" href="{{ path('app_change_locale',{'locale': locale})}}"><img src="{{ asset('assets/css/img/'~locale~'.png') }}" alt="{{ locale }}" width="23" height="18"></a>
+                            {% endif %}
+                        {% endfor %}
                     </a>
 
                 </div>
@@ -36,17 +36,17 @@
 {% else %}
 
     <nav>
-        <a class="nav_link neon" href="{{ path('app_homepage')}}">LoopBox</a>
+        <a class="nav_link neon red-color" href="{{ path('app_homepage')}}">LoopBox</a>
 
         <div class="header_nav">
 
-            <a class="nav_link neon " href="{{ path('app_register')}}">{% trans %}Sign up{% endtrans %}</a>
+            <a class="nav_link neon red-color " href="{{ path('app_register')}}">{% trans %}Sign up{% endtrans %}</a>
 
-            <a class="nav_link neon " href="{{ path('app_login')}}">{% trans %}Login{% endtrans %}</a>
+            <a class="nav_link neon red-color " href="{{ path('app_login')}}">{% trans %}Login{% endtrans %}</a>
 
             {% for locale in locales %}
                 {% if locale!=app.request.locale %}
-                    <a class="nav_link neon" href="{{ path('app_change_locale', {'locale': locale}) }}"><img src="{{ asset('assets/css/img/'~locale~'.png') }}" alt="{{ locale }}" width="23" height="18"></a>
+                    <a class="nav_link neon" href="{{ path('/change-locale/{locale}', {'locale': locale}) }}"><img src="{{ asset('assets/css/img/'~locale~'.png') }}" alt="{{ locale }}" width="23" height="18"></a>
                 {% endif %}
             {% endfor %}
 

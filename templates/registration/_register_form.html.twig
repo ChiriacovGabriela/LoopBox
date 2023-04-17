@@ -5,7 +5,7 @@
 {{ form_row(registrationForm.preference) }}
 {{ form_row(registrationForm.email) }}
 {% if emailAlreadyUsed is defined %}
-    Email is already used
+    {% trans %}Email is already used{% endtrans %}
 {% endif %}
 {{ form_row(registrationForm.plainPassword, {
     label: 'Password'
@@ -16,7 +16,6 @@
 </div>
 
 <div class="btn1">
-
     {% if app.request.locale=="en" %}
         <button type="submit" class="btn btn-light btn-lg px-5">{{ button_label| default('Create') }}</button>
     {% else %}
