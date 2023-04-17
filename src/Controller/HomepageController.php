@@ -11,8 +11,9 @@ use App\Form\SearchType;
 use App\Repository\CommentRepository;
 use App\Repository\PlaylistRepository;
 use App\Repository\SongRepository;
+
 use App\Model\SearchData;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Service\AjaxService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomepageController extends AbstractController
 {
     #[Route('/homepage', name: 'app_homepage')]
-    public function index(SongRepository $songRepository, PlaylistRepository $playlistRepository, Request $request, AlbumRepository $albumRepository): Response
+    public function index(SongRepository $songRepository, PlaylistRepository $playlistRepository, Request $request, AlbumRepository $albumRepository, AjaxService $ajaxService): Response
     {
         $searchData = new SearchData();
         $form = $this->createForm(SearchType::class, $searchData);
@@ -39,27 +40,13 @@ class HomepageController extends AbstractController
             ]);
 
         }
-
         //on recupere les filtres
         $filters = $request->get('type');
-        //dd($filters);
-        if ($filters != null) {
-            //on recupere les bonnes chansons en fonction des filtres
-            $songs = $songRepository->findSongsByType($filters);
-        } else {
-            $songs = $songRepository->findAll();
-        }
+        $songs = $ajaxService->handleFilterHomepage($filters, $songRepository);
 
         //on verifie si on a une requete ajax
         if ($request->get('ajax')) {
-            return new JsonResponse([
-                'content' => $this->renderView('homepage/_content.html.twig', [
-                    'form' => $form->createView(),
-                    'songs' => $songs,
-                    'playlists' => $playlistRepository->findBy(['user' => $this->getUser()]),
-
-                ])
-            ]);
+            return $ajaxService->handleHomepageAjaxRequest($request, $songs, $playlistRepository->findBy(['user' => $this->getUser()]), $form->createView());
         }
 
         return $this->render('homepage/index.html.twig', [

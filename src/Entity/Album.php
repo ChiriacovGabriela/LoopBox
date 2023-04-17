@@ -96,6 +96,11 @@ class Album
         return $this;
     }
 
+    public function getPictureFileName(): ?string
+    {
+        return $this->pictureFileName;
+    }
+
     public function getAudioFileName(): ?string
     {
         return $this->audioFileName;

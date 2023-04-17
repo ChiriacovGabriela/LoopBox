@@ -2,12 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Playlist;
 use App\Entity\Song;
 use App\Model\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use PhpParser\Node\Expr\Array_;
 
 
 /**
@@ -42,28 +43,80 @@ class SongRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    public function findBySearch(SearchData $searchData): Array
+
+    public function findBySearch(SearchData $searchData): array
     {
         $data = $this->createQueryBuilder('p')
             ->addOrderBy('p.created_at', 'DESC');
 
-        if(!empty($searchData->q)) {
+        if (!empty($searchData->q)) {
             $data = $data
                 ->where('p.name LIKE :q')
                 ->orWhere('p.artist LIKE :q')
                 ->orWhere('p.type LIKE :q')
-                ->setParameter('q', "%{$searchData->q}%");
+                ->setParameter('q', "%$searchData->q%");
         }
-        $data = $data
-            ->getQuery()
-            ->getResult();
 
-        return $data;
-
+        return $data->getQuery()->getResult();
     }
 
+    public function findSongsByType($filters)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->andWhere('s.type IN(:types)')
+            ->setParameter(':types', array_values($filters));
+        return $qb->getQuery()->getResult();
+    }
 
+    public function findSongsByPlaylistAndType(Playlist $playlist, array $types, int $page, int $limit): array
+    {
+        $limit = abs($limit);
 
+        $qb = $this->createQueryBuilder('s');
+        $qb->leftJoin('s.playlists', 'p')
+            ->andWhere('p.id = :playlistId')
+            ->andWhere('s.type IN (:types)')
+            ->setParameter('playlistId', $playlist->getId())
+            ->setParameter('types', array_values($types))
+            ->setMaxResults($limit)
+            ->setFirstResult($page * $limit - $limit);
+
+        return $this->pagination($qb, $page, $limit);
+    }
+
+    public function findSongsByPlaylistPaginated(Playlist $playlist, int $page, int $limit): array
+    {
+        $limit = abs($limit);
+
+        $qb = $this->createQueryBuilder('s');
+        $qb->leftJoin('s.playlists', 'p')
+            ->andWhere('p.id = :playlistId')
+            ->setParameter('playlistId', $playlist->getId())
+            ->setMaxResults($limit)
+            ->setFirstResult($page * $limit - $limit);
+
+        return $this->pagination($qb, $page, $limit);
+    }
+
+    private function pagination(QueryBuilder $qb, int $page, int $limit): array
+    {
+        $result = [];
+        $paginator = new Paginator($qb);
+        $data = $paginator->getQuery()->getResult();
+
+        if (empty($data)) {
+            return $result;
+        }
+
+        $pages = ceil($paginator->count() / $limit);
+
+        $result['data'] = $data;
+        $result['pages'] = $pages;
+        $result['page'] = $page;
+        $result['limit'] = $limit;
+
+        return $result;
+    }
 
 
 //    /**

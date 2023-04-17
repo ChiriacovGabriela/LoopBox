@@ -3,37 +3,27 @@
 {% block title %}Album index{% endblock %}
 
 {% block body %}
-    <h1>Album index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Artist</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for album in albums %}
-            <tr>
-                <td>{{ album.id }}</td>
-                <td>{{ album.name }}</td>
-                <td>{{ album.type }}</td>
-                <td>{{ album.artist }}</td>
-                <td>
-                    <a href="{{ path('app_album_show', {'id': album.id}) }}">show</a>
-                    <a href="{{ path('app_album_edit', {'id': album.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% include "/partials/_nav_bar.html.twig" %}
 
-    <a href="{{ path('app_album_new') }}">Create new</a>
+    <section class="bg_index_album">
+        <h1 class="red-color neon center margin_top">{% trans %}Albums that you have added on LoopBox{% endtrans %}</h1>
+        <div class="container1 margin_top">
+            <div class="row">
+                {% for album in albums %}
+                    <div class="card2">
+                        <div class="center">
+                            <img class="picture" src="{{ asset('uploads/images/'~album.pictureFileName) }}" alt="Card image cap" width="220" height="220">
+                        </div>
+
+                        <p><h4 class="center"><a class="red-color neon" href="{{path('app_album_show', {id: album.id})}}">{{ album.name }}</a></h4></p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="center btn1">
+        <button class="btn btn-outline-light btn-lg px-5"><a class="neon red-color" href="{{ path('app_album_new') }}">{% trans %}Add album{% endtrans %}</a></button>
+        </div>
+    </section>
+
 {% endblock %}

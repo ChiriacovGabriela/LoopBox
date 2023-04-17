@@ -1,0 +1,19 @@
+{% if isHomepage is defined %}
+    <a  href="{{ path('app_homepage_player',{id: idSong})  }}"
+{% endif %}
+
+{% if playlist is defined %}
+    <a  href="{{ path('app_playlist_player',{'playlistId': playlist.id, 'songId': idSong}) }}" >
+{% endif %}
+
+{% if isSong is defined %}
+    <a href="{{ path('app_song_player',{id: idSong}) }}" >
+{% endif %}
+
+{% if album is defined %}
+    <a  href="{{ path('app_album_player',{'albumId': album.id, 'songId': idSong}) }}" >
+{% endif %}
+
+{% if isFavoris is defined %}
+    <a href="{{ path('app_song_favoris_player',{'userId': user.id, 'songId': idSong}) }}">
+{% endif%}

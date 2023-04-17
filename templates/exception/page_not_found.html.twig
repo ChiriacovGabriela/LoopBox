@@ -2,6 +2,23 @@
 {% block title %} Page not found{% endblock %}
 
 {% block body %}
-    <h1> Page not found !</h1>
-    <p>Details : {{ message }}</p>
+
+    <div class="d-flex align-items-center justify-content-center vh-100">
+        <div class="text-center">
+           <img src="https://pyxis.nymag.com/v1/imgs/d67/377/dc02b103fe29d8f6a3f9fb287b75bdb552-19-inside-out-cry.rhorizontal.w700.jpg">
+           <p class="fs-3"> <span class="text-danger">Don't Cry!</span> It's just a 404 Error! </p>
+           <p class="lead">
+               The page you’re looking for doesn’t exist.
+           </p>
+           <p class="lead">
+               Details : {{ message }}</Details : {{ message }}
+           </p>
+           <div>
+               <a href="{{ path('app_homepage') }}" class="btn btn-primary">Go Home</a>
+           </div>
+        </div>
+    </div>
+
+
+
 {% endblock %}
