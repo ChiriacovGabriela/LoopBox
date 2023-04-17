@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Album;
+use App\Entity\Song;
 use App\Form\AlbumType;
 use App\FormHandler\CommentHandler;
 use App\FormHandler\UploadFileHandler;
