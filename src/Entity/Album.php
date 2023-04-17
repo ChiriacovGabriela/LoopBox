@@ -16,8 +16,14 @@ class Album
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     private ?string $name = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $type = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $artist = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
@@ -28,7 +34,10 @@ class Album
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
-    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'relationWithAlbum')]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $pictureFileName = null;
+
+    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'album', cascade:['persist'])]
     private Collection $songs;
 
     #[ORM\ManyToOne(inversedBy: 'relationWithAlbum')]
@@ -37,6 +46,7 @@ class Album
     public function __construct()
     {
         $this->songs = new ArrayCollection();
+        $this->created_at=new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -54,6 +64,46 @@ class Album
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getArtist(): ?string
+    {
+        return $this->artist;
+    }
+
+    public function setArtist(?string $artist): self
+    {
+        $this->artist = $artist;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function setPictureFileName(?string $pictureFileName): self
+    {
+        $this->pictureFileName = $pictureFileName;
+        return $this;
+    }
+
+    public function getPictureFileName(): ?string
+    {
+        return $this->pictureFileName;
+    }
+
+    public function getAudioFileName(): ?string
+    {
+        return $this->audioFileName;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
@@ -104,7 +154,7 @@ class Album
     {
         if (!$this->songs->contains($song)) {
             $this->songs->add($song);
-            $song->addRelationWithAlbum($this);
+            $song->addAlbum($this);
         }
 
         return $this;
@@ -113,7 +163,7 @@ class Album
     public function removeSong(Song $song): self
     {
         if ($this->songs->removeElement($song)) {
-            $song->removeRelationWithAlbum($this);
+            $song->removeAlbum($this);
         }
 
         return $this;

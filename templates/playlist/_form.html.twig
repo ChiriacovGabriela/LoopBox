@@ -1,0 +1,16 @@
+{{ form_start(playlistForm) }}
+
+    <div class="form-outline form-white mb-4">
+
+    <div>{{ form_widget(playlistForm.name) }}</div>
+    <div>{{ form_label(playlistForm.name) }}</div>
+    </div>
+
+    <div class="form-outline form-white mb-4">
+        <div>{{ form_widget(playlistForm.imageFileName) }}</div>
+        <div>{{ form_label(playlistForm.imageFileName) }}</div>
+    </div>
+
+    <div class="btn1"><button class="btn btn-outline-light btn-lg px-5" type="submit">{{ button_label| default('Create') }}</button></div>
+
+{{ form_end(playlistForm) }}

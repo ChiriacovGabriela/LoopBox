@@ -35,28 +35,34 @@ class Song
     private ?\DateTimeInterface $updated_at = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $picturePath = null;
+    private ?string $pictureFileName = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $audioPath = null;
+    private ?string $audioFileName = null;
 
     #[ORM\ManyToOne(inversedBy: 'relation')]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'song', targetEntity: comment::class)]
+    #[ORM\OneToMany(mappedBy: 'song', targetEntity: Comment::class)]
     private Collection $relation;
 
-    #[ORM\ManyToMany(targetEntity: playlist::class, inversedBy: 'songs')]
-    private Collection $relationWithPlaylist;
+    #[ORM\ManyToMany(targetEntity: Playlist::class, inversedBy: 'songs', cascade: ['persist'])]
+    private Collection $playlists;
 
-    #[ORM\ManyToMany(targetEntity: album::class, inversedBy: 'songs')]
-    private Collection $relationWithAlbum;
+    #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'songs')]
+    private Collection $album;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'favoris')]
+    private Collection $favoris;
 
     public function __construct()
     {
         $this->relation = new ArrayCollection();
-        $this->relationWithPlaylist = new ArrayCollection();
-        $this->relationWithAlbum = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
+        $this->album = new ArrayCollection();
+        $this->created_at=new \DateTimeImmutable();
+        $this->favoris = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -136,26 +142,26 @@ class Song
         return $this;
     }
 
-    public function getPicturePath(): ?string
+    public function getPictureFileName(): ?string
     {
-        return $this->picturePath;
+        return $this->pictureFileName;
     }
 
-    public function setPicturePath(?string $picturePath): self
+    public function setPictureFileName(?string $pictureFileName): self
     {
-        $this->picturePath = $picturePath;
+        $this->pictureFileName = $pictureFileName;
 
         return $this;
     }
 
-    public function getAudioPath(): ?string
+    public function getAudioFileName(): ?string
     {
-        return $this->audioPath;
+        return $this->audioFileName;
     }
 
-    public function setAudioPath(string $audioPath): self
+    public function setAudioFileName(string $audioFileName): self
     {
-        $this->audioPath = $audioPath;
+        $this->audioFileName = $audioFileName;
 
         return $this;
     }
@@ -205,23 +211,23 @@ class Song
     /**
      * @return Collection<int, playlist>
      */
-    public function getRelationWithPlaylist(): Collection
+    public function getPlaylists(): Collection
     {
-        return $this->relationWithPlaylist;
+        return $this->playlists;
     }
 
-    public function addRelationWithPlaylist(playlist $relationWithPlaylist): self
+    public function addPlaylist(playlist $playlist): self
     {
-        if (!$this->relationWithPlaylist->contains($relationWithPlaylist)) {
-            $this->relationWithPlaylist->add($relationWithPlaylist);
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists->add($playlist);
         }
 
         return $this;
     }
 
-    public function removeRelationWithPlaylist(playlist $relationWithPlaylist): self
+    public function removePlaylist(playlist $playlist): self
     {
-        $this->relationWithPlaylist->removeElement($relationWithPlaylist);
+        $this->playlists->removeElement($playlist);
 
         return $this;
     }
@@ -229,23 +235,47 @@ class Song
     /**
      * @return Collection<int, album>
      */
-    public function getRelationWithAlbum(): Collection
+    public function getAlbum(): Collection
     {
-        return $this->relationWithAlbum;
+        return $this->album;
     }
 
-    public function addRelationWithAlbum(album $relationWithAlbum): self
+    public function addAlbum(album $album): self
     {
-        if (!$this->relationWithAlbum->contains($relationWithAlbum)) {
-            $this->relationWithAlbum->add($relationWithAlbum);
+        if (!$this->album->contains($album)) {
+            $this->album->add($album);
         }
 
         return $this;
     }
 
-    public function removeRelationWithAlbum(album $relationWithAlbum): self
+    public function removeAlbum(album $album): self
     {
-        $this->relationWithAlbum->removeElement($relationWithAlbum);
+        $this->album->removeElement($album);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(User $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(User $favori): self
+    {
+        $this->favoris->removeElement($favori);
 
         return $this;
     }

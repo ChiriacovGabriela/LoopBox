@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Album index{% endblock %}
+
+{% block body %}
+
+    {% include "/partials/_nav_bar.html.twig" %}
+
+    <section class="bg_index_album">
+        <h1 class="red-color neon center margin_top">{% trans %}Albums that you have added on LoopBox{% endtrans %}</h1>
+        <div class="container1 margin_top">
+            <div class="row">
+                {% for album in albums %}
+                    <div class="card2">
+                        <div class="center">
+                            <img class="picture" src="{{ asset('uploads/images/'~album.pictureFileName) }}" alt="Card image cap" width="220" height="220">
+                        </div>
+
+                        <p><h4 class="center"><a class="red-color neon" href="{{path('app_album_show', {id: album.id})}}">{{ album.name }}</a></h4></p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="center btn1">
+        <button class="btn btn-outline-light btn-lg px-5"><a class="neon red-color" href="{{ path('app_album_new') }}">{% trans %}Add album{% endtrans %}</a></button>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+<div class="modal fade" id="exampleModalLong{{ song.id }}" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content popup_show_songs">
+            <div class="modal-header">
+                <h5 class="modal-title white emphasized" id="exampleModalLongTitle">{% trans %}Song details{% endtrans %}</h5>
+                <button type="button" class="close no_bg_border white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-check">
+                  <table>
+                      <tr>
+                          <td class="td3 text-center">
+                              {% if song.pictureFileName == null %}
+                                  <img src="{{ asset('assets/css/img/music3.jpg') }}" alt="Song" width="230" height="230">
+                              {% else %}
+                                  <img src="{{ asset('uploads/images/'~song.pictureFileName) }}" alt="Song" width="230" height="230">
+                              {% endif %}
+                          </td>
+                          <td class="td3 text-center">
+                              <div class="white emphasized text-center">
+                              {{ song.name }}, {{ song.artist }}, {{ song.type }}
+                              </div>
+                              <div class="inline center margin_top">
+                                  <button class="btn_space btn btn-outline-light ">
+                                      <a class="red-color neon" href="{{ path('app_song_edit', {'id': song.id}) }}">{% trans %}Edit{% endtrans %}</a>
+                                  </button>
+                                  <div class="position_right"> {{ include('song/_delete_form.html.twig') }}</div>
+                              </div>
+                          </td>
+                      </tr>
+
+                  </table>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
 class Playlist
 {
     #[ORM\Id]
@@ -20,29 +21,43 @@ class Playlist
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imagePath = null;
-
-    #[ORM\Column]
-    private ?bool $visibility = null;
+    private ?string $imageFileName = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $deleted_at = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
-    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'relationWithPlaylist')]
+    #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'playlists', cascade: ['persist'])]
     private Collection $songs;
 
-    #[ORM\ManyToOne(inversedBy: 'relationWithPlaylist')]
+    #[ORM\ManyToOne(inversedBy: 'playlists')]
     private ?User $user = null;
 
     public function __construct()
     {
         $this->songs = new ArrayCollection();
+
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->created_at = new \DateTime;
+
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue():void
+    {
+        $this->updated_at = new \DateTime;
+
+    }
+    public function setUser(User $user):self
+    {
+        $this->user=$user;
+        return $this;
     }
 
     public function getId(): ?int
@@ -62,50 +77,38 @@ class Playlist
         return $this;
     }
 
-    public function getImagePath(): ?string
+    public function getImageFileName(): ?string
     {
-        return $this->imagePath;
+        return $this->imageFileName;
     }
 
-    public function setImagePath(?string $imagePath): self
+    public function setImageFileName(?string $imageFileName): self
     {
-        $this->imagePath = $imagePath;
+        $this->imageFileName = $imageFileName;
 
         return $this;
     }
 
-    public function isVisibility(): ?bool
-    {
-        return $this->visibility;
-    }
 
-    public function setVisibility(bool $visibility): self
+    public function addSongPlaylist(Song $song): self
     {
-        $this->visibility = $visibility;
+        $this->songs[] = $song;
+
+        if (!$song->getPlaylists()->contains($this)) {
+            $song->addPlaylist($this);
+        }
 
         return $this;
     }
 
-    public function getCretedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->creted_at;
+        return $this->created_at;
     }
 
-    public function setCretedAt(\DateTimeInterface $creted_at): self
+    public function setCreatedAt(\DateTimeInterface $created_at): self
     {
-        $this->creted_at = $creted_at;
-
-        return $this;
-    }
-
-    public function getDeletedAt(): ?\DateTimeInterface
-    {
-        return $this->deleted_at;
-    }
-
-    public function setDeletedAt(?\DateTimeInterface $deleted_at): self
-    {
-        $this->deleted_at = $deleted_at;
+        $this->created_at = $created_at;
 
         return $this;
     }
@@ -125,6 +128,7 @@ class Playlist
     /**
      * @return Collection<int, Song>
      */
+
     public function getSongs(): Collection
     {
         return $this->songs;
@@ -134,7 +138,7 @@ class Playlist
     {
         if (!$this->songs->contains($song)) {
             $this->songs->add($song);
-            $song->addRelationWithPlaylist($this);
+            $song->addPlaylist($this);
         }
 
         return $this;
@@ -142,10 +146,10 @@ class Playlist
 
     public function removeSong(Song $song): self
     {
-        if ($this->songs->removeElement($song)) {
-            $song->removeRelationWithPlaylist($this);
+        if ($this->songs->contains($song)) {
+            $this->songs->removeElement($song);
+            $song->removePlaylist($this);
         }
-
         return $this;
     }
 
@@ -154,10 +158,7 @@ class Playlist
         return $this->user;
     }
 
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
-        return $this;
-    }
+
+
 }

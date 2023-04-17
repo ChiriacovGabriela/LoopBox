@@ -1,0 +1,30 @@
+.bg_homepage {
+    background-image: url("img/music6.jpg");
+    background-size: cover;
+    background-position: center;
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
+    position: absolute;
+}
+.white_hover {
+    color: white;
+}
+.white_hover:hover{
+    color: black;
+}
+.search_zone {
+    width: 550px;
+    margin-bottom: 35px;
+    margin-right: 20px;
+}
+.search_btn {
+    margin-bottom: 35px;
+    border-radius: 5px;
+}
+.popup_homepage {
+    background-color: whitesmoke;
+}
+.popup_homepage2 {
+    background-image: url("img/music6.jpg");
+}

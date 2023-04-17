@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Song index{% endblock %}
+
+{% block body %}
+
+    {% include "partials/_nav_bar.html.twig" %}
+
+    <div class="background_song">
+
+    <h1 class="red-color neon center title">{% trans %}Songs that you have added on LoopBox{% endtrans %}</h1>
+
+    <table class="table noline">
+        <thead>
+            <tr>
+                <th class="th2"><font class="red-color neon">{% trans %}Title{% endtrans %}</font></th>
+                <th class="th2"><font class="red-color neon">{% trans %}Type{% endtrans %}</font></th>
+                <th class="th2"><font class="red-color neon">{% trans %}Artist{% endtrans %}</font></th>
+                <th class="th2"></th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for song in songs %}
+            <tr>
+                <td class="td2"><font color="white">{{ song.name }}</font></td>
+                <td class="td2"><font color="white">{{ song.type }}</font></td>
+                <td class="td2"><font color="white">{{ song.artist }}</font></td>
+                <td class="td2">
+                    <button class="btn_space btn btn-outline-light"><a class="white_hover neon" href="{{ path('app_song_player', {'id': song.id}) }}">{% trans %}play{% endtrans %}</a></button>
+                    <button type="button" class="btn_space btn btn-outline-light white_hover neon" data-toggle="modal"
+                            data-target="#exampleModalLong{{ song.id }}">{% trans %}show{% endtrans %}
+                    </button>
+                    {% include "/partials/_popupShowSongs.html.twig" %}
+                </td>
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="10" class="td2">
+                    <div class="red-color neon">{% trans %}No records found{% endtrans %}</div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="center btn1"><button class="btn btn-outline-light btn-lg px-5"><a class="white_hover neon" href="{{ path('app_song_new') }}">{% trans %}Add song{% endtrans %}</a></button></div>
+    </div>
+
+{% endblock %}

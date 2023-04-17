@@ -1,0 +1,19 @@
+{{ form_start(registrationForm) }}
+
+{{ form_row(registrationForm.name) }}
+{{ form_row(registrationForm.surname) }}
+{{ form_row(registrationForm.preference) }}
+{{ form_row(registrationForm.email, {'attr':{'readonly':true}} ) }}
+{{ form_row(registrationForm.plainPassword, {
+    label: 'Password'
+}) }}
+
+<div class="agree_terms">
+    {{ form_row(registrationForm.agreeTerms) }}
+</div>
+
+<div class="btn1">
+    <button type="submit" class="btn btn-light btn-lg px-5">{{ button_label| default('Create')}}</button>
+</div>
+
+{{ form_end(registrationForm) }}
