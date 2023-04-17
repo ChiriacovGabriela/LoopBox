@@ -1,0 +1,17 @@
+.title {
+    height: 100px;
+}
+.center {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.background_song {
+    background-image: url("img/music6.jpg");
+}
+.btn_space {
+    margin-right: 15px;
+}
+.popup_show_songs {
+    background-image: url("img/music9.jpeg");
+}

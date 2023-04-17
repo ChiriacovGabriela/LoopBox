@@ -17,7 +17,7 @@
             </td>
             <td>
                 <a class="btn btn-outline-light"
-                   href= {{ path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>Delete</a>
+                   href= {{ path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>{% trans %}Delete{% endtrans %}</a>
             </td>
         </tr>
     {% endfor %}

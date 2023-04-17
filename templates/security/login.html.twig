@@ -2,12 +2,11 @@
 
 {% block title %}Log in!{% endblock %}
 
-
 {% block body %}
 
     {% include "partials/_nav_bar.html.twig" %}
 
-    <section class="vh-100 gradient bgg" >
+    <section class="vh-100 gradient bg_login" >
 
         <div class="container py-5 h-100 ">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -38,23 +37,11 @@
                                     <label for="inputPassword">{% trans %}Password{% endtrans %}</label>
                                     <input type="password" name="password" id="inputPassword" class="form-control form-outline form-white mb-4" autocomplete="current-password" required>
 
-                                    <input type="hidden" name="_csrf_token"
-                                        value="{{ csrf_token('authenticate') }}"
-                                    >
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}
-                                <div class="btn1"><button class="btn btn-outline-light btn-lg px-5" type="submit">
-                                    {% trans %}Sign in{% endtrans %}
-                                </button></div>
+                                    <div class="btn1"><button class="btn btn-outline-light btn-lg px-5" type="submit">
+                                        {% trans %}Sign in{% endtrans %}
+                                    </button></div>
 
                                 </form>
                             </div>

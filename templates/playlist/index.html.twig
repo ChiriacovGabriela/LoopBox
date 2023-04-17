@@ -6,11 +6,9 @@
 
 {% block body %}
 
-
     {% include "partials/_nav_bar.html.twig" %}
 
-
-    <div class="jumbotron text-center background_playlist">
+    <div class="jumbotron text-center background_playlist bg_properties">
 
         <div class="container">
             <h1 class="red-color neon center title">Playlist {{ playlist.name }}</h1>
@@ -29,14 +27,12 @@
                     {% trans %}Add Song{% endtrans %}
                 </button>
 
-                <a href="{{ path('app_playlist_edit',{id: playlist.id}) }}" class="btn btn-outline-light btn_margin">{% trans %}Edit
-                    playlist{% endtrans %}</a>
+                <a href="{{ path('app_playlist_edit',{id: playlist.id}) }}" class="btn btn-outline-light btn_margin">
+                    {% trans %}Edit{% endtrans %} playlist</a>
 
+                    {{ include('playlist/_delete_form.html.twig') }}
 
-                {{ include('playlist/_delete_form.html.twig') }}
-
-            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content color_popup2">
                         <div class="modal-header color_popup">
@@ -46,8 +42,7 @@
                             </button>
                         </div>
                         <div class="filtre white">
-
-                            <p>Select by type</p>
+                            <div>{% trans %}Select by type{% endtrans %}</div>
                             <form id="filtersPopup">
                                 {% for genre in genres %}
                                     {% if queryParams is not empty and queryParams.type is defined %}
@@ -55,16 +50,14 @@
                                     {% else %}
                                         {% set checked = "" %}
                                     {% endif %}
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" name="type[]" id="{{ genre }}" value="{{ genre }}" {{ checked }}>
-                                    <label for="{{ genre }}">{{ genre }}</label>
-
-                                </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" name="type[]" id="{{ genre }}" value="{{ genre }}" {{ checked }}>
+                                        <label for="{{ genre }}">{{ genre }}</label>
+                                    </div>
                                 {% endfor %}
                             </form>
                         </div>
                         <div class="modal-body">
-
                             <table class="table">
                                 <thead>
                                 <tr class="white">
@@ -74,11 +67,9 @@
                                     <th class="td1"></th>
                                 </tr>
                                 </thead>
-
                                 <tbody id="contentPopup">
                                 {% include "playlist/_contentPopup.html.twig" %}
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
@@ -87,7 +78,7 @@
             </p>
         </div>
         <div class="filtre white">
-            <p>Select by type</p>
+            <p>{% trans %}Select by type{% endtrans %}</p>
             <form id="filters">
                 {% for genre in genres %}
                     {% if queryParams is not empty and queryParams.type is defined %}
@@ -112,34 +103,8 @@
                 <th></th>
             </tr>
             </thead>
-
-           {#  <tbody>
-            {% for song in playlist.songs %}
-                <tr class="white">
-                    <td>{{ song.name }}</td>
-                    <td>{{ song.artist }}</td>
-                    <td>{{ song.type }}</td>
-                    <td>
-                        <button class="btn btn-outline-light">
-                            <a href="{{ path('app_playlist_player', {'playlistId': playlist.id, 'songId':song.id}) }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                     class="bi bi-caret-right white_hover" viewBox="0 0 16 16">
-                                    <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
-                                </svg>
-                            </a>
-                        </button>
-                    </td>
-                    <td>
-                        <a class="btn btn-outline-light"
-                           href= {{ path('delete_song_playlist', {'playlistId': playlist.id, 'songId': song.id}) }}>{% trans %}Delete{% endtrans %}</a>
-                    </td>
-                </tr>
-            {% endfor %}#}
-
-
             <tbody id="content">
-            {% include "playlist/_content.html.twig" %}
-
+                {% include "playlist/_content.html.twig" %}
             </tbody>
         </table>
     </div>

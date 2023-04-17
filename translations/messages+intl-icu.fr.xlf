@@ -259,7 +259,7 @@
       </trans-unit>
       <trans-unit id="MFb6RFr" resname="It's time to edit your album!">
         <source>It's time to edit your album!</source>
-        <target>C'est le moment de créer votre album!</target>
+        <target>C'est le moment de modifier votre album!</target>
       </trans-unit>
       <trans-unit id="s3wF2Eu" resname="Add album">
         <source>Add album</source>
@@ -291,7 +291,39 @@
       </trans-unit>
       <trans-unit id="lTI5Ffk" resname="It's time to edit your song">
         <source>It's time to edit your song</source>
-        <target>C'est le moment de modifier ton compte</target>
+        <target>C'est le moment de modifier ton chanson</target>
+      </trans-unit>
+      <trans-unit id="tTGBpNh" resname="My account">
+        <source>My account</source>
+        <target>Mon compte</target>
+      </trans-unit>
+      <trans-unit id="bT7CWjt" resname="Click here to sign in:">
+        <source>Click here to sign in:</source>
+        <target>Cliquez ici pour vous connecter :</target>
+      </trans-unit>
+      <trans-unit id="dWBqAOK" resname="SIGN IN">
+        <source>SIGN IN</source>
+        <target>S'IDENTIFIER</target>
+      </trans-unit>
+      <trans-unit id="XMvyUOO" resname="Edit playlist">
+        <source>Edit playlist</source>
+        <target>Modifier playlist</target>
+      </trans-unit>
+      <trans-unit id="uq3fcPt" resname="Type">
+        <source>Type</source>
+        <target>Type</target>
+      </trans-unit>
+      <trans-unit id=".qS1zv_" resname="Song">
+        <source>Song</source>
+        <target>Chanson</target>
+      </trans-unit>
+      <trans-unit id="KTSYAB8" resname="Song (MP3 file)">
+        <source>Song (MP3 file)</source>
+        <target>Chanson (fichier MP3)</target>
+      </trans-unit>
+      <trans-unit id="CtrArEL" resname="Email is already used">
+        <source>Email is already used</source>
+        <target>Email déjà utilisé</target>
       </trans-unit>
     </body>
   </file>
