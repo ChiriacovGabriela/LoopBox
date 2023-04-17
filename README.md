@@ -22,6 +22,8 @@ https://mailtrap.io/inboxes/2161878/messages
 php bin/console messenger:consume async
 dans le terminal.
 
+Vous pouvez vous connecter sur le compte: yessicerlyn@gmail.com; mdp:qPt4R26Zr3SdwFQ
+
 ### Ajout de chansons, playlists et albums
 Une fois connecté, il est possible d'importer des chansons, des albums et de créer des playlists.
 Les images de couverture des chansons, playlists ou albums doivent être importées au format jpeg. (2mo maximum)
@@ -34,4 +36,5 @@ Lorsque vous écoutez une musique, il est possible de la liker et de la commente
 ### Multilingue 
 L'ensemble de pages de notre site est disponible dans deux langues: anglais et français.
 
-
+### Organisation
+https://docs.google.com/spreadsheets/d/1Wnbul110U-vXBZlOg_KTy3_M8YD3c1825SdkyZD0ZMo/edit?usp=sharing
