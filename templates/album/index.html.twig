@@ -12,10 +12,15 @@
             <div class="row">
                 {% for album in albums %}
                     <div class="card2">
-                        <div class="center">
-                            <img class="picture" src="{{ asset('uploads/images/'~album.pictureFileName) }}" alt="Card image cap" width="220" height="220">
-                        </div>
-
+                        {% if album.pictureFileName == null %}
+                            <div class="center">
+                                <img class="picture" src="https://cdn.dribbble.com/users/1752437/screenshots/14183305/ep_4x.png" alt="Music Note" width="220" height="220">
+                            </div>
+                        {% else %}
+                            <div class="center">
+                                <img class="picture" src="{{ asset('uploads/images/'~album.pictureFileName) }}" alt="Card image cap" width="220" height="220">
+                            </div>
+                        {% endif %}
                         <p><h4 class="center"><a class="red-color neon" href="{{path('app_album_show', {id: album.id})}}">{{ album.name }}</a></h4></p>
                     </div>
                 {% endfor %}
